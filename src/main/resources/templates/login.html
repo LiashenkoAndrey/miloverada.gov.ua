@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Вхід</title>
-<link rel="stylesheet" href="/src/main/resources/static/styles/login.css">
+  <link rel="stylesheet" th:href="@{/styles/login.css}">
 
 </head>
 <body >
 <div id="login-form-wrap">
   <h2>Вхід для адміністратора</h2>
-  <form id="login-form">
+  <form id="login-form" th:method="post" th:action="@{/login}">
     <p>
-    <input type="text" id="username" name="username" placeholder="Логін" required><i class="validation"><span></span><span></span></i>
+    <input type="text" id="username" name="login" placeholder="Логін" required><i class="validation"><span></span><span></span></i>
     </p>
     <p>
-    <input type="email" id="email" name="email" placeholder="Пароль" required><i class="validation"><span></span><span></span></i>
+    <input type="email" id="email" name="password" placeholder="Пароль" required><i class="validation"><span></span><span></span></i>
 
     </p>
     <p>
@@ -22,7 +22,7 @@
     </p>
   </form>
   <div id="create-account-wrap">
-    <a href="">Забули пароль?</a>
+    <a href="#">Забули пароль?</a>
   </div>
 </div>
 
