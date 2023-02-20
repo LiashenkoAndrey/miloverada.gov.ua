@@ -1,0 +1,12 @@
+#links a {
+    display: block;
+   margin: 4px;
+   padding: 2px;
+   color: black;
+   text-decoration: none;
+    background-color: rgba(194, 192, 192, 0.911);
+}
+
+#links a:hover {
+    background-color: rgba(156, 155, 155, 0.911);
+}
