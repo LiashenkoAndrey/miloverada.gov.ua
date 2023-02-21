@@ -11,4 +11,9 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/group")
+    public String group() {
+        return "group";
+    }
+
 }
