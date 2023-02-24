@@ -63,14 +63,14 @@
 
 <div id="deleteGroupForm" class="form" style="display: none;">
     <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
-        <form action="" class="h1">
+        <div class="h1">
             <div class="text-end">
                 <button type="button" class="btn-close" onclick="disableForm('deleteGroupForm')" aria-label="Close"></button>
             </div>
 
             <h2>Ви впевненні що хочете видалити групу?</h2>
-            <input type="submit" value="Так, видалити групу" class="btn btn-danger mt-2">
-        </form>
+            <button type="submit" th:onclick="'getRequest(\'/group/' + ${group.id} + '/delete\',\'/\')'" class="btn btn-danger mt-2">Так, видалити групу</button>
+        </div>
     </div>
 </div>
 <!--forms-->
@@ -143,8 +143,8 @@
                       Звіт сільського голови
                     </h1>
                       <div class="text-end">
+                          <!-- add subgroup button-->
                           <button class="btn btn-success" onclick="enableForm('new-sub-group')" >Додати підгрупу</button>
-                          <button class="btn btn-danger " onclick="enableForm('deleteGroupForm')" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
                       </div>
                   </div>
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -182,7 +182,10 @@
                                     </form>
 
                                     <div class="text-end">
+                                        <!-- add document button-->
                                         <button class="btn btn-success" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableDocumentForm(\'new-document' + ${sub_group.id} + '\')'" >Додати документ</button>
+
+                                        <!-- delete subgroup button-->
                                         <button class="btn btn-danger" th:onclick="'enableFormAndInjectDeleteUrl(\'delete-sub-group\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\')'" >Видалити підгрупу</button>
                                     </div>
 
@@ -193,8 +196,8 @@
 
                         <h1 th:if="${sub_groups.isEmpty()}">Документи ще не додані</h1>
                     </div>
-        
-                <a href=""  class="btn btn-danger mt-3" style="color: azure; width: 170px; height: 40px; ">Видалити групу</a>
+                    <!-- delete group button -->
+                    <button class="btn btn-danger " onclick="enableForm('deleteGroupForm')" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
                 </div>
 
             </div>

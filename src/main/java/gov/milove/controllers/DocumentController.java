@@ -33,6 +33,12 @@ public class DocumentController {
         this.subGroupService = subGroupService;
     }
 
+    @PostMapping("/new")
+    public String createNewGroup(@RequestParam("title") String title) {
+        documentGroupService.createGroup(title);
+        return "redirect:/";
+    }
+
     @GetMapping("/{id}")
     public String group(@PathVariable("id") Long id, Model model) {
         Optional<DocumentGroup> documentGroup = documentGroupService.findDocumentGroupById(id);
@@ -45,6 +51,14 @@ public class DocumentController {
         }
     }
 
+    @GetMapping("/{group_id}/delete")
+    public ResponseEntity<String> deleteGroup (@PathVariable("group_id") Long id) {
+        boolean success = documentGroupService.deleteGroup(id);
+        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
+        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
     @PostMapping("/{group_id}/sub-group/{subGroupId}/document/new")
     public String saveDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @PathVariable Long subGroupId) {
         System.out.println("Saving file: " + title);
@@ -52,11 +66,6 @@ public class DocumentController {
         return "redirect:/";
     }
 
-    @PostMapping("/new")
-    public String createNewGroup(@RequestParam("title") String title) {
-        documentGroupService.createGroup(title);
-        return "redirect:/";
-    }
 
     @PostMapping("/{group_id}/sub-group/new")
     public String createNewSubGroup (@PathVariable("group_id") Long id, @RequestParam("title") String title) {
@@ -66,8 +75,8 @@ public class DocumentController {
 
     @GetMapping("/sub-group/{subgroup_id}/delete")
     public ResponseEntity<String> deleteSubGroup (@PathVariable("subgroup_id") Long id) {
-        boolean status = subGroupService.deleteSubGroup(id);
-        if (status) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
+        boolean success = subGroupService.deleteSubGroup(id);
+        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
         else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -30,4 +30,16 @@ public class DocumentGroupService {
     public Optional<DocumentGroup> findDocumentGroupById(Long id) {
         return documentGroupRepository.findById(id);
     }
+
+    public boolean deleteGroup(Long id) {
+        boolean success;
+        try {
+            documentGroupRepository.deleteById(id);
+            success = true;
+        } catch (Exception ex) {
+            success = false;
+            throw new RuntimeException(ex);
+        }
+        return success;
+    }
 }

@@ -14,10 +14,11 @@ function enableFormAndInjectDeleteUrl (str, deleteUrl) {
     let form = document.querySelector("#" + str);
     form.style.display= "block";
     wrapper.style.filter = 'blur(8px)';
-    document.querySelector("#deleteBtn").setAttribute('onclick',"getRequest('" + deleteUrl + "')");
+    document.querySelector("#deleteBtn").setAttribute('onclick',"getRequest('" + deleteUrl + ",null')");
 }
 
-function getRequest(deleteUrl) {
+
+function getRequest(deleteUrl, redirectUrl) {
     let xmlhttp=new XMLHttpRequest();
 
     xmlhttp.onreadystatechange=function() {
@@ -25,7 +26,7 @@ function getRequest(deleteUrl) {
             console.log("request")
             console.log(xmlhttp.responseText);
             sendNotification(xmlhttp.responseText, 'Success')
-            sleepAndReload(3000);
+            sleepAndRedirect(3000, redirectUrl);
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===500) {
             sendNotification(xmlhttp.responseText, 'Error')
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===404) {
@@ -37,9 +38,14 @@ function getRequest(deleteUrl) {
     xmlhttp.send();
 }
 
-async function sleepAndReload(milliseconds) {
+async function sleepAndRedirect(milliseconds, redirectUrl) {
     await new Promise(r => setTimeout(r, milliseconds)); // sleep(n) seconds
-    document.location.reload();
+
+    if (redirectUrl === 'null') {
+        document.location.reload();
+    } else {
+        window.location.replace(redirectUrl)
+    }
 }
 
 /**
