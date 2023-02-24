@@ -1,11 +1,17 @@
 package gov.milove.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+
 
 import java.util.List;
 
+
 @Data
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "document_group")
 public class DocumentGroup {
@@ -16,7 +22,11 @@ public class DocumentGroup {
 
     private String title;
 
-    @OneToMany
-    private List<DocumentGroup> group;
+    @OneToMany(mappedBy = "document_group", cascade = CascadeType.ALL)
+    private List<SubGroup> subGroups;
 
+
+    public DocumentGroup() {
+
+    }
 }

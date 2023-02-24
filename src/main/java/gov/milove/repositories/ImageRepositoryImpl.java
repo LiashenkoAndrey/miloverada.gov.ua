@@ -35,12 +35,13 @@ public class ImageRepositoryImpl implements ImageRepository {
         try {
             document.append("filename", file.getName());
             document.append("binary_image", file.getBytes());
+            mongoCollection.insertOne(document);
             id = mongoCollection.find(document).iterator().tryNext().get("_id").toString();
         } catch (IOException ex) {
             System.out.println("Error saving image!");
             return "error";
         }
-        mongoCollection.insertOne(document);
+
 
         return id;
     }

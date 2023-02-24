@@ -1,16 +1,18 @@
 package gov.milove.domain;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
-public class Document {
+@Table(name = "sub_group")
+public class SubGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,13 +20,14 @@ public class Document {
 
     private String title;
 
-    private String document_id;
-
     @ManyToOne
-    @JoinColumn(name = "sub_group_id")
-    private SubGroup sub_group;
+    @JoinColumn(name = "document_group_id")
+    private DocumentGroup document_group;
 
-    public Document() {
+    @OneToMany(mappedBy = "sub_group", cascade = CascadeType.ALL)
+    private List<Document> documents;
+
+    public SubGroup() {
 
     }
 }
