@@ -5,6 +5,7 @@
     <link rel="stylesheet" th:href="@{/styles/main.css}">
     <link rel="stylesheet" th:href="@{/styles/main-head.css}">
     <link rel="stylesheet" th:href="@{/styles/group.css}">
+    <link rel="stylesheet" th:href="@{/styles/notifications.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
@@ -15,7 +16,24 @@
     </head>
 <body>
 
+<!--todo create thymeleaf tags to terminate boilerplate code-->
+<!--notifications -->
+<div class="col-sm-12 notification animateOpen" id="notificationSuccess"  style="background-color: rgba(250, 235, 215, 0); display: none;" >
+    <div class="alert  fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
+        <i class="bi bi-bookmark-check-fill h3"></i>
+        <span class="h5" id="notificationValueSuccess">Видалення успішно виконано!</span>
+    </div>
+</div>
 
+<div class="col-sm-12 notification animateOpen" id="notificationError"  style="background-color: rgba(250, 235, 215, 0); display: none;" >
+    <div class="alert fade alert-simple alert-danger alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
+        <i class="bi bi-x-circle h3" ></i>
+        <span class="h5" id="notificationValueError">Видалення успішно виконано!</span>
+    </div>
+</div>
+<!--notifications-->
+
+<!--forms-->
 <div id="new-sub-group" class="form" style="display: none;">
     <div class="d-flex align-items-center justify-content-center " style="height: 600px; ">
         <form th:action="@{'/group/'+ ${group.id} + '/sub-group/new'}" th:method="post" class="h1">
@@ -43,7 +61,6 @@
     </div>
 </div>
 
-
 <div id="deleteGroupForm" class="form" style="display: none;">
     <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
         <form action="" class="h1">
@@ -56,6 +73,7 @@
         </form>
     </div>
 </div>
+<!--forms-->
 
     <div class="wrapper">
         <div class="container head mt-5">
@@ -66,7 +84,6 @@
             <div class="p-1 text-center" id="head_nav">
                 <div class="dropdown">
                     <button class="dropbtn">Новини</button>
-                
                   </div>
                   
                   <div class="dropdown">
@@ -122,7 +139,6 @@
                 
                 <div class="col h4" style="max-width: 700px;"> 
                   <div class="text-center mt-3">
-
                     <h1 th:text="${group.title}">
                       Звіт сільського голови
                     </h1>
@@ -167,7 +183,7 @@
 
                                     <div class="text-end">
                                         <button class="btn btn-success" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableDocumentForm(\'new-document' + ${sub_group.id} + '\')'" >Додати документ</button>
-                                        <button class="btn btn-danger" th:onclick="'enableDeleteSubGroupForm(\'delete-sub-group\',\'' + ${sub_group.id} + '\')'" >Видалити підгрупу</button>
+                                        <button class="btn btn-danger" th:onclick="'enableFormAndInjectDeleteUrl(\'delete-sub-group\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\')'" >Видалити підгрупу</button>
                                     </div>
 
                                 </div>
@@ -188,13 +204,11 @@
         <footer class="footer p-3 text-info mt-5">
             <h1>footer</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio quasi obcaecati sed nobis aut cupiditate officia molestias deserunt vel beatae. Aspernatur quo voluptates fugiat, deleniti in suscipit. Assumenda, itaque nisi?</p>
-          </footer>            
+        </footer>
       
     </div>
 
-
-    <script th:src="@{/scripts/newDocument.js}"></script>
-    <script th:src="@{/scripts/documentsService.js}"></script>
+    <script th:src="@{/scripts/documentService.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
