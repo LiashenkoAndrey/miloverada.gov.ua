@@ -1,10 +1,12 @@
 package gov.milove.repositories;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
 import jakarta.persistence.EntityExistsException;
 import org.bson.BsonDocument;
 import org.bson.Document;
@@ -58,4 +60,5 @@ public class DocumentRepositoryMongo {
 
         System.out.println("All documents was deleted!");
     }
+
 }

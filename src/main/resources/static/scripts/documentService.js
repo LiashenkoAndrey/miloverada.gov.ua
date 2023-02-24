@@ -3,18 +3,22 @@ let wrapper = document.querySelector(".wrapper");
 
 
 /**
- * Deletes subgroup by id
- * When a user clicks "Видалити підгрупу" {@link group.html, 167 line} button it enables confirm form and changes
+ * todo: update doc
+ * When a user clicks "delete" button it enables confirm form and changes
  * in delete button {@code 'onclick'} property
- * @param str
- * @param subGroupId
+ * @param message
+ * @param confirm_btn_text
+ * @param deleteUrl
+ * @param redirectUrl
  */
-function enableFormAndInjectDeleteUrl (str, deleteUrl) {
-    console.log(str)
-    let form = document.querySelector("#" + str);
-    form.style.display= "block";
+function enableFormAndInjectMessageAndDeleteUrl(message, confirm_btn_text, deleteUrl, redirectUrl) {
+    document.querySelector("#confirm-form").style.display= "block";
+    document.querySelector("#confirm-form-message").innerHTML = message;
     wrapper.style.filter = 'blur(8px)';
-    document.querySelector("#deleteBtn").setAttribute('onclick',"getRequest('" + deleteUrl + ",null')");
+
+    let confirm_btn = document.querySelector("#confirm-operation-btn");
+    confirm_btn.innerHTML = confirm_btn_text;
+    confirm_btn.setAttribute('onclick',"getRequest('" + deleteUrl + "','" + redirectUrl + "')");
 }
 
 

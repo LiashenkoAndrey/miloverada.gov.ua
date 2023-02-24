@@ -10,6 +10,9 @@ import jakarta.persistence.EntityExistsException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class DocumentService {
@@ -35,5 +38,22 @@ public class DocumentService {
 
         documentRepository.save(newDocument);
         System.out.println("Document saved successfully!");
+    }
+
+    public boolean deleteDocument(String id) {
+        boolean success;
+
+        try {
+            documentRepository.deleteByDocument_id(id);
+            List<String> list = new ArrayList<>();
+            list.add(id);
+            documentRepositoryMongo.deleteDocumentsById(list);
+            success = true;
+        } catch (Exception ex) {
+            success = false;
+            throw new RuntimeException(ex);
+        }
+
+        return success;
     }
 }

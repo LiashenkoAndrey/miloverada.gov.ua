@@ -21,14 +21,14 @@
 <div class="col-sm-12 notification animateOpen" id="notificationSuccess"  style="background-color: rgba(250, 235, 215, 0); display: none;" >
     <div class="alert  fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
         <i class="bi bi-bookmark-check-fill h3"></i>
-        <span class="h5" id="notificationValueSuccess">Видалення успішно виконано!</span>
+        <span class="h5" id="notificationValueSuccess"></span>
     </div>
 </div>
 
 <div class="col-sm-12 notification animateOpen" id="notificationError"  style="background-color: rgba(250, 235, 215, 0); display: none;" >
     <div class="alert fade alert-simple alert-danger alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
         <i class="bi bi-x-circle h3" ></i>
-        <span class="h5" id="notificationValueError">Видалення успішно виконано!</span>
+        <span class="h5" id="notificationValueError"></span>
     </div>
 </div>
 <!--notifications-->
@@ -48,18 +48,21 @@
     </div>
 </div>
 
-<div id="delete-sub-group" class="form" style="display: none;">
+<div id="confirm-form" class="form" style="display: none;">
     <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
         <div class="h1">
             <div class="text-end">
-                <button type="button" class="btn-close" onclick="disableForm('delete-sub-group')" aria-label="Close"></button>
+                <button type="button" class="btn-close" onclick="disableForm('confirm-form')" aria-label="Close"></button>
             </div>
 
-            <h2>Ви впевненні що хочете видалити підгрупу?</h2>
-            <button class="btn btn-danger mt-2" id="deleteBtn" onclick="" >Так, видалити підгрупу</button>
+            <!--message-->
+            <h2 id="confirm-form-message"></h2>
+            <button class="btn btn-danger mt-2" id="confirm-operation-btn" onclick="" ></button> <!--confirm operation-->
         </div>
     </div>
 </div>
+
+
 
 <div id="deleteGroupForm" class="form" style="display: none;">
     <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
@@ -159,12 +162,13 @@
                             <div th:id="'flush-collapse' + ${sub_group.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
 
-                                    <ol>
-                                        <li class="li-doc" th:each="document : ${sub_group.documents}">
-                                            <a th:href="@{'/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/new'}" class="links" th:text="${document.title}">Title</a>
+                                    <ol class="position-relative">
+                                        <li class="li-doc links" th:each="document : ${sub_group.documents}">
+                                            <a th:href="@{'/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/new'}" th:text="${document.title}">Title</a>
                                             <a th:href="@{'/upload/document/' + ${document.document_id}}">
-                                                <i class="bi bi-download btn btn-success download"></i>
+                                                <i class="bi bi-download download"></i>
                                             </a>
+                                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/group/document/' + ${document.document_id} + '/delete\',\'null\')'}">Видалити</button>
                                         </li>
                                         <h1 th:if="${sub_group.documents.isEmpty()}">Документи ще не додані</h1>
                                     </ol>
@@ -186,7 +190,7 @@
                                         <button class="btn btn-success" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableDocumentForm(\'new-document' + ${sub_group.id} + '\')'" >Додати документ</button>
 
                                         <!-- delete subgroup button-->
-                                        <button class="btn btn-danger" th:onclick="'enableFormAndInjectDeleteUrl(\'delete-sub-group\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\')'" >Видалити підгрупу</button>
+                                        <button class="btn btn-danger" th:onclick="'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевнені що хочете видалити підгрупу\',\'Так, видалити\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\',\'null\')'" >Видалити підгрупу</button>
                                     </div>
 
                                 </div>

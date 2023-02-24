@@ -66,6 +66,14 @@ public class DocumentController {
         return "redirect:/";
     }
 
+    @GetMapping("/document/{document_id}/delete")
+    public ResponseEntity<String> deleteDocument(@PathVariable("document_id") String document_id) {
+        boolean success = documentService.deleteDocument(document_id);
+
+        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
+        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     @PostMapping("/{group_id}/sub-group/new")
     public String createNewSubGroup (@PathVariable("group_id") Long id, @RequestParam("title") String title) {
