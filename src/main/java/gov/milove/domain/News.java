@@ -11,12 +11,12 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String topic;
-
     private String description;
 
-    private String mainText;
+    private String main_text;
+
+    private String image_id;
 
     @Embedded
-    private CustomDate dateOfCreation;
+    private CustomDate date_of_creation;
 }

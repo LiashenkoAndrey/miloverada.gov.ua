@@ -29,7 +29,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     @Override
     public String saveImage(MultipartFile file) {
 
-        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove");
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove_images");
         Document document = new Document();
         String id;
         try {
@@ -48,7 +48,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     @Override
     public byte[] getImageById(String id) {
-        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove");
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove_images");
         FindIterable<Document> findIterable = mongoCollection.find(new Document("_id", new ObjectId(id)));
         Document document = Optional.ofNullable(findIterable.first()).orElseThrow(EntityExistsException::new);
         Binary binary = (Binary) document.get("binary_image");
