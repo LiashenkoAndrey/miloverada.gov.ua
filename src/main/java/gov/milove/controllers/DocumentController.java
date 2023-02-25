@@ -60,10 +60,10 @@ public class DocumentController {
 
 
     @PostMapping("/{group_id}/sub-group/{subGroupId}/document/new")
-    public String saveDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @PathVariable Long subGroupId) {
+    public String saveDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @PathVariable Long subGroupId, @PathVariable("group_id") String group_id) {
         System.out.println("Saving file: " + title);
         documentService.createDocument(file,title, subGroupId);
-        return "redirect:/";
+        return "redirect:/group/" + group_id;
     }
 
     @GetMapping("/document/{document_id}/delete")
@@ -76,9 +76,9 @@ public class DocumentController {
 
 
     @PostMapping("/{group_id}/sub-group/new")
-    public String createNewSubGroup (@PathVariable("group_id") Long id, @RequestParam("title") String title) {
-        subGroupService.createSubGroup(id, title);
-        return "redirect:/";
+    public String createNewSubGroup (@PathVariable("group_id") Long group_id, @RequestParam("title") String title) {
+        subGroupService.createSubGroup(group_id, title);
+        return "redirect:/group/" + group_id;
     }
 
     @GetMapping("/sub-group/{subgroup_id}/delete")
