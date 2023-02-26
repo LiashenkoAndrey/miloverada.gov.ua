@@ -85,7 +85,11 @@ body {
     #icon {
       display: none;
     }
-    
+
+    #news-wrapper {
+      margin: 0 10px 0 20px;
+    }
+
     .head {
       height: 270px;
     }

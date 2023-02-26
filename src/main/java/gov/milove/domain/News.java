@@ -7,6 +7,10 @@ import lombok.Data;
 @Entity
 public class News {
 
+    public News(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,4 +23,8 @@ public class News {
 
     @Embedded
     private CustomDate date_of_creation;
+
+    public News() {
+
+    }
 }

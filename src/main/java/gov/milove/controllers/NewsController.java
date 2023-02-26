@@ -1,13 +1,15 @@
 package gov.milove.controllers;
 
-import gov.milove.domain.CustomDate;
 import gov.milove.domain.News;
 import gov.milove.services.NewsService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/news")
@@ -15,27 +17,55 @@ public class NewsController {
 
     private final NewsService newsService;
 
+
     public NewsController(NewsService newsService) {
         this.newsService = newsService;
     }
 
     @GetMapping("/new")
     public String newNewsForm() {
-        return "newNews";
+        return "news/new";
     }
 
     @PostMapping("/new")
     public String newNews(@RequestParam("description") String description,
-                          @RequestParam("main_text") String main_text) {
-
-        News news =  new News();
-        news.setDescription(description);
-        news.setDate_of_creation(new CustomDate());
-        news.setMain_text(main_text);
-        news.setImage_id("63fa35d9287f9f5a3522057b");
-        newsService.saveNews(news);
+                          @RequestParam("main_text") String main_text,
+                          @RequestParam("image") MultipartFile file) {
+        newsService.saveNews(description, main_text, file);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/{news_id}/delete")
+    public ResponseEntity<String> deleteNews(@PathVariable("news_id") Long id) {
+        boolean success = newsService.deleteNews(id);
+        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
+        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/{news_id}")
+    public String getFullNewsPage(@PathVariable("news_id") Long news_id, Model model) {
+        Optional<News> news = newsService.getNewsById(news_id);
+
+        if (news.isEmpty()) {
+            return "error/404";
+        } else {
+            model.addAttribute("news", news.get());
+            return "news/page";
+        }
+    }
+
+
+    @GetMapping("/{news_id}/edit")
+    public String editNews(@PathVariable("news_id") Long news_id, Model model) {
+        Optional<News> news = newsService.getNewsById(news_id);
+
+        if (news.isEmpty()) {
+            return "error/404";
+        } else {
+            model.addAttribute("news", news.get());
+            return "news/edit";
+        }
     }
 
 
