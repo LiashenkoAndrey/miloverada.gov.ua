@@ -3,8 +3,11 @@ package gov.milove.repositories;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.UpdateResult;
 import jakarta.persistence.EntityExistsException;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 
 @Controller
 public class ImageRepositoryImpl implements ImageRepository {
@@ -24,7 +31,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
     /**
      * This method saves image to mongoDB and returns id of image in database
-     * @return {code:String} id image
+     * @return String id image
      */
     @Override
     public String saveImage(MultipartFile file) {
@@ -47,6 +54,28 @@ public class ImageRepositoryImpl implements ImageRepository {
         return id;
     }
 
+    /**
+     * @param image_id
+     * @param file
+     * @return
+     */
+    @Override
+    public void updateImage(String image_id, MultipartFile file) {
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove_images");
+        byte[] binary;
+        try {
+            binary = file.getBytes();
+        }catch (IOException ex) {
+            System.out.println("error");
+            throw new RuntimeException(ex);
+        }
+
+        Bson filter = eq("_id", new ObjectId(image_id));
+        Bson updateOperation = combine(set("binary_image", binary), set("filename", file.getName()));
+        UpdateResult updateResult = mongoCollection.updateOne(filter, updateOperation);
+        System.out.println(updateResult);
+    }
+
     @Override
     public byte[] getImageById(String id) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove_images");
@@ -54,5 +83,17 @@ public class ImageRepositoryImpl implements ImageRepository {
         Document document = Optional.ofNullable(findIterable.first()).orElseThrow(EntityExistsException::new);
         Binary binary = (Binary) document.get("binary_image");
         return binary.getData();
+    }
+
+    private Document prepareDocument(MultipartFile file) {
+        Document document = new Document();
+        try {
+            document.append("binary_image", file.getBytes());
+            document.append("filename", file.getName());
+        } catch (IOException e) {
+            System.out.println("Fail to save image: " + file.getName());
+            throw new RuntimeException(e);
+        }
+        return document;
     }
 }

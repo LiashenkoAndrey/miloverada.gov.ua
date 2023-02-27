@@ -1,5 +1,6 @@
 package gov.milove.services;
 
+import gov.milove.repositories.ImageRepository;
 import gov.milove.repositories.ImageRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ImageService {
 
-    private final ImageRepositoryImpl imageRepository;
+    private final ImageRepository imageRepository;
 
     public ImageService(ImageRepositoryImpl imageRepository) {
         this.imageRepository = imageRepository;
@@ -22,4 +23,7 @@ public class ImageService {
     }
 
 
+    public void updateImage(MultipartFile file, String image_id) {
+        imageRepository.updateImage(image_id, file);
+    }
 }

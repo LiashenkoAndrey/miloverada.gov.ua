@@ -68,5 +68,13 @@ public class NewsController {
         }
     }
 
+    @PostMapping("/{news_id}/update")
+    public String updateNews(@RequestParam("description") String description,
+                             @RequestParam("main_text") String main_text,
+                             @RequestParam("image") MultipartFile file,
+                             @PathVariable("news_id") Long news_id) {
 
+        newsService.updateNews(description, main_text, file, news_id);
+        return "redirect:/news/" + news_id;
+    }
 }

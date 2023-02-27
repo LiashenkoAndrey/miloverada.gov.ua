@@ -18,7 +18,7 @@
 <div class="wrapper">
     <div class="container head mt-5">
         <h1 class="text-center text-dark" style="font-size: 38px;">Милівська сільська об'єднана територіальна громада</h1>
-        <a href="/static" style="width: 150px;">
+        <a href="/" style="width: 150px;">
             <img th:src="@{/img/tryzub6.svg}" width="150" height="150" alt="" id="icon" style="position: relative; bottom: 15px; ">
         </a>
         <div class="p-1 text-center" id="head_nav">
@@ -75,13 +75,18 @@
 
             <h3 class="text-center mt-3">Додати новину</h3>
 
-            <form th:action="@{/news/new}" th:method="post" class="container" enctype="multipart/form-data">
+            <form th:action="@{'/news/' + ${news.id} +'/update'}" th:method="post" class="container mb-5" enctype="multipart/form-data">
                 <input type="file" id="uploadImage"  style="display: none">
 
                 <label for="description" class="form-label">Короткий опис</label>
                 <input type="text" class="form-control" id="description" th:value="${news.description}" name="description">
 
-                <label for="file" class="form-label">Зоображення</label>
+                <div class="mt-3">
+                    <label for="current-img" class="form-label">Поточне зоображення</label>
+                    <img th:src="@{'/upload/image/' + ${news.image_id}}" id="current-img" width="290" height="180">
+                </div>
+
+                <label for="file" class="form-label">Змінити зоображення</label>
                 <input type="file" id="file" name="image" class="form-control">
 
                 <br>
@@ -90,11 +95,10 @@
                     <div class="tinymce-body" id="input" th:utext="${news.main_text}" ></div>
                     <textarea style="display: none" id="main_text" class="form-control tinymce-body"  name="main_text"></textarea>
                 </div>
-                <button class="btn btn-success" onclick="injectTextAndSendForm()">Додати</button>
+                <button class="btn btn-success mt-3" onclick="injectTextAndSendForm()">Додати</button>
                 <input type="submit" id="submit-form" style="display: none" class="btn btn-success mt-2" value="Додати">
             </form>
         </div>
-        <button class="btn btn-danger" onclick="showContent()">Show content!</button>
 
 
     </div>

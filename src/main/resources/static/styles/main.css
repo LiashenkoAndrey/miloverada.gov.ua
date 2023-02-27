@@ -10,6 +10,14 @@ body {
 	height: 110%;
   font-family: 'Montserrat', sans-serif;
 }
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 5px;
+}
+
 .wrapper {
 	display: flex;
 	flex-direction: column;
@@ -77,9 +85,14 @@ body {
     
   }
 
+#news-wrapper {
+  margin: 0 10px 0 30px;
+}
+
   #nav a:hover {
     color: #634db2;
   }
+
 
   @media screen and (max-width: 900px) {
     #icon {
