@@ -116,7 +116,7 @@
 
         <div class="mt-3">
           <a th:href="@{/news/{news_id}/edit(news_id=${news.id})}" class="btn btn-success" >Змінити</a>
-          <button class="btn btn-danger" th:onclick="'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
+          <button class="btn btn-danger" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
         </div>
 
         <div class="container" >

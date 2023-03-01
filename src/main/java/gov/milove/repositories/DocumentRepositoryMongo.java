@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import jakarta.persistence.EntityExistsException;
 import org.bson.BsonDocument;
 import org.bson.Document;
@@ -24,6 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
+
 @Component
 public class DocumentRepositoryMongo {
     private final MongoDatabase mongoDatabase;
@@ -36,10 +41,8 @@ public class DocumentRepositoryMongo {
     public void saveToMongo(MultipartFile file) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
         Document document = new Document();
-        System.out.println("file.getOriginalFilename() : " + file.getOriginalFilename());
         document.append("name", file.getName());
         document.append("filename", file.getOriginalFilename());
-        document.append("content_type", file.getContentType());
         try {
             document.append("file", file.getBytes());
 
@@ -56,9 +59,6 @@ public class DocumentRepositoryMongo {
         Document document = Optional.ofNullable(findIterable.first()).orElseThrow(EntityExistsException::new);
 
         Binary binary = (Binary) document.get("file");
-        String filename = (String) document.get("filename");
-        String name = (String) document.get("name");
-        String contentType = (String) document.get("content_type");
         return binary.getData();
     }
 
@@ -71,4 +71,22 @@ public class DocumentRepositoryMongo {
         System.out.println("All documents was deleted!");
     }
 
+    /**
+     * Updates file by filename
+     * @param document_id old filename
+     * @param file new file
+     */
+    public void updateDocument(String document_id, MultipartFile file) {
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
+        byte[] binary_file;
+        try {
+            binary_file = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Bson filter = eq("filename", document_id);
+        Bson updateOperation = combine(set("file", binary_file), set("filename", file.getOriginalFilename()));
+        UpdateResult updateResult = mongoCollection.updateOne(filter, updateOperation);
+        System.out.println(updateResult);
+    }
 }

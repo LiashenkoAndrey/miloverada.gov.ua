@@ -9,11 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Query("from Document d where d.sub_group =?1")
     List<Document> findAllBySub_group(Long id);
+
+    @Query("from Document d where d.document_filename =?1")
+    Optional<Document> findByDocument_filename(String filename);
 
     @Transactional
     @Modifying

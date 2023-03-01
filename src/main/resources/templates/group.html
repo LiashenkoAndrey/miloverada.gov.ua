@@ -62,20 +62,23 @@
     </div>
 </div>
 
-
-
-<div id="deleteGroupForm" class="form" style="display: none;">
-    <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
+<div id="update-document" class="form" style="display: none;">
+    <div class="d-flex align-items-center justify-content-center " style="height: 600px; ">
         <div class="h1">
             <div class="text-end">
-                <button type="button" class="btn-close" onclick="disableForm('deleteGroupForm')" aria-label="Close"></button>
+                <button type="button" class="btn-close" onclick="disableForm('update-document')" aria-label="Close"></button>
             </div>
 
-            <h2>Ви впевненні що хочете видалити групу?</h2>
-            <button type="submit" th:onclick="'getRequest(\'/group/' + ${group.id} + '/delete\',\'/\')'" class="btn btn-danger mt-2">Так, видалити групу</button>
+            <label for="new-document-title" class="form-label">Нова назва документу</label>
+            <input type="text" class="form-control" id="new-document-title" name="title">
+            <label for="new-document-file" class="form-label">Новий документ</label>
+            <input type="file" id="new-document-file" class="form-control" name="file" >
+            <button class="btn btn-info mt-2" id="new-document-confirm-operation-btn" onclick="" >Оновити</button>
         </div>
     </div>
 </div>
+
+
 <!--forms-->
 
     <div class="wrapper">
@@ -147,7 +150,7 @@
                     </h1>
                       <div class="text-end">
                           <!-- add subgroup button-->
-                          <button class="btn btn-success mb-2 me-2" onclick="enableForm('new-sub-group')" >Додати підгрупу</button>
+                          <button class="btn btn-success mb-2 me-2" onclick="enableForm('new-sub-group')"  >Додати підгрупу</button>
                       </div>
                   </div>
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -168,7 +171,8 @@
                                             <a th:href="@{'/upload/document/' + ${document.document_filename}}">
                                                 <i class="bi bi-download download"></i>
                                             </a>
-                                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/group/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
+                                            <button class="btn btn-info p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndUpdateDocument(\'/group/' + ${group.id} + '/document/' + ${document.document_filename} + '/update\',\'/group/' + ${group.id} + '\')'}">Оновити</button>
+                                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/group/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
                                         </li>
                                         <h1 th:if="${sub_group.documents.isEmpty()}">Документи ще не додані</h1>
                                     </ol>
@@ -187,10 +191,10 @@
 
                                     <div class="text-end">
                                         <!-- add document button-->
-                                        <button class="btn btn-success" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableDocumentForm(\'new-document' + ${sub_group.id} + '\')'" >Додати документ</button>
+                                        <button class="btn btn-success mt-5" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableDocumentForm(\'new-document' + ${sub_group.id} + '\')'" >Додати документ</button>
 
                                         <!-- delete subgroup button-->
-                                        <button class="btn btn-danger" th:onclick="'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевнені що хочете видалити підгрупу\',\'Так, видалити\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\',\'null\')'" >Видалити підгрупу</button>
+                                        <button class="btn btn-danger mt-5" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити підгрупу\',\'Так, видалити\',\'/group/sub-group/' + ${sub_group.id} + '/delete' + '\',\'null\')'" >Видалити підгрупу</button>
                                     </div>
 
                                 </div>
@@ -201,7 +205,7 @@
                         <h1 th:if="${sub_groups.isEmpty()}">Документи ще не додані</h1>
                     </div>
                     <!-- delete group button -->
-                    <button class="btn btn-danger mt-2 ms-2" onclick="enableForm('deleteGroupForm')" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
+                    <button class="btn btn-danger mt-2 ms-2" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити дгрупу\',\'Так, видалити\',\'/group/' + ${group.id} + '/delete' + '\',\'/\')'" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
                 </div>
 
             </div>

@@ -46,7 +46,6 @@ public class DocumentService {
 
     public boolean deleteDocument(String id) {
         boolean success;
-
         try {
             documentRepository.deleteByDocument_id(id);
             List<String> list = new ArrayList<>();
@@ -57,11 +56,21 @@ public class DocumentService {
             success = false;
             throw new RuntimeException(ex);
         }
-
         return success;
     }
 
     public byte[] getDocumentById(String id) {
         return documentRepositoryMongo.getFromMongoById(id);
+    }
+
+    public void updateDocument(String document_id, MultipartFile file, String title) {
+        Document document = documentRepository.findByDocument_filename(document_id).orElseThrow(EntityExistsException::new);
+        if (file != null) {
+            documentRepositoryMongo.updateDocument(document_id, file);
+            document.setDocument_filename(file.getOriginalFilename());
+        }
+        System.out.println("upd doc TITLE: " + title);
+        if (title != null) document.setTitle(title);
+        documentRepository.save(document);
     }
 }

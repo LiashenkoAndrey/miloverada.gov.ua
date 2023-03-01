@@ -8,17 +8,17 @@ let wrapper = document.querySelector(".wrapper");
  * in delete button {@code 'onclick'} property
  * @param message
  * @param confirm_btn_text
- * @param deleteUrl
+ * @param getUrl
  * @param redirectUrl
  */
-function enableFormAndInjectMessageAndDeleteUrl(message, confirm_btn_text, deleteUrl, redirectUrl) {
+function enableFormAndDoGetRequest(message, confirm_btn_text, getUrl, redirectUrl) {
     document.querySelector("#confirm-form").style.display= "block";
     document.querySelector("#confirm-form-message").innerHTML = message;
     wrapper.style.filter = 'blur(8px)';
 
     let confirm_btn = document.querySelector("#confirm-operation-btn");
     confirm_btn.innerHTML = confirm_btn_text;
-    confirm_btn.setAttribute('onclick',"getRequest('" + deleteUrl + "','" + redirectUrl + "')");
+    confirm_btn.setAttribute('onclick',"getRequest('" + getUrl + "','" + redirectUrl + "')");
 }
 
 
@@ -32,7 +32,7 @@ function getRequest(deleteUrl, redirectUrl) {
             sendNotification(xmlhttp.responseText, 'Success')
             sleepAndRedirect(3000, redirectUrl);
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===500) {
-            sendNotification(xmlhttp.responseText, 'Error')
+            sendNotification("Видалення було неуспішне", 'Error')
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===404) {
             sendNotification("Видалення було неуспішне", 'Error')
         }
@@ -40,6 +40,48 @@ function getRequest(deleteUrl, redirectUrl) {
 
     xmlhttp.open("GET", deleteUrl,true);
     xmlhttp.send();
+}
+
+function enableFormAndUpdateDocument(url, redirectUrl) {
+    document.querySelector("#update-document").style.display= "block";
+    wrapper.style.filter = 'blur(8px)';
+    let document_title = document.querySelector("#new-document-title")
+    let document_file = document.querySelector("#new-document-file")
+    let confirmBtn = document.querySelector("#new-document-confirm-operation-btn");
+    confirmBtn.addEventListener('click', async function () {
+        let formData = new FormData();
+        formData.append("file", document_file.files[0])
+        formData.append("title", document_title.value)
+        await fetch(url, {
+            method: "POST",
+            body: formData
+        }).then(response => {
+            if (response.status === 200) {
+                sendNotification("Оновлення успішне", 'Success')
+                sleepAndRedirect(3000, redirectUrl);
+            } else {
+                sendNotification("Оновлення було неуспішне", 'Error')
+            }
+
+        })
+    })
+
+}
+
+function enableFormAndSaveDocument() {
+
+}
+
+
+
+async function postRequest(url) {
+    let input = document.getElementById("uploadImage")
+    let formData = new FormData();
+    formData.append("file", input.files[0])
+    await fetch("/image", {
+        method: "POST",
+        body: formData
+    }).then(response => response.text().then(result => console.log(result)))
 }
 
 async function sleepAndRedirect(milliseconds, redirectUrl) {

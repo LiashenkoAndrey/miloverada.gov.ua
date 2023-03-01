@@ -68,6 +68,17 @@ public class DocumentController {
         return "redirect:/group/" + group_id;
     }
 
+    @PostMapping("/{group_id}/document/{document_id}/update")
+    public String updateDocument(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "title",required = false) String title,
+            @PathVariable("document_id") String document_id,
+            @PathVariable("group_id") String group_id) {
+        System.out.println("TITLE: " + title);
+        documentService.updateDocument(document_id, file, title);
+        return "redirect:/group/" + group_id;
+    }
+
     @GetMapping("/document/{document_id}/delete")
     public ResponseEntity<String> deleteDocument(@PathVariable("document_id") String document_id) {
         boolean success = documentService.deleteDocument(document_id);
