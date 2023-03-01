@@ -8,6 +8,7 @@ import gov.milove.services.DocumentService;
 import gov.milove.services.DocumentSubGroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,13 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final DocumentGroupService documentGroupService;
-
-    private final DocumentSubGroupRepository documentSubGroupRepository;
-
     private final DocumentSubGroupService subGroupService;
 
-    public DocumentController(DocumentService documentService, DocumentGroupService documentGroupService, DocumentSubGroupRepository documentSubGroupRepository, DocumentSubGroupService subGroupService) {
+    public DocumentController(DocumentService documentService,
+                              DocumentGroupService documentGroupService,
+                              DocumentSubGroupService subGroupService) {
         this.documentService = documentService;
         this.documentGroupService = documentGroupService;
-        this.documentSubGroupRepository = documentSubGroupRepository;
         this.subGroupService = subGroupService;
     }
 
@@ -60,8 +59,11 @@ public class DocumentController {
 
 
     @PostMapping("/{group_id}/sub-group/{subGroupId}/document/new")
-    public String saveDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @PathVariable Long subGroupId, @PathVariable("group_id") String group_id) {
-        System.out.println("Saving file: " + title);
+    public String saveDocument(@RequestParam("file") MultipartFile file,
+                               @RequestParam("title") String title,
+                               @PathVariable Long subGroupId,
+                               @PathVariable("group_id") String group_id) {
+
         documentService.createDocument(file,title, subGroupId);
         return "redirect:/group/" + group_id;
     }
@@ -76,7 +78,9 @@ public class DocumentController {
 
 
     @PostMapping("/{group_id}/sub-group/new")
-    public String createNewSubGroup (@PathVariable("group_id") Long group_id, @RequestParam("title") String title) {
+    public String createNewSubGroup (
+            @PathVariable("group_id") Long group_id,
+            @RequestParam("title") String title) {
         subGroupService.createSubGroup(group_id, title);
         return "redirect:/group/" + group_id;
     }

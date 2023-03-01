@@ -7,9 +7,13 @@ import gov.milove.repositories.DocumentRepository;
 import gov.milove.repositories.DocumentRepositoryMongo;
 import gov.milove.repositories.DocumentSubGroupRepository;
 import jakarta.persistence.EntityExistsException;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +33,10 @@ public class DocumentService {
 
     public void createDocument(MultipartFile file, String title, Long subGroupId) {
         SubGroup subGroup = subGroupRepository.findById(subGroupId).orElseThrow(EntityExistsException::new);
-        String id = documentRepositoryMongo.saveToMongo(file, title);
+        documentRepositoryMongo.saveToMongo(file);
         Document newDocument = Document.builder()
                 .title(title)
-                .document_id(id)
+                .document_filename(file.getOriginalFilename())
                 .sub_group(subGroup)
                 .build();
 
@@ -55,5 +59,9 @@ public class DocumentService {
         }
 
         return success;
+    }
+
+    public byte[] getDocumentById(String id) {
+        return documentRepositoryMongo.getFromMongoById(id);
     }
 }

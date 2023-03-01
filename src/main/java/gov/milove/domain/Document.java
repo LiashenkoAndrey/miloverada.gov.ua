@@ -18,7 +18,7 @@ public class Document {
 
     private String title;
 
-    private String document_id;
+    private String document_filename;
 
     @ManyToOne
     @JoinColumn(name = "sub_group_id")

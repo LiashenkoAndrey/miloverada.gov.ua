@@ -17,6 +17,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "delete from document where document_id =:doc_id", nativeQuery = true)
+    @Query(value = "delete from document where document_filename =:doc_id", nativeQuery = true)
     void deleteByDocument_id(@Param("doc_id") String id);
 }

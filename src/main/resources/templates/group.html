@@ -165,10 +165,10 @@
                                     <ol class="position-relative">
                                         <li class="li-doc links" th:each="document : ${sub_group.documents}">
                                             <a th:href="@{'/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/new'}" th:text="${document.title}">Title</a>
-                                            <a th:href="@{'/upload/document/' + ${document.document_id}}">
+                                            <a th:href="@{'/upload/document/' + ${document.document_filename}}">
                                                 <i class="bi bi-download download"></i>
                                             </a>
-                                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/group/document/' + ${document.document_id} + '/delete\',\'null\')'}">Видалити</button>
+                                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndInjectMessageAndDeleteUrl(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/group/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
                                         </li>
                                         <h1 th:if="${sub_group.documents.isEmpty()}">Документи ще не додані</h1>
                                     </ol>
@@ -181,7 +181,7 @@
                                         <label for="name" class="form-label">Назва документу</label>
                                         <input type="text" class="form-control" id="name" name="title">
                                         <label for="input-file" class="form-label">Завантаження документу</label>
-                                        <input type="file" id="input-file" class="form-control" name="file">
+                                        <input type="file" id="input-file" class="form-control" name="file" >
                                         <input type="submit" value="Додати документ" class="btn btn-success mt-2">
                                     </form>
 

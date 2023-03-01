@@ -47,7 +47,7 @@ public class DocumentSubGroupService {
             List<Document> documentList = subGroup.getDocuments();
             List<String> documentsId = new ArrayList<>(documentList.size());
             for (Document d : documentList) {
-                documentsId.add(d.getDocument_id());
+                documentsId.add(d.getDocument_filename());
             }
             documentRepositoryMongo.deleteDocumentsById(documentsId);
             subGroupRepository.deleteById(subGroupId);

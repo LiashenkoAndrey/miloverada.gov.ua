@@ -11,7 +11,11 @@ import jakarta.persistence.EntityExistsException;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,10 +33,13 @@ public class DocumentRepositoryMongo {
     }
 
 
-    public String saveToMongo(MultipartFile file, String title) {
+    public void saveToMongo(MultipartFile file) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
         Document document = new Document();
-        document.append("title", title);
+        System.out.println("file.getOriginalFilename() : " + file.getOriginalFilename());
+        document.append("name", file.getName());
+        document.append("filename", file.getOriginalFilename());
+        document.append("content_type", file.getContentType());
         try {
             document.append("file", file.getBytes());
 
@@ -40,22 +47,25 @@ public class DocumentRepositoryMongo {
             throw new RuntimeException(e);
         }
         mongoCollection.insertOne(document);
-        System.out.println("saved document " + file.getName());
-        String id = mongoCollection.find(document).iterator().tryNext().get("_id").toString();
-        return id;
     }
 
-    public MultipartFile getFromMongoById(String id) {
+    public byte[] getFromMongoById(String id) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
-        FindIterable<Document> findIterable = mongoCollection.find(new Document("_id", new ObjectId(id)));
+
+        FindIterable<Document> findIterable = mongoCollection.find(new Document("filename", id));
         Document document = Optional.ofNullable(findIterable.first()).orElseThrow(EntityExistsException::new);
-        return (MultipartFile) document.get("file");
+
+        Binary binary = (Binary) document.get("file");
+        String filename = (String) document.get("filename");
+        String name = (String) document.get("name");
+        String contentType = (String) document.get("content_type");
+        return binary.getData();
     }
 
     public void deleteDocumentsById(List<String> documentsIdList) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
         for (String id : documentsIdList) {
-            mongoCollection.deleteOne(Filters.eq("_id", new ObjectId(id)));
+            mongoCollection.deleteOne(Filters.eq("filename", id));
         }
 
         System.out.println("All documents was deleted!");
