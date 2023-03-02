@@ -126,4 +126,17 @@ body {
   border-radius: 3px;
 }
 
+#icons-bar div div, #icons-bar-link {
+  text-align: center;
+}
+
+#icons-bar div div a, #icons-bar-link a {
+  text-decoration: none;
+  color: #2a2a2a;
+}
+
+#icons-bar div div a:hover, #icons-bar-link a:hover {
+  color: #6161a6;
+}
+
 

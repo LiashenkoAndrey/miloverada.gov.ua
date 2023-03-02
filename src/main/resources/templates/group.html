@@ -176,18 +176,21 @@
                                         </li>
                                         <h1 th:if="${sub_group.documents.isEmpty()}">Документи ще не додані</h1>
                                     </ol>
+                                    <div  th:id="'new-document' + ${sub_group.id}" style="display: none">
+                                        <form  th:action="@{'/group/' + ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/new'}" th:method="post" class="h1" enctype="multipart/form-data">
+                                            <div class="text-end">
+                                                <button type="button" class="btn-close" th:onclick="'disableBtn(\'new-document' + ${sub_group.id} + '\')'" aria-label="Close"></button>
+                                            </div>
 
-                                    <form th:id="'new-document' + ${sub_group.id}" style="display: none" th:action="@{'/group/' + ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/new'}" th:method="post" class="h1" enctype="multipart/form-data">
-                                        <div class="text-end">
-                                            <button type="button" class="btn-close" th:onclick="'disableBtn(\'new-document' + ${sub_group.id} + '\')'" aria-label="Close"></button>
-                                        </div>
+                                            <label for="name" class="form-label">Назва документу</label>
+                                            <input type="text" class="form-control" required maxlength="100" id="name" name="title">
+                                            <label for="input-file" class="form-label">Завантаження документу</label>
+                                            <input type="file" id="input-file" required class="form-control" name="file" >
+                                            <input type="submit" id="new-document-submit" style="display: none" value="Додати документ" class="btn btn-success mt-2">
+                                        </form>
+                                        <button onclick="checkFileSize()" id="checkBtn"  class="btn btn-success mt-2">Додати документ</button>
 
-                                        <label for="name" class="form-label">Назва документу</label>
-                                        <input type="text" class="form-control" id="name" name="title">
-                                        <label for="input-file" class="form-label">Завантаження документу</label>
-                                        <input type="file" id="input-file" class="form-control" name="file" >
-                                        <input type="submit" value="Додати документ" class="btn btn-success mt-2">
-                                    </form>
+                                    </div>
 
                                     <div class="text-end">
                                         <!-- add document button-->

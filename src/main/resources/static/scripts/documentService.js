@@ -68,8 +68,15 @@ function enableFormAndUpdateDocument(url, redirectUrl) {
 
 }
 
-function enableFormAndSaveDocument() {
-
+function checkFileSize() {
+    let fileInput = document.querySelector("#input-file")
+    let submitBtn = document.querySelector("#new-document-submit")
+    if (fileInput.files[0].size < 10485760) {
+        console.log("action!!!")
+        submitBtn.click();
+    } else {
+        sendNotification("Перевищено ліміт файлу 10MB!", 'Error')
+    }
 }
 
 
