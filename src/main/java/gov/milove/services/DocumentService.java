@@ -4,16 +4,12 @@ package gov.milove.services;
 import gov.milove.domain.Document;
 import gov.milove.domain.SubGroup;
 import gov.milove.repositories.DocumentRepository;
-import gov.milove.repositories.DocumentRepositoryMongo;
+import gov.milove.repositories.implementation.DocumentRepositoryMongo;
 import gov.milove.repositories.DocumentSubGroupRepository;
 import jakarta.persistence.EntityExistsException;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

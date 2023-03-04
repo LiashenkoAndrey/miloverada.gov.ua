@@ -1,4 +1,4 @@
-package gov.milove.repositories;
+package gov.milove.repositories.implementation;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.ClientSession;

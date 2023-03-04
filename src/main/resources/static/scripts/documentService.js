@@ -26,15 +26,14 @@ function getRequest(deleteUrl, redirectUrl) {
     let xmlhttp=new XMLHttpRequest();
 
     xmlhttp.onreadystatechange=function() {
+        let responseText = xmlhttp.responseText;
         if (xmlhttp.readyState===4 && xmlhttp.status===200) {
-            console.log("request")
-            console.log(xmlhttp.responseText);
-            sendNotification(xmlhttp.responseText, 'Success')
-            sleepAndRedirect(3000, redirectUrl);
+            sendNotification(responseText, 'Success')
+            sleepAndRedirect(1100, redirectUrl);
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===500) {
-            sendNotification("Видалення було неуспішне", 'Error')
+            sendNotification(responseText, 'Error')
         } else if (xmlhttp.readyState===4 &&  xmlhttp.status===404) {
-            sendNotification("Видалення було неуспішне", 'Error')
+            sendNotification(responseText, 'Error')
         }
     }
 
@@ -58,7 +57,7 @@ function enableFormAndUpdateDocument(url, redirectUrl) {
         }).then(response => {
             if (response.status === 200) {
                 sendNotification("Оновлення успішне", 'Success')
-                sleepAndRedirect(3000, redirectUrl);
+                sleepAndRedirect(1100, redirectUrl);
             } else {
                 sendNotification("Оновлення було неуспішне", 'Error')
             }
