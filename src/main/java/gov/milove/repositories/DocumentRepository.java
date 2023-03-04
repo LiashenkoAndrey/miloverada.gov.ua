@@ -2,6 +2,7 @@ package gov.milove.repositories;
 
 
 import gov.milove.domain.Document;
+import gov.milove.domain.dto.DocumentGroupDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Modifying
     @Query(value = "delete from document where document_filename =:doc_id", nativeQuery = true)
     void deleteByDocument_id(@Param("doc_id") String id);
+
+
 }

@@ -1,6 +1,7 @@
 package gov.milove.services;
 
 import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.DocumentGroupDto;
 import gov.milove.repositories.DocumentGroupRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,9 @@ public class DocumentGroupService {
             throw new RuntimeException(ex);
         }
         return success;
+    }
+
+    public DocumentGroupDto getDtoById(Long id) {
+        return documentGroupRepository.getDtoBySubGroupId(id);
     }
 }

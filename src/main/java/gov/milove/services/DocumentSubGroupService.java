@@ -65,4 +65,8 @@ public class DocumentSubGroupService {
         return subGroupRepository.findAllByDocumentGroupId(id);
     }
 
+
+    public String getTitleById(Long sub_group_id) {
+        return subGroupRepository.getTitleById(sub_group_id);
+    }
 }

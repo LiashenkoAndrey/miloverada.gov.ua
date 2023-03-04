@@ -1,6 +1,8 @@
 package gov.milove.controllers;
 
+import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.DocumentGroupDto;
 import gov.milove.services.DocumentGroupService;
 import gov.milove.services.DocumentService;
 import gov.milove.services.DocumentSubGroupService;
@@ -83,6 +85,25 @@ public class DocumentController {
 
         if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
         else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/{group_id}/sub-group/{sub_group_id}/document/{document_id}")
+    public String displayDocument(
+            @PathVariable("group_id") Long group_id,
+            @PathVariable("sub_group_id") Long sub_group_id,
+            @PathVariable("document_id") Long document_id,
+            Model model) {
+        Optional<Document> document = documentService.getDocumentById(document_id);
+        System.out.println(document.get().getDocument_filename());
+        if (document.isEmpty()) return "error/404";
+        DocumentGroupDto groupDto = documentGroupService.getDtoById(group_id);
+        System.out.println(groupDto.getTitle());
+        System.out.println(groupDto.getId());
+        String subGroupTitle = subGroupService.getTitleById(sub_group_id);
+        model.addAttribute("group", groupDto);
+        model.addAttribute("subGroupTitle", subGroupTitle);
+        model.addAttribute("document", document.get());
+        return "document";
     }
 
 

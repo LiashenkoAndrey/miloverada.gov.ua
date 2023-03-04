@@ -2,20 +2,13 @@ package gov.milove.controllers;
 
 import gov.milove.services.DocumentService;
 import gov.milove.services.ImageService;
-import org.bson.Document;
-import org.bson.types.Binary;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/upload")
@@ -45,7 +38,7 @@ public class UploadController {
 
     @GetMapping("/document/{id}")
     public ResponseEntity<byte[]> getDocument(@PathVariable("id") String id) {
-        byte[] file = documentService.getDocumentById(id);
+        byte[] file = documentService.getDocumentBinaryById(id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("content-disposition", "inline; filename=\"" + id + "\"");

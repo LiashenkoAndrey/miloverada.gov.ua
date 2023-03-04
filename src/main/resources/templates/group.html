@@ -170,7 +170,7 @@
 
                                     <ol class="position-relative">
                                         <li class="li-doc links" th:each="document : ${sub_group.documents}">
-                                            <a th:href="@{'/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/new'}" th:text="${document.title}">Title</a>
+                                            <a th:href="@{'/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/' + ${document.id}}" th:text="${document.title}">Title</a>
                                             <a th:href="@{'/upload/document/' + ${document.document_filename}}">
                                                 <i class="bi bi-download download"></i>
                                             </a>

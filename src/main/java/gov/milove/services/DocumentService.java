@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -55,8 +56,12 @@ public class DocumentService {
         return success;
     }
 
-    public byte[] getDocumentById(String id) {
+    public byte[] getDocumentBinaryById(String id) {
         return documentRepositoryMongo.getFromMongoById(id);
+    }
+
+    public Optional<Document> getDocumentById(Long id) {
+        return documentRepository.findById(id);
     }
 
     public void updateDocument(String document_id, MultipartFile file, String title) {
