@@ -27,6 +27,8 @@ public class SubGroup {
     @OneToMany(mappedBy = "sub_group", cascade = CascadeType.ALL)
     private List<Document> documents;
 
+    private CustomDate date_of_creation;
+
     public SubGroup() {
 
     }

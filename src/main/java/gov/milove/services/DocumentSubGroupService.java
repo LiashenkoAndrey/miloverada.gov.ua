@@ -1,5 +1,6 @@
 package gov.milove.services;
 
+import gov.milove.domain.CustomDate;
 import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.SubGroup;
@@ -36,6 +37,7 @@ public class DocumentSubGroupService {
         SubGroup newSubGroup = new SubGroup();
         newSubGroup.setTitle(title);
         newSubGroup.setDocument_group(documentGroup);
+        newSubGroup.setDate_of_creation(new CustomDate());
         subGroupRepository.save(newSubGroup);
     }
 
