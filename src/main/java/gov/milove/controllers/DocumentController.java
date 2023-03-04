@@ -44,6 +44,7 @@ public class DocumentController {
         if (documentGroup.isPresent()) {
             model.addAttribute("group", documentGroup.get());
             model.addAttribute("sub_groups", subGroupService.findAllByGroupId(id));
+            model.addAttribute("groups",documentGroupService.findAll());
             return "group";
         } else {
             return "error/404";

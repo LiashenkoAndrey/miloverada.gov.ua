@@ -70,10 +70,13 @@
 
         <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
             <div class="row ">
-                <nav class="h5 col-sm-2 text-dark ms-3 mt-2 " id="nav">
-                    <a href="">Звіт сільського голови</a>
-                    <a href="">Відділ ЦНАП</a>
-                    <a href="">Інфраструктура та благоустрій</a>
+                <nav class="h5 col-sm-2 text-dark ms-4 mt-2 " id="nav">
+                    <div class="sticky">
+                        <div th:each="group : ${groups}"  style="position: relative;">
+                            <img th:src="@{/img/arrow-left.png}" alt="arrow-left" style="position: absolute; left: -25px;" width="25" height="25">
+                            <a th:href="@{'/group/' + ${group.id}}"  th:text="${group.title}" >Document</a>
+                        </div>
+                    </div>
                 </nav>
                 <div class="col h2">
                   <div class="text-center mt-3">

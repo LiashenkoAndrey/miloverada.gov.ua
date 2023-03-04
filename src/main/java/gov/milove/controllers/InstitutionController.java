@@ -3,6 +3,7 @@ package gov.milove.controllers;
 import gov.milove.domain.intitution.Employee;
 import gov.milove.domain.intitution.Institution;
 import gov.milove.exceptions.EmployeeServiceException;
+import gov.milove.services.DocumentGroupService;
 import gov.milove.services.EmployeeService;
 import gov.milove.services.InstitutionService;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,16 +22,19 @@ import static gov.milove.controllers.ControllerUtil.ok;
 public class InstitutionController {
 
     private final InstitutionService institutionService;
+    private final DocumentGroupService documentGroupService;
 
     private final EmployeeService employeeService;
 
-    public InstitutionController(InstitutionService institutionService, EmployeeService employeeService) {
+    public InstitutionController(InstitutionService institutionService, DocumentGroupService documentGroupService, EmployeeService employeeService) {
         this.institutionService = institutionService;
+        this.documentGroupService = documentGroupService;
         this.employeeService = employeeService;
     }
 
     @GetMapping("/{title}")
     public String getInstitution(@PathVariable("title") String title, Model model) {
+        model.addAttribute("groups",documentGroupService.findAll());
         Optional<Institution> institution = institutionService.findInstitutionByTitle(title);
         if (institution.isPresent()) {
             model.addAttribute("institution", institution.get());
