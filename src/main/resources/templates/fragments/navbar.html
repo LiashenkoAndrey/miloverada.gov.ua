@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<nav class="h5 col-sm-2 text-dark ms-4 mt-2 " id="nav" th:fragment="navbar">
+  <div class="sticky">
+    <div th:each="group : ${groups}"  style="position: relative;">
+      <img th:src="@{/img/arrow-left.png}" class="arrows" alt="arrow">
+      <a th:href="@{'/group/' + ${group.id}}"  th:text="${group.title}" >Document</a>
+    </div>
+  </div>
+</nav>
+
+</body>
+</html>

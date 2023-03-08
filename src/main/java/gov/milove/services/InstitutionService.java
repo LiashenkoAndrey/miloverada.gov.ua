@@ -1,6 +1,6 @@
 package gov.milove.services;
 
-import gov.milove.domain.intitution.Institution;
+import gov.milove.domain.institution.Institution;
 import gov.milove.repositories.InstitutionRepository;
 import org.springframework.stereotype.Service;
 

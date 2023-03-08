@@ -45,7 +45,12 @@
     bottom: 70px;
 }
 
-@media screen and (max-width: 1000px) {
+#head_nav a {
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 1300px) {
 
     .dropbtn {
       padding: 10px;

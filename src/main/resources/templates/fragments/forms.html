@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div id="confirm-form" class="form" style="display: none;" th:fragment="confirm-form">
+  <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
+    <div class="h1">
+      <div class="text-end">
+        <button type="button" class="btn-close" onclick="disableForm('confirm-form')" aria-label="Close"></button>
+      </div>
+
+      <!--message-->
+      <h2 id="confirm-form-message"></h2>
+      <button class="btn btn-danger mt-2" id="confirm-operation-btn" onclick="" ></button> <!--confirm operation-->
+    </div>
+  </div>
+</div>
+
+<!--form with one input-->
+<div id="new" class="form" style="display: none;" th:fragment="form-with-one-input (action, label, confirm_text )">
+  <div class="d-flex align-items-center justify-content-center " style="height: 600px; ">
+    <form th:action="${action}" th:method="post" class="h1">
+      <div class="text-end">
+        <button type="button" class="btn-close" onclick="disableForm('new')" aria-label="Close"></button>
+      </div>
+      <label for="name" class="form-label" th:text="${label}"></label>
+      <input type="text" class="form-control" id="name" name="title">
+      <input type="submit" th:value="${confirm_text}" class="btn btn-success mt-2">
+    </form>
+  </div>
+</div>
+
+<!-- employee form -->
+<div id="employee-form-wrapper" class="form" style="display: none;" th:fragment="employee-form">
+  <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
+    <div class="h1" id="employee-form">
+      <div class="text-end">
+        <button type="button" class="btn-close" onclick="disableForm('employee-form-wrapper')" aria-label="Close"></button>
+      </div>
+
+      <label for="sub_institution" class="form-label">Установа</label>
+      <input type="text" class="form-control" id="sub_institution" name="sub_institution">
+
+      <label for="position" class="form-label">Посада</label>
+      <input type="text" class="form-control" id="position" name="position">
+
+      <label for="fname" class="form-label">Iм'я</label>
+      <input type="text" class="form-control" id="fname" name="first_name">
+
+      <label for="lname" class="form-label">Фамілія</label>
+      <input type="text" class="form-control" id="lname" name="last_name">
+
+      <label for="phone_number" class="form-label">Телефон</label>
+      <input type="text" class="form-control" id="phone_number" name="phone_number">
+
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" name="email">
+
+      <label for="file" class="form-label">Фото</label>
+      <input type="file" class="form-control" id="file" name="file">
+
+      <button type="submit" class="btn btn-success" id="submit-employee-form"></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

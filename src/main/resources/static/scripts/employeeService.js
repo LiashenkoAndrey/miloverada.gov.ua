@@ -15,7 +15,12 @@ function enableFormAndInjectAction(actionUrl, submitBtnValue) {
 
         let inputs = form.getElementsByTagName("input");
         Array.prototype.forEach.call(inputs, e => {
-            formData.append(e.getAttribute('name'), e.value)
+            let nameAttribute = e.getAttribute('name')
+            if (nameAttribute === 'file') {
+                formData.append(nameAttribute, e.files[0])
+            } else {
+                formData.append(nameAttribute, e.value)
+            }
         });
 
         await fetch(actionUrl, {

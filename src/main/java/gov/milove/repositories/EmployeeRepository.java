@@ -1,6 +1,6 @@
 package gov.milove.repositories;
 
-import gov.milove.domain.intitution.Employee;
+import gov.milove.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

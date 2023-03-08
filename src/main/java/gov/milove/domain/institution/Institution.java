@@ -1,6 +1,7 @@
-package gov.milove.domain.intitution;
+package gov.milove.domain.institution;
 
 
+import gov.milove.domain.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
 

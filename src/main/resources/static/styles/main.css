@@ -30,8 +30,7 @@ body {
 	flex: 0 0 auto;
 }
 
-.head {
-  background-color: rgba(36, 108, 189, 0.4);
+#head {
   color: white;
   height: 200px;
   border-radius: 3px;
@@ -72,7 +71,7 @@ body {
     padding-left: 0;
     padding-right: 0;
     background: rgb(190,190,190);
-    background: linear-gradient(180deg, rgba(190,190,190,1) 19%, rgba(52,52,64,1) 88%);
+    background: linear-gradient(180deg, rgb(81, 78, 78) 19%, rgba(52,52,64,1) 88%);
   }
 
 
@@ -103,7 +102,7 @@ body {
       margin: 0 10px 0 20px;
     }
 
-    .head {
+    #head {
       height: 270px;
     }
   }
@@ -126,17 +125,53 @@ body {
   border-radius: 3px;
 }
 
-#icons-bar div div, #icons-bar-link {
-  text-align: center;
+.svg {
+  transition-duration: 160ms;
+}
+.svg:hover {
+  padding: 6px;
 }
 
-#icons-bar div div a, #icons-bar-link a {
+@media screen and (max-width: 1300px) {
+  .nav-img-wrapper div a img {
+    width: 120px;
+    height: 120px;
+  }
+
+
+}
+
+.nav-img-wrapper div {
+  text-align: center;
+  width: 80%;
+}
+
+.nav-img-wrapper div a {
   text-decoration: none;
   color: #2a2a2a;
 }
 
-#icons-bar div div a:hover, #icons-bar-link a:hover {
+.nav-img-wrapper div a:hover {
   color: #6161a6;
+}
+
+.nav-img-wrapper div a img {
+  width: 90px;
+  height: 90px;
+}
+
+.nav-img-wrapper div a p {
+  font-size: 16px;
+  font-palette: dark;
+  font-style: italic;
+  font-weight: bolder;
+}
+
+.arrows {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  left: -25px;
 }
 
 

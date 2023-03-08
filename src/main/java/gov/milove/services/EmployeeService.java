@@ -1,6 +1,6 @@
 package gov.milove.services;
 
-import gov.milove.domain.intitution.Employee;
+import gov.milove.domain.Employee;
 import gov.milove.exceptions.EmployeeServiceException;
 import gov.milove.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
