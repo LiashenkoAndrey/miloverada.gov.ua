@@ -1,21 +1,31 @@
 package gov.milove.domain.administration;
 
-import gov.milove.domain.Employee;
-import gov.milove.domain.SubGroup;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import gov.milove.domain.Document;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
 @Entity
 @Table(name = "administration_group")
-public class AdministrationGroup extends SubGroup {
+public class AdministrationGroup {
 
-    @OneToMany
-    private List<Employee> employeeList;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @OneToMany(mappedBy = "administration_group")
+    private List<AdministrationEmployee> employee_list;
+
+    @OneToMany(mappedBy = "administration_group")
+    private List<Document> document_list;
+
+    @ManyToOne
+    private AdministrationGroup administration_group;
+
+    @OneToMany(mappedBy = "administration_group")
+    private List<AdministrationGroup> group_list;
 }

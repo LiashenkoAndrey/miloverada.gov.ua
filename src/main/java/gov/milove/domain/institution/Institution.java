@@ -1,7 +1,6 @@
 package gov.milove.domain.institution;
 
 
-import gov.milove.domain.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,5 +17,5 @@ public class Institution {
     private String title;
 
     @OneToMany
-    private List<Employee> employee_list;
+    private List<InstitutionEmployee> employee_list;
 }

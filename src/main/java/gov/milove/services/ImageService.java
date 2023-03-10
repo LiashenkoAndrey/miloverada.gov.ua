@@ -22,8 +22,11 @@ public class ImageService {
         return imageRepository.getImageById(id);
     }
 
-
     public void updateImage(MultipartFile file, String image_id) {
         imageRepository.updateImage(image_id, file);
+    }
+
+    public void deleteImageById(String id) {
+        imageRepository.deleteImageById(id);
     }
 }

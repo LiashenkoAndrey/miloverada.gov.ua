@@ -15,7 +15,7 @@
                         <a th:href="@{/}" >Головна</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <a th:href="@{'/group/' + ${group.id}}" th:text="${group.title}"></a>
+                        <a th:href="${previousPageUrl}" th:text="${previousPageTitle}"></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page" th:text="${subGroupTitle}"></li>
                     <li class="breadcrumb-item" aria-current="page" th:text="${document.title}"></li>

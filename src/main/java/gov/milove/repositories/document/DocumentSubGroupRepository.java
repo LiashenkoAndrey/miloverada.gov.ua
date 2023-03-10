@@ -1,4 +1,4 @@
-package gov.milove.repositories;
+package gov.milove.repositories.document;
 
 import gov.milove.domain.SubGroup;
 import org.springframework.data.jpa.repository.JpaRepository;

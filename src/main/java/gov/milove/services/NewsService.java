@@ -3,6 +3,7 @@ package gov.milove.services;
 import gov.milove.domain.CustomDate;
 import gov.milove.domain.News;
 import gov.milove.repositories.NewsRepository;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,13 +17,12 @@ public class NewsService {
 
     private final NewsRepository newsRepository;
     private final ImageService imageService;
-    private final DocumentService documentService;
 
-    public NewsService(NewsRepository newsRepository, ImageService imageService, DocumentService documentService) {
+    public NewsService(NewsRepository newsRepository, ImageService imageService) {
         this.newsRepository = newsRepository;
         this.imageService = imageService;
-        this.documentService = documentService;
     }
+
 
     public Page<News> getPagesList(int page) {
         return newsRepository.findAll(PageRequest.of(page,9));
@@ -44,7 +44,7 @@ public class NewsService {
         boolean success;
         try {
             News news = newsRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            documentService.deleteDocument(news.getImage_id());
+            imageService.deleteImageById(news.getImage_id());
             newsRepository.delete(news);
             success = true;
         } catch (Exception ex) {

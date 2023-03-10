@@ -1,21 +1,15 @@
 package gov.milove.domain;
 
-import gov.milove.domain.institution.Institution;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Entity
+@MappedSuperclass
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    private Institution institution;
-
-    private String sub_institution;
 
     private String position;
 
@@ -26,4 +20,14 @@ public class Employee {
     private String email;
 
     private String phone_number;
+
+
+    // todo: use MapStruct instead!!!
+    public static void updateEmployee(Employee newEmployee, Employee oldEmployee) {
+        if (!newEmployee.getEmail().equals("")) oldEmployee.setEmail(newEmployee.getEmail());
+        if (!newEmployee.getPosition().equals("")) oldEmployee.setPosition(newEmployee.getPosition());
+        if (!newEmployee.getFirst_name().equals("")) oldEmployee.setFirst_name(newEmployee.getFirst_name());
+        if (!newEmployee.getLast_name().equals("")) oldEmployee.setLast_name(newEmployee.getLast_name());
+        if (!newEmployee.getPhone_number().equals("")) oldEmployee.setPhone_number(newEmployee.getPhone_number());
+    }
 }

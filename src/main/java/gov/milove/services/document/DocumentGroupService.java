@@ -1,8 +1,8 @@
-package gov.milove.services;
+package gov.milove.services.document;
 
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.dto.DocumentGroupDto;
-import gov.milove.repositories.DocumentGroupRepository;
+import gov.milove.repositories.document.DocumentGroupRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

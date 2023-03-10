@@ -9,4 +9,6 @@ public interface ImageRepository {
     public void updateImage(String image_id, MultipartFile file);
 
     public byte[] getImageById(String id);
+
+    public void deleteImageById(String id);
 }

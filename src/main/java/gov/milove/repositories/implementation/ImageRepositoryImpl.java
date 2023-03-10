@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -84,6 +85,12 @@ public class ImageRepositoryImpl implements ImageRepository {
         Document document = Optional.ofNullable(findIterable.first()).orElseThrow(EntityExistsException::new);
         Binary binary = (Binary) document.get("binary_image");
         return binary.getData();
+    }
+
+    public void deleteImageById(String image_id) {
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("milove_images");
+        mongoCollection.deleteOne(new Document("_id", new ObjectId(image_id)));
+        System.out.println("Image with _id "+ image_id +" was deleted!");
     }
 
     private Document prepareDocument(MultipartFile file) {

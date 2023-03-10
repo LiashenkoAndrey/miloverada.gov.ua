@@ -1,15 +1,17 @@
 package gov.milove.controllers;
 
+import gov.milove.domain.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ControllerUtil {
 
-    static ResponseEntity<String> ok(String message) {
+    public static ResponseEntity<String> ok(String message) {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    static ResponseEntity<String> error(String message) {
+    public static ResponseEntity<String> error(String message) {
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

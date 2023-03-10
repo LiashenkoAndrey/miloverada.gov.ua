@@ -1,7 +1,7 @@
 package gov.milove.controllers;
 
 import gov.milove.domain.News;
-import gov.milove.services.DocumentGroupService;
+import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

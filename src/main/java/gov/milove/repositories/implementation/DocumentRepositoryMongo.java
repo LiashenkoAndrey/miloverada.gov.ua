@@ -1,30 +1,20 @@
 package gov.milove.repositories.implementation;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.ClientSession;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import jakarta.persistence.EntityExistsException;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.Binary;
-import org.bson.types.ObjectId;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
@@ -65,9 +55,8 @@ public class DocumentRepositoryMongo {
     public void deleteDocumentsById(List<String> documentsIdList) {
         MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("document");
         for (String id : documentsIdList) {
-            mongoCollection.deleteOne(Filters.eq("filename", id));
+            mongoCollection.deleteOne(new Document("filename", id));
         }
-
         System.out.println("All documents was deleted!");
     }
 

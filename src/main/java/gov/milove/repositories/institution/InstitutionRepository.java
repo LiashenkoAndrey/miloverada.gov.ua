@@ -1,4 +1,4 @@
-package gov.milove.repositories;
+package gov.milove.repositories.institution;
 
 import gov.milove.domain.institution.Institution;
 import org.springframework.data.jpa.repository.JpaRepository;

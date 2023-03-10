@@ -3,10 +3,11 @@ package gov.milove.controllers;
 import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.dto.DocumentGroupDto;
-import gov.milove.services.DocumentGroupService;
-import gov.milove.services.DocumentService;
-import gov.milove.services.DocumentSubGroupService;
-import org.springframework.http.HttpStatus;
+import gov.milove.exceptions.DocumentCrudServiceException;
+import gov.milove.services.document.DocumentGroupService;
+import gov.milove.services.document.DocumentService;
+import gov.milove.services.document.DocumentSubGroupService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,27 +16,32 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+import static gov.milove.controllers.ControllerUtil.error;
+import static gov.milove.controllers.ControllerUtil.ok;
+
 @Controller
 @RequestMapping("/group")
-public class DocumentController {
+public class LocalCommunityDocumentController {
 
     private final DocumentService documentService;
     private final DocumentGroupService documentGroupService;
     private final DocumentSubGroupService subGroupService;
 
-    public DocumentController(DocumentService documentService,
-                              DocumentGroupService documentGroupService,
-                              DocumentSubGroupService subGroupService) {
+    public LocalCommunityDocumentController(@Qualifier("localCommunityDocumentService") DocumentService documentService, DocumentGroupService documentGroupService, DocumentSubGroupService subGroupService) {
         this.documentService = documentService;
         this.documentGroupService = documentGroupService;
         this.subGroupService = subGroupService;
     }
+
 
     @PostMapping("/new")
     public String createNewGroup(@RequestParam("title") String title) {
         documentGroupService.createGroup(title);
         return "redirect:/";
     }
+
+
+
 
     @GetMapping("/{id}")
     public String group(@PathVariable("id") Long id, Model model) {
@@ -53,39 +59,26 @@ public class DocumentController {
     @GetMapping("/{group_id}/delete")
     public ResponseEntity<String> deleteGroup (@PathVariable("group_id") Long id) {
         boolean success = documentGroupService.deleteGroup(id);
-        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
-        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (success) return ok("Видалення успішне");
+        else return error("Виникли проблеми з видаленням");
     }
 
 
     @PostMapping("/{group_id}/sub-group/{subGroupId}/document/new")
-    public String saveDocument(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<String> saveDocument(@RequestParam("file") MultipartFile file,
                                @RequestParam("title") String title,
                                @PathVariable Long subGroupId,
                                @PathVariable("group_id") String group_id) {
 
-        documentService.createDocument(file,title, subGroupId);
-        return "redirect:/group/" + group_id;
+        try {
+            documentService.createDocument(file,title, subGroupId);
+            return ok("Документ успішно доданий");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return error("Виникли проблеми з додаванням документу");
+        }
     }
 
-    @PostMapping("/{group_id}/document/{document_id}/update")
-    public String updateDocument(
-            @RequestParam(name = "file", required = false) MultipartFile file,
-            @RequestParam(name = "title",required = false) String title,
-            @PathVariable("document_id") String document_id,
-            @PathVariable("group_id") String group_id) {
-        System.out.println("TITLE: " + title);
-        documentService.updateDocument(document_id, file, title);
-        return "redirect:/group/" + group_id;
-    }
-
-    @GetMapping("/document/{document_id}/delete")
-    public ResponseEntity<String> deleteDocument(@PathVariable("document_id") String document_id) {
-        boolean success = documentService.deleteDocument(document_id);
-
-        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
-        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     @GetMapping("/{group_id}/sub-group/{sub_group_id}/document/{document_id}")
     public String displayDocument(
@@ -94,13 +87,12 @@ public class DocumentController {
             @PathVariable("document_id") Long document_id,
             Model model) {
         Optional<Document> document = documentService.getDocumentById(document_id);
-        System.out.println(document.get().getDocument_filename());
         if (document.isEmpty()) return "error/404";
+
         DocumentGroupDto groupDto = documentGroupService.getDtoById(group_id);
-        System.out.println(groupDto.getTitle());
-        System.out.println(groupDto.getId());
         String subGroupTitle = subGroupService.getTitleById(sub_group_id);
-        model.addAttribute("group", groupDto);
+        model.addAttribute("previousPageTitle", groupDto.getTitle());
+        model.addAttribute("previousPageUrl", "/group/" + group_id);
         model.addAttribute("subGroupTitle", subGroupTitle);
         model.addAttribute("document", document.get());
         return "document";
@@ -118,7 +110,7 @@ public class DocumentController {
     @GetMapping("/sub-group/{subgroup_id}/delete")
     public ResponseEntity<String> deleteSubGroup (@PathVariable("subgroup_id") Long id) {
         boolean success = subGroupService.deleteSubGroup(id);
-        if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
-        else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (success) return ok("Видалення успішне");
+        else return error("Виникли проблеми з видаленням");
     }
 }

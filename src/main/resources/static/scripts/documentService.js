@@ -18,77 +18,52 @@ function enableFormAndDoGetRequest(message, confirm_btn_text, getUrl, redirectUr
 
     let confirm_btn = document.querySelector("#confirm-operation-btn");
     confirm_btn.innerHTML = confirm_btn_text;
-    confirm_btn.setAttribute('onclick',"getRequest('" + getUrl + "','" + redirectUrl + "')");
+    confirm_btn.addEventListener('click', function () {
+        getRequest(getUrl, redirectUrl);
+    });
 }
 
 
-function getRequest(deleteUrl, redirectUrl) {
-    let xmlhttp=new XMLHttpRequest();
 
-    xmlhttp.onreadystatechange=function() {
-        let responseText = xmlhttp.responseText;
-        if (xmlhttp.readyState===4 && xmlhttp.status===200) {
-            sendNotification(responseText, 'Success')
-            sleepAndRedirect(1100, redirectUrl);
-        } else if (xmlhttp.readyState===4 &&  xmlhttp.status===500) {
-            sendNotification(responseText, 'Error')
-        } else if (xmlhttp.readyState===4 &&  xmlhttp.status===404) {
-            sendNotification(responseText, 'Error')
-        }
-    }
-
-    xmlhttp.open("GET", deleteUrl,true);
-    xmlhttp.send();
-}
-
-function enableFormAndUpdateDocument(url, redirectUrl) {
-    document.querySelector("#update-document").style.display= "block";
+function enableFormAndSaveDocument(title, btnValue,url, redirectUrl) {
+    document.querySelector("#document").style.display= "block";
     wrapper.style.filter = 'blur(8px)';
-    let document_title = document.querySelector("#new-document-title")
-    let document_file = document.querySelector("#new-document-file")
-    let confirmBtn = document.querySelector("#new-document-confirm-operation-btn");
+    let document_title = document.querySelector("#nameOfDocument")
+    let document_file = document.querySelector("#input-file")
+    let confirmBtn = document.querySelector("#document-submit");
+
+    confirmBtn.value = btnValue;
+    document.querySelector("#documentTitle").innerHTML = title
+
     confirmBtn.addEventListener('click', async function () {
+        console.log(!document_file.files[0])
+
         let formData = new FormData();
-        formData.append("file", document_file.files[0])
+        if (document_file.files[0]) {
+            if (checkFileSize(document_file.files[0].size)) {
+                formData.append("file", document_file.files[0])
+            }
+        }
         formData.append("title", document_title.value)
         await fetch(url, {
             method: "POST",
             body: formData
         }).then(response => {
-            if (response.status === 200) {
-                sendNotification("Оновлення успішне", 'Success')
-                sleepAndRedirect(1100, redirectUrl);
-            } else {
-                sendNotification("Оновлення було неуспішне", 'Error')
-            }
-
+            processResponse(response, redirectUrl)
         })
-    })
 
+    })
 }
 
-function checkFileSize() {
-    let fileInput = document.querySelector("#input-file")
-    let submitBtn = document.querySelector("#new-document-submit")
-    if (fileInput.files[0].size < 10485760) {
-        console.log("action!!!")
-        submitBtn.click();
+function checkFileSize(size) {
+    if (size < 10485760) {
+        return true;
     } else {
         sendNotification("Перевищено ліміт файлу 10MB!", 'Error')
+        return false
     }
 }
 
-
-
-async function postRequest(url) {
-    let input = document.getElementById("uploadImage")
-    let formData = new FormData();
-    formData.append("file", input.files[0])
-    await fetch("/image", {
-        method: "POST",
-        body: formData
-    }).then(response => response.text().then(result => console.log(result)))
-}
 
 async function sleepAndRedirect(milliseconds, redirectUrl) {
     await new Promise(r => setTimeout(r, milliseconds)); // sleep(n) seconds

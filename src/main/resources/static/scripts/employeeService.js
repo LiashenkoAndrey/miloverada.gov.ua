@@ -10,31 +10,10 @@ function enableFormAndInjectAction(actionUrl, submitBtnValue) {
     submitBtn.innerHTML = submitBtnValue;
 
     submitBtn.addEventListener("click", async function () {
-        let formData = new FormData();
         let form = document.querySelector("#employee-form");
-
         let inputs = form.getElementsByTagName("input");
-        Array.prototype.forEach.call(inputs, e => {
-            let nameAttribute = e.getAttribute('name')
-            if (nameAttribute === 'file') {
-                formData.append(nameAttribute, e.files[0])
-            } else {
-                formData.append(nameAttribute, e.value)
-            }
-        });
-
-        await fetch(actionUrl, {
-            method: "POST",
-            body: formData
-        }).then(response => {
-            if (response.status === 200) {
-                response.text().then(function (resp) {
-                    sendNotification(resp, 'Success')
-                })
-                sleepAndRedirect(1100, 'null');
-
-            } else { sendNotification(response.text(), 'Error') }
-        })
+        let formData = parseInputsAndCreateFormData(inputs)
+        await postRequest(formData, actionUrl, 'null')
     });
 }
 
@@ -42,6 +21,19 @@ function disableForm(str) {
     let form = document.querySelector("#" + str);
     form.style.display= "none";
     wrapper.style.filter = 'none';
+}
+
+function parseInputsAndCreateFormData(inputs) {
+    let formData = new FormData();
+    Array.prototype.forEach.call(inputs, e => {
+        let nameAttribute = e.getAttribute('name')
+        if (nameAttribute === 'file') {
+            formData.append(nameAttribute, e.files[0])
+        } else {
+            formData.append(nameAttribute, e.value)
+        }
+    });
+    return formData;
 }
 
 
