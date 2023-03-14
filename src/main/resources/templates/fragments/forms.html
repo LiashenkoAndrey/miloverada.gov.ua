@@ -6,7 +6,6 @@
 </head>
 <body>
 
-
 <div id="confirm-form" class="form" style="display: none;" th:fragment="confirm-form">
   <div class="d-flex align-items-center justify-content-center m-5" style="height: 600px; ">
     <div class="h1">
@@ -76,25 +75,25 @@
       </div>
 
       <label for="sub_institution" id="sub_institution_title" class="form-label">Установа</label>
-      <input type="text" class="form-control" id="sub_institution" name="sub_institution">
+      <input type="text" class="form-control" id="sub_institution" name="sub_institution" maxlength="50">
 
-      <label for="position" class="form-label">Посада</label>
-      <input type="text" class="form-control" id="position" name="position">
+      <label for="position" id="position-title" class="form-label">Посада</label>
+      <input type="text" class="form-control" id="position" name="position" maxlength="50">
 
       <label for="fname" class="form-label">Iм'я</label>
-      <input type="text" class="form-control" id="fname" name="first_name">
+      <input type="text" class="form-control" id="fname" name="first_name" maxlength="50">
 
       <label for="lname" class="form-label">Фамілія</label>
-      <input type="text" class="form-control" id="lname" name="last_name">
+      <input type="text" class="form-control" id="lname" name="last_name" maxlength="50">
 
       <label for="phone_number" class="form-label">Телефон</label>
-      <input type="text" class="form-control" id="phone_number" name="phone_number">
+      <input type="text" class="form-control" id="phone_number" name="phone_number" maxlength="50">
 
       <label for="email" class="form-label">Email</label>
       <input type="text" class="form-control" id="email" name="email">
 
       <label for="file" id="file-label" class="form-label">Фото</label>
-      <input type="file" class="form-control" id="file" name="file">
+      <input type="file" class="form-control" id="file" name="file" maxlength="50">
 
       <button type="submit" class="btn btn-success" id="submit-employee-form"></button>
     </div>

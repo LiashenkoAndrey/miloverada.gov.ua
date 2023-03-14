@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 
 @Controller

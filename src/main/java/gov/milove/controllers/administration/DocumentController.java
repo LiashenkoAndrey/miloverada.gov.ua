@@ -2,7 +2,6 @@ package gov.milove.controllers.administration;
 
 import gov.milove.domain.Document;
 import gov.milove.domain.dto.AdministrationGroupDto;
-import gov.milove.exceptions.DocumentCrudServiceException;
 import gov.milove.services.administration.AdministrationGroupService;
 import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/administration")

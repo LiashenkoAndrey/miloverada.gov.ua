@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head th:replace="~{/fragments/basic-head.html :: basic-head}"></head>
-    <link rel="stylesheet" th:href="@{/styles/notifications.css}">
-    <title>Милівська ОТГ</title>
+<head th:replace="~{/fragments/basic-head.html :: basic-head}"></head>
+<link rel="stylesheet" th:href="@{/styles/notifications.css}">
+<title>Милівська ОТГ</title>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
-    #file-label, #file {
-        display: none;
-    }
+  #file-label, #file {
+    display: none;
+  }
+  #sub_institution, #sub_institution_title  {
+      display: none;
+  }
 </style>
+
 
 <!--notifications -->
 <div th:replace="~{/fragments/notification.html :: notifications}"></div>
@@ -19,23 +23,23 @@
 <div th:replace="~{/fragments/forms.html :: confirm-form}"></div>
 <div th:replace="~{/fragments/forms.html :: employee-form}"></div>
 
+<script>
+    document.querySelector("#position").setAttribute("name", "district")
+    document.querySelector("#position-title").innerHTML = "Округ"
+</script>
 <div class="wrapper">
-    <div th:replace="fragments/header.html :: header"></div>
+  <div th:replace="fragments/header.html :: header"></div>
 
-    <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
-        <div class="row ">
-            <div th:replace="~{/fragments/navbar.html :: navbar}"></div>
+  <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
 
-            <div class="col">
-                <div class="container" >
-                    <div th:text="${institution.title}" style="text-transform: capitalize" class="m-2 h3 text-center"></div>
-                    <div>
+      <div class="container mt-3" >
+          <h2 class="text-center">Депутати по округам</h2>
+          <div>
                         <pre>
                             <table class="table">
                                 <thead class="table-head">
                                     <tr>
-                                        <th>Установа</th>
-                                        <th>Посада</th>
+                                        <th>Округ</th>
                                         <th>Ім'я</th>
                                         <th>Фамілія</th>
                                         <th>Телефон</th>
@@ -44,27 +48,24 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="employee : ${employee_list}" >
-                                        <th th:text="${employee.sub_institution}"></th>
-                                        <th th:text="${employee.position}"></th>
+                                        <th th:text="${employee.district}"></th>
                                         <th th:text="${employee.first_name}"></th>
                                         <th th:text="${employee.last_name}"></th>
                                         <th th:text="${employee.phone_number}"></th>
                                         <th th:text="${employee.email}"></th>
-                                        <th><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/установа/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
-                                        <th><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/установа/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
+                                        <th><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/депутати по округах/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
+                                        <th><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/депутати по округах/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
                                     </tr>
 
                                 </tbody>
                             </table>
                         </pre>
-                        <button class="btn btn-success mb-3" th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+              <button class="btn btn-success mb-3" th:onclick="'enableFormAndInjectAction(\'/депутати по округах/employee/new\', \'Додати\')'">Додати запис</button>
+          </div>
+      </div>
+  </div>
 
-    <div th:replace="/fragments/footer.html :: footer"></div>
+  <div th:replace="/fragments/footer.html :: footer"></div>
 
 </div>
 

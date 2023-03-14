@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/установа")

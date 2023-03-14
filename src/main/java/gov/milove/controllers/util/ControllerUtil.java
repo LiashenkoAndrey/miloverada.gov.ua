@@ -1,6 +1,5 @@
-package gov.milove.controllers;
+package gov.milove.controllers.util;
 
-import gov.milove.domain.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

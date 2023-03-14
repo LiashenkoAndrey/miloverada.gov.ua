@@ -11,10 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.NoSuchElementException;
-
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/administration")
@@ -35,7 +33,7 @@ public class EmployeeController {
 
 
     @PostMapping("/group/{group_id}/employee/new")
-    public ResponseEntity<String> newMainEmployee(
+    public ResponseEntity<String> create(
             @ModelAttribute("main_employee") AdministrationEmployee employee,
             @RequestParam(name = "file", required = false) MultipartFile file,
             @PathVariable("group_id") String group_id) {
@@ -58,14 +56,14 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/{employee_id}/update")
-    public ResponseEntity<String> updateEmployee (
+    public ResponseEntity<String> update (
             @PathVariable("employee_id") Long id,
             @ModelAttribute("main_employee") AdministrationEmployee updatedEmployee,
             @RequestParam(value = "file", required = false) MultipartFile file) {
 
         try {
             AdministrationEmployee oldEmployee =
-                    administrationEmployeeService.findById(id).orElseThrow(NoSuchElementException::new);
+                    administrationEmployeeService.findById(id).orElseThrow(EntityNotFoundException::new);
 
             if (oldEmployee.getAdministration_group() == null && file != null) {
                 String savedImageId = imageService.saveImage(file);
@@ -82,7 +80,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{employee_id}/delete")
-    public ResponseEntity<String> newMainEmployee(@PathVariable("employee_id") Long employee_id) {
+    public ResponseEntity<String> delete(@PathVariable("employee_id") Long employee_id) {
         try {
             administrationEmployeeService.deleteById(employee_id);
             return ok("Працівник успішно видалений");

@@ -1,4 +1,4 @@
-package gov.milove.controllers;
+package gov.milove.controllers.util;
 
 import gov.milove.exceptions.DocumentCrudServiceException;
 import gov.milove.services.document.DocumentService;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/document")

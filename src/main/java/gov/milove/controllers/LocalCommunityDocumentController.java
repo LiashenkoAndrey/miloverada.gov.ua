@@ -3,7 +3,6 @@ package gov.milove.controllers;
 import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.dto.DocumentGroupDto;
-import gov.milove.exceptions.DocumentCrudServiceException;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.document.DocumentService;
 import gov.milove.services.document.DocumentSubGroupService;
@@ -16,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static gov.milove.controllers.ControllerUtil.error;
-import static gov.milove.controllers.ControllerUtil.ok;
+import static gov.milove.controllers.util.ControllerUtil.error;
+import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/group")
