@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{/fragments/basic-head.html :: basic-head}"></head>
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
 <link rel="stylesheet" th:href="@{/styles/notifications.css}">
 <title>Милівська ОТГ</title>
 <body>
@@ -17,18 +17,18 @@
 
 
 <!--notifications -->
-<div th:replace="~{/fragments/notification.html :: notifications}"></div>
+<div th:replace="~{fragments/notification.html :: notifications}"></div>
 
 <!-- forms -->
-<div th:replace="~{/fragments/forms.html :: confirm-form}"></div>
-<div th:replace="~{/fragments/forms.html :: employee-form}"></div>
+<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
+<div th:replace="~{fragments/forms.html :: employee-form}"></div>
 
 <script>
     document.querySelector("#position").setAttribute("name", "district")
     document.querySelector("#position-title").innerHTML = "Округ"
 </script>
 <div class="wrapper">
-  <div th:replace="fragments/header.html :: header"></div>
+  <div th:replace="~{fragments/header.html :: header}"></div>
 
   <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
 
@@ -65,7 +65,7 @@
       </div>
   </div>
 
-  <div th:replace="/fragments/footer.html :: footer"></div>
+  <div th:replace="~{fragments/footer.html :: footer}"></div>
 
 </div>
 

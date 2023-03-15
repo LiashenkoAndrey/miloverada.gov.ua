@@ -2,7 +2,6 @@ package gov.milove.services;
 
 
 import gov.milove.domain.ContactEmployee;
-import gov.milove.domain.Employee;
 import gov.milove.exceptions.ContactEmployeeException;
 import gov.milove.repositories.ContactEmployeeRepository;
 import org.springframework.stereotype.Service;

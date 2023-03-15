@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head th:replace="~{/fragments/basic-head.html :: basic-head}"></head>
+  <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
   <link rel="stylesheet" th:href="@{/styles/notifications.css}">
   <link rel="stylesheet" th:href="@{/styles/news.css}">
   <title>Милівська ОТГ</title>
@@ -9,18 +9,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--notifications -->
-<div th:replace="/fragments/notification.html :: notifications"></div>
+<div th:replace="~{fragments/notification.html :: notifications}"></div>
 
 <!--confirm-form-->
-<div th:replace="/fragments/forms.html :: confirm-form"></div>
+<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
 
 <div class="wrapper">
-  <div th:replace="fragments/header.html :: header"></div>
+  <div th:replace="~{fragments/header.html :: header}"></div>
 
   <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
     <div class="row ">
 
-      <div th:replace="~{/fragments/navbar.html :: navbar}"></div>
+      <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
       <div class="col" style="max-width: 700px;">
 
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div th:replace="/fragments/footer.html :: footer"></div>
+  <div th:replace="~{fragments/footer.html :: footer}"></div>
 </div>
 
   <script th:src="@{/scripts/documentService.js}"></script>

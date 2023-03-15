@@ -3,7 +3,6 @@ package gov.milove.repositories.implementation;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import gov.milove.repositories.ImageRepository;
 import jakarta.persistence.EntityExistsException;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;

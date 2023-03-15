@@ -22,10 +22,10 @@
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
     </div>
     <div class="carousel-inner">
-        <div th:insert="/fragments/main/carousel.html :: carousel-item ('/upload/image/64073ff8b39a9034df0b3c36', 'hello', 'hello text')" class="carousel-item active"></div>
-        <div th:insert="/fragments/main/carousel.html :: carousel-item ('/upload/image/6407414ae9608806f2707a06', 'hello', 'hello text')" class="carousel-item"></div>
-        <div th:insert="/fragments/main/carousel.html :: carousel-item ('/upload/image/640619edbc51f108619e71c5', 'hello', 'hello text')" class="carousel-item"></div>
-        <div th:insert="/fragments/main/carousel.html :: carousel-item ('/upload/image/64074132e9608806f2707a05', 'hello', 'hello text')" class="carousel-item"></div>
+        <div th:insert="~{fragments/main/carousel.html :: carousel-item ('/upload/image/64073ff8b39a9034df0b3c36', 'hello', 'hello text')}" class="carousel-item active"></div>
+        <div th:insert="~{fragments/main/carousel.html :: carousel-item ('/upload/image/6407414ae9608806f2707a06', 'hello', 'hello text')}" class="carousel-item"></div>
+        <div th:insert="~{fragments/main/carousel.html :: carousel-item ('/upload/image/640619edbc51f108619e71c5', 'hello', 'hello text')}" class="carousel-item"></div>
+        <div th:insert="~{fragments/main/carousel.html :: carousel-item ('/upload/image/64074132e9608806f2707a05', 'hello', 'hello text')}" class="carousel-item"></div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

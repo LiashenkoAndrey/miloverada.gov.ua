@@ -4,7 +4,6 @@ package gov.milove.repositories.implementation;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import jakarta.persistence.EntityExistsException;
 import org.bson.Document;

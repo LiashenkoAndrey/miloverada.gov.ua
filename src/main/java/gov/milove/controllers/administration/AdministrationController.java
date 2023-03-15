@@ -32,9 +32,4 @@ public class AdministrationController {
         return "administration/administration";
     }
 
-
-    @GetMapping("/депутати")
-    public String getDeputiesPage() {
-        return "deputies";
-    }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{/fragments/basic-head.html :: basic-head}"></head>
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
 <link rel="stylesheet" th:href="@{/styles/notifications.css}">
 <link rel="stylesheet" th:href="@{/styles/document.css}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -10,13 +10,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--notifications -->
-<div th:replace="~{/fragments/notification.html :: notifications}"></div>
+<div th:replace="~{fragments/notification.html :: notifications}"></div>
 
 <!-- forms -->
-<div th:replace="~{/fragments/forms.html :: formWithOneInput}"></div>
-<div th:replace="~{/fragments/forms.html :: confirm-form}"></div>
-<div th:replace="~{/fragments/forms.html :: employee-form}"></div>
-<div th:replace="~{/fragments/forms.html :: document}"></div>
+<div th:replace="~{fragments/forms.html :: formWithOneInput}"></div>
+<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
+<div th:replace="~{fragments/forms.html :: employee-form}"></div>
+<div th:replace="~{fragments/forms.html :: document}"></div>
 
 <style>
    #sub_institution, #sub_institution_title  {
@@ -77,13 +77,13 @@
 
                                                 <div th:replace="~{fragments/administration/printTable.html :: printTable(${sub_group.employee_list})}"></div>
                                                 <div th:replace="~{fragments/administration/printDocuments.html :: printDocuments(${sub_group})}"></div>
-                                                <div th:replace="~{/fragments/administration/groupCrudButtons.html :: groupCrudButtons(${sub_group})}"></div>
+                                                <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${sub_group})}"></div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <div th:replace="~{/fragments/administration/groupCrudButtons.html :: groupCrudButtons(${group})}"></div>
+                                        <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${group})}"></div>
                                         <button class="btn btn-success mt-2" th:onclick="'enableFormAndDoPostRequest(\'Додати\',\'/administration/group/' + ${group.id} + '/sub-group/new\', \'Назва підгрупи\')'">Додати підгрупу</button>
                                     </div>
 
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div th:replace="~{/fragments/footer.html :: footer}"></div>
+    <div th:replace="~{fragments/footer.html :: footer}"></div>
 
 </div>
 
