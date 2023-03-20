@@ -27,8 +27,8 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          name: milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies
+          path: '${{ github.workspace }}/target/milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: java-app
+          name: milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -50,4 +50,4 @@ jobs:
           app-name: 'milove'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5C1FCF9525E1405B9FF902320B4692E1 }}
-          package: '*.war'
+          package: '*.jar'
