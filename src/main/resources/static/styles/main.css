@@ -182,3 +182,17 @@ body {
   text-decoration: none;
 }
 
+
+#edit_icon {
+  position: absolute;
+
+}
+
+#edit_icon:hover {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+
+
+

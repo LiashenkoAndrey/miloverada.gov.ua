@@ -1,53 +1,32 @@
-package gov.milove.controllers;
+package gov.milove.controllers.institution;
 
 import gov.milove.domain.Employee;
 import gov.milove.domain.institution.Institution;
 import gov.milove.domain.institution.InstitutionEmployee;
 import gov.milove.exceptions.EmployeeServiceException;
-import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.institution.InstitutionEmployeeService;
 import gov.milove.services.institution.InstitutionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
 @RequestMapping("/установа")
-public class InstitutionController {
+public class InstitutionEmployeeController {
 
     private final InstitutionService institutionService;
-    private final DocumentGroupService documentGroupService;
 
     private final InstitutionEmployeeService institutionEmployeeService;
 
-    public InstitutionController(InstitutionService institutionService, DocumentGroupService documentGroupService, InstitutionEmployeeService institutionEmployeeService) {
+    public InstitutionEmployeeController(InstitutionService institutionService, InstitutionEmployeeService institutionEmployeeService) {
         this.institutionService = institutionService;
-        this.documentGroupService = documentGroupService;
         this.institutionEmployeeService = institutionEmployeeService;
     }
-
-    @GetMapping("/{title}")
-    public String getInstitution(@PathVariable("title") String title, Model model) {
-        model.addAttribute("groups",documentGroupService.findAll());
-        Optional<Institution> institution = institutionService.findInstitutionByTitle(title);
-        if (institution.isPresent()) {
-            model.addAttribute("institution", institution.get());
-            model.addAttribute("employee_list", institutionEmployeeService.findAllByInstitutionTitle(title));
-            model.addAttribute("employee", new InstitutionEmployee());
-            return "institution";
-        } else {
-            return "error/404";
-        }
-    }
-
 
     @PostMapping("/{institution_id}/employee/new")
     public ResponseEntity<String> newEmployee(
@@ -85,7 +64,8 @@ public class InstitutionController {
             @ModelAttribute("employee") InstitutionEmployee employee) {
 
         try {
-            InstitutionEmployee oldEmployee = institutionEmployeeService.findById(employee_id).orElseThrow(EntityNotFoundException::new);
+            InstitutionEmployee oldEmployee = institutionEmployeeService.findById(employee_id)
+                    .orElseThrow(EntityNotFoundException::new);
 
             Employee.updateEmployee(employee, oldEmployee);
             oldEmployee.setSub_institution(employee.getSub_institution());

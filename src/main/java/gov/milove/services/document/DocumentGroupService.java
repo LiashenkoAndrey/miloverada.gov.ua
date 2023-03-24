@@ -2,6 +2,7 @@ package gov.milove.services.document;
 
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.dto.DocumentGroupDto;
+import gov.milove.domain.institution.Institution;
 import gov.milove.repositories.document.DocumentGroupRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,6 @@ public class DocumentGroupService {
     public void createGroup(String title) {
         DocumentGroup group = new DocumentGroup();
         group.setTitle(title);
-
         documentGroupRepository.save(group);
     }
 
@@ -31,6 +31,7 @@ public class DocumentGroupService {
     public Optional<DocumentGroup> findDocumentGroupById(Long id) {
         return documentGroupRepository.findById(id);
     }
+
 
     public boolean deleteGroup(Long id) {
         boolean success;
@@ -47,4 +48,6 @@ public class DocumentGroupService {
     public DocumentGroupDto getDtoById(Long id) {
         return documentGroupRepository.getDtoBySubGroupId(id);
     }
+
+
 }

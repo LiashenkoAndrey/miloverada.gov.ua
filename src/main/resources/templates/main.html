@@ -6,7 +6,6 @@
 <title>Милівська ОТГ</title>
 <body>
 
-<div th:replace="~{fragments/forms.html :: form-with-one-input ('/group/new', 'Назва групи документів', 'Створити нову групу')}"></div>
 
     <div class="wrapper">
 
@@ -18,10 +17,8 @@
 
                 <div class="col" >
                     <button class="btn btn-success m-1" onclick="enableForm('form')" >Змінити картинку</button>
-                    <button class="btn btn-success m-1" onclick="enableForm('new')" >Додати групу</button>
                     <div th:replace="~{fragments/main/icons-bar.html :: icons-bar}"></div>
                 </div>
-                <h1>Deploy was successful! Jenkins</h1>
 
                 <div th:replace="~{fragments/main/carousel.html :: main-carousel}"></div>
 

@@ -2,33 +2,34 @@
 <html lang="en">
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
     <link rel="stylesheet" th:href="@{/styles/notifications.css}">
+    <link rel="stylesheet" th:href="@{/styles/group.css}">
+    <link rel="stylesheet" th:href="@{/styles/document.css}">
     <title>Милівська ОТГ</title>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
-    #file-label, #file {
-        display: none;
-    }
+    #file-label, #file {display: none;}
 </style>
 
-<!--notifications -->
 <div th:replace="~{fragments/notification.html :: notifications}"></div>
-
-<!-- forms -->
 <div th:replace="~{fragments/forms.html :: confirm-form}"></div>
 <div th:replace="~{fragments/forms.html :: employee-form}"></div>
+<div th:replace="~{fragments/forms.html :: formWithOneInput}"></div>
+<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
+<div th:replace="~{fragments/forms.html :: document}"></div>
 
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
 
     <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
         <div class="row ">
-            <div th:replace="~{fragments/navbar.html :: navbar}"></div>
-
             <div class="col">
-                <div class="container" >
-                    <div th:text="${institution.title}" style="text-transform: capitalize" class="m-2 h3 text-center"></div>
+                <div>
+                    <div id="edit_icon_wrapper" class="text-center" style="padding: 10px">
+                        <span id="element" th:text="${institution.title}" class="h2"></span>
+                        <img th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22"  th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/' + ${institution.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
+                    </div>
                     <div>
                         <pre>
                             <table class="table">
@@ -37,7 +38,7 @@
                                         <th>Установа</th>
                                         <th>Посада</th>
                                         <th>Ім'я</th>
-                                        <th>Фамілія</th>
+                                        <th>Прізвище</th>
                                         <th>Телефон</th>
                                         <th>Робочий email</th>
                                     </tr>
@@ -53,24 +54,28 @@
                                         <th><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/установа/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
                                         <th><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/установа/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </pre>
                         <button class="btn btn-success mb-3" th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
                     </div>
+                    <div class="text-end">
+                        <!-- add subgroup button-->
+                        <button class="btn btn-success mb-2 me-2" th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
+                    </div>
+                    <div th:replace="~{/fragments/documents_render.html :: document_render(${group.getSubGroups()})}"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div th:replace="~{fragments/footer.html :: footer}"></div>
-
 </div>
 
 <script th:src="@{/scripts/documentService.js}"></script>
 <script th:src="@{/scripts/employeeService.js}"></script>
 <script th:src="@{/scripts/requests.js}"></script>
+<script th:src="@{/scripts/editText.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

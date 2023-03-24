@@ -1,5 +1,6 @@
 package gov.milove.domain;
 
+import gov.milove.domain.institution.Institution;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,9 @@ public class DocumentGroup {
     private Long id;
 
     private String title;
+
+    @OneToOne
+    private Institution institution;
 
     @OneToMany(mappedBy = "document_group", cascade = CascadeType.ALL)
     private List<SubGroup> subGroups;

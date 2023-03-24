@@ -20,21 +20,8 @@
   </div>
 </div>
 
-<!--form with one input-->
-<div id="new" class="form" style="display: none;" th:fragment="form-with-one-input (action, label, confirm_text )">
-  <div class="d-flex align-items-center justify-content-center " style="height: 600px; ">
-    <form th:action="${action}" th:method="post" class="h1">
-      <div class="text-end">
-        <button type="button" class="btn-close" onclick="disableForm('new')" aria-label="Close"></button>
-      </div>
-      <label for="name" class="form-label" th:text="${label}"></label>
-      <input type="text" class="form-control" id="name" name="title">
-      <input type="submit" th:value="${confirm_text}" class="btn btn-success mt-2">
-    </form>
-  </div>
-</div>
 
-<!--form with one input 2-->
+<!--form with one input -->
 <div id="formWithOneInput" class="form" style="display: none;" th:fragment="formWithOneInput">
   <div class="d-flex align-items-center justify-content-center " style="height: 600px; ">
     <div class="h1">
