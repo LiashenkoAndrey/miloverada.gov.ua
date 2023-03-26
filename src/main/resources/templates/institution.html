@@ -63,7 +63,7 @@
                         <!-- add subgroup button-->
                         <button class="btn btn-success mb-2 me-2" th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
                     </div>
-                    <div th:replace="~{/fragments/documents_render.html :: document_render(${institution.getDocument_group()})}"></div>
+                    <div th:replace="~{fragments/documents_render.html :: document_render(${institution.getDocument_group()})}"></div>
                 </div>
             </div>
         </div>

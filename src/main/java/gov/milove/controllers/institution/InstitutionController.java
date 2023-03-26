@@ -37,7 +37,7 @@ public class InstitutionController {
                                  Model model) {
         Optional<Institution> institution = institutionService.findInstitutionByTitle(title);
         if (institution.isPresent()) {
-            model.addAttribute("institution", institution.get());
+            model.addAttribute("institution", institution.get().getDocument_group());
             model.addAttribute("employee_list", institutionEmployeeService.findAllByInstitutionTitle(title));
             model.addAttribute("employee", new InstitutionEmployee());
             return "institution";
