@@ -37,7 +37,7 @@ public class Group {
         if (documentGroup.isPresent()) {
 
             model.addAttribute("group", documentGroup.get());
-            model.addAttribute("sub_groups", subGroupService.findAllByGroupId(group_id));
+//            model.addAttribute("sub_groups", subGroupService.findAllByGroupId(group_id));
             model.addAttribute("groups",documentGroupService.findAll());
             return "group";
         } else {

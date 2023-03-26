@@ -19,9 +19,7 @@
 <div th:replace="~{fragments/forms.html :: document}"></div>
 
 <style>
-   #sub_institution, #sub_institution_title  {
-       display: none;
-   }
+   #sub_institution, #sub_institution_title  {display: none;}
 </style>
 
 <div class="wrapper">
@@ -86,15 +84,10 @@
                                         <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${group})}"></div>
                                         <button class="btn btn-success mt-2" th:onclick="'enableFormAndDoPostRequest(\'Додати\',\'/administration/group/' + ${group.id} + '/sub-group/new\', \'Назва підгрупи\')'">Додати підгрупу</button>
                                     </div>
-
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

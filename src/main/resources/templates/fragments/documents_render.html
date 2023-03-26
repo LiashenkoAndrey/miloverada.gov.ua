@@ -5,15 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-<div class="accordion accordion-flush" id="accordionFlushExample" th:fragment="document_render(sub_groups)">
-    <div class="text-center" th:unless="${sub_groups.isEmpty()}" id="wrapper" style="padding: 50px;">
+<div class="accordion accordion-flush" id="accordionFlushExample" th:fragment="document_render(group)">
+    <div class="text-center" th:unless="${group.getSubGroups().isEmpty()}" id="wrapper" style="padding: 50px;">
         <div id="edit_icon_wrapper" style="padding: 10px">
             <span id="element" th:text="${group.title}" class="h2"></span>
             <img th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/n/group/' + ${group.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
         </div>
     </div>
 
-    <div class="accordion-item" th:each="sub_group : ${sub_groups}" th:inline="text">
+    <div class="accordion-item" th:each="sub_group : ${group.getSubGroups()}" th:inline="text">
 
         <h2 class="accordion-header" id="flush-headingOne">
             <button th:text="${sub_group.title}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${sub_group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${sub_group.id}">Title</button>
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <h3 class="text-center" th:if="${sub_groups.isEmpty()}">Документи ще не додані</h3>
+    <h3 class="text-center" th:if="${group.getSubGroups().isEmpty()}">Документи ще не додані</h3>
 </div>
 </body>
 </html>

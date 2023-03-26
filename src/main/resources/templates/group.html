@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <div th:replace="~{/fragments/documents_render.html :: document_render(${sub_groups})}"></div>
+                <div th:replace="~{/fragments/documents_render.html :: document_render(${group})}"></div>
                 <!-- delete group button -->
                 <button class="btn btn-danger mt-2 ms-2" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити групу\',\'Так, видалити\',\'/institution//group/' + ${group.id} + '/delete' + '\',\'/\')'" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
             </div>
