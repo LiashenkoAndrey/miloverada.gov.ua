@@ -1,6 +1,5 @@
 package gov.milove.controllers;
 
-import gov.milove.domain.News;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
 import org.springframework.http.HttpStatus;
@@ -14,13 +13,13 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/news")
-public class NewsController {
+public class News {
 
     private final NewsService newsService;
     private final DocumentGroupService documentGroupService;
 
 
-    public NewsController(NewsService newsService, DocumentGroupService documentGroupService) {
+    public News(NewsService newsService, DocumentGroupService documentGroupService) {
         this.newsService = newsService;
         this.documentGroupService = documentGroupService;
     }
@@ -48,7 +47,7 @@ public class NewsController {
 
     @GetMapping("/{news_id}")
     public String getFullNewsPage(@PathVariable("news_id") Long news_id, Model model) {
-        Optional<News> news = newsService.getNewsById(news_id);
+        Optional<gov.milove.domain.News> news = newsService.getNewsById(news_id);
         model.addAttribute("groups",documentGroupService.findAll());
 
         if (news.isEmpty()) {
@@ -62,7 +61,7 @@ public class NewsController {
 
     @GetMapping("/{news_id}/edit")
     public String editNews(@PathVariable("news_id") Long news_id, Model model) {
-        Optional<News> news = newsService.getNewsById(news_id);
+        Optional<gov.milove.domain.News> news = newsService.getNewsById(news_id);
 
         if (news.isEmpty()) {
             return "error/404";

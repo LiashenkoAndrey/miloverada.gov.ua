@@ -13,13 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/upload")
-public class UploadController {
+public class Upload {
     private final ImageService imageService;
 
 
     private final DocumentService documentService;
 
-    public UploadController(ImageService imageService, @Qualifier("administrationDocumentService") DocumentService documentService) {
+    public Upload(ImageService imageService, @Qualifier("administrationDocumentService") DocumentService documentService) {
         this.imageService = imageService;
         this.documentService = documentService;
     }

@@ -1,6 +1,5 @@
 // editor configuration
 tinymce.init({
-
     selector: '.tinymce-body',
 
     plugins: [
@@ -15,6 +14,10 @@ tinymce.init({
         editor.ui.registry.addButton('addimg', {
             icon: 'browse',
             onAction: (_) => document.getElementById('uploadImage').click()
+        });
+
+        editor.on('init', () => {
+            editor.setContent(fillContent());
         });
     }
 });
@@ -52,4 +55,8 @@ function injectTextAndSendForm() {
     let content = tinymce.activeEditor.getContent();
     document.querySelector("#main_text").innerHTML = content;
     document.querySelector("#submit-form").click();
+}
+
+function update() {
+
 }

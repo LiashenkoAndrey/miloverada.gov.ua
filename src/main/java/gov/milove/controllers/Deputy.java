@@ -1,8 +1,7 @@
 package gov.milove.controllers;
 
-import gov.milove.domain.ContactEmployee;
-import gov.milove.exceptions.ContactEmployeeException;
-import gov.milove.services.ContactEmployeeService;
+import gov.milove.exceptions.DeputyServiceException;
+import gov.milove.services.DeputyService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,29 +12,29 @@ import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
-@RequestMapping("/контакти")
-public class ContactEmployeeController {
+@RequestMapping("/депутати по округах")
+public class Deputy {
 
-    private final ContactEmployeeService service;
+    private final DeputyService service;
 
-    public ContactEmployeeController(ContactEmployeeService service) {
+    public Deputy(DeputyService service) {
         this.service = service;
     }
 
     @GetMapping
     public String showContacts(Model model) {
-        model.addAttribute("employee", new ContactEmployee());
+        model.addAttribute("employee", new gov.milove.domain.Deputy());
         model.addAttribute("employee_list", service.findAll());
-        return "contacts";
+        return "deputies_by_districts";
     }
 
     @PostMapping("/employee/new")
-    public ResponseEntity<String> create(@ModelAttribute("employee") ContactEmployee employee ){
+    public ResponseEntity<String> create(@ModelAttribute("employee") gov.milove.domain.Deputy employee ){
 
         try {
             service.save(employee);
             return ok("Працівник успішно доданий");
-        } catch (Exception ex) {
+        } catch (DeputyServiceException ex) {
             return error("Виникли проблеми з додаванням");
         }
     }
@@ -43,16 +42,16 @@ public class ContactEmployeeController {
     @PostMapping("/employee/{employee_id}/update")
     public ResponseEntity<String> update (
             @PathVariable("employee_id") Long id,
-            @ModelAttribute("employee") ContactEmployee updatedEmployee){
+            @ModelAttribute("employee") gov.milove.domain.Deputy updatedEmployee){
 
         try {
-            ContactEmployee oldEmployee = service.findById(id).
+            gov.milove.domain.Deputy oldDeputy = service.findById(id).
                     orElseThrow(EntityNotFoundException::new);
-            ContactEmployee.updateEmployee(updatedEmployee, oldEmployee);
+            gov.milove.domain.Deputy.updateEmployee(updatedEmployee, oldDeputy);
 
-            service.save(oldEmployee);
+            service.save(oldDeputy);
             return ok("Працівник успішно оновлений");
-        } catch (ContactEmployeeException ex) {
+        } catch (DeputyServiceException ex) {
             ex.printStackTrace();
             return error("Виникли проблеми з оновленням");
         }
@@ -63,7 +62,7 @@ public class ContactEmployeeController {
         try {
             service.deleteById(employee_id);
             return ok("Працівник успішно видалений");
-        } catch (ContactEmployeeException ex) {
+        } catch (DeputyServiceException ex) {
             return error("Виникли проблеми з видаленням");
         }
     }

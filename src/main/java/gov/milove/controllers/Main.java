@@ -14,11 +14,11 @@ import java.util.Iterator;
 import java.util.List;
 
 @Controller
-public class MainController {
+public class Main {
 
     private final DocumentGroupService documentGroupService;
     private final NewsService newsService;
-    public MainController(DocumentGroupService documentGroupService, NewsService newsService) {
+    public Main(DocumentGroupService documentGroupService, NewsService newsService) {
         this.documentGroupService = documentGroupService;
         this.newsService = newsService;
     }
@@ -48,6 +48,7 @@ public class MainController {
         model.addAttribute("currentPage", page);
         return "main";
     }
+
 
 
 
