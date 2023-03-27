@@ -7,6 +7,7 @@
 }
 html,
 body {
+  overflow-x: hidden;
 	height: 110%;
   font-family: 'Montserrat', sans-serif;
 }
@@ -25,12 +26,15 @@ body {
 }
 .content {
 	flex: 1 0 auto;
+    background-color: white;
+    padding: 0;
 }
 .footer {
 	flex: 0 0 auto;
 }
 
 #head {
+  padding: 0;
   color: white;
   height: 200px;
   border-radius: 3px;
@@ -84,23 +88,35 @@ body {
     
   }
 
-#news-wrapper {
-  margin: 0 10px 0 30px;
-}
 
   #nav a:hover {
     color: #634db2;
   }
 
+#main-title {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-size: 38px;
+}
+
+@media screen and (max-width: 400px) {
+  .carousel-images {
+    height: 300px;
+    }
+  #main-title {
+    position: relative;
+    bottom: 25px;
+    font-size: 35px;
+  }
+  }
 
   @media screen and (max-width: 900px) {
     #icon {
       display: none;
     }
 
-    #news-wrapper {
-      margin: 0 10px 0 20px;
-    }
+
 
     #head {
       height: 270px;

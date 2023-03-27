@@ -6,10 +6,9 @@
 </head>
 <body>
 <div class="container mt-5" id="head" th:fragment="header">
-    <h1 class="text-center" style="font-size: 38px;">Милівська сільська територіальна громада</h1>
+    <a th:href="@{/}" class="text-center" id="main-title">Милівська сільська територіальна громада</a>
     <div class="p-1 text-center" id="head_nav" >
 
-        <a href="/" class="dropdown dropbtn" >Головна</a>
         <a href="/новини" class="dropdown dropbtn" >Новини</a>
 
         <div class="dropdown">
@@ -21,6 +20,9 @@
             </div>
         </div>
 
+        <a href="/контакти" class="dropdown dropbtn" >Контакти</a>
+
+        <a href="/about" class="dropdown dropbtn" >Про громаду</a>
         <div class="dropdown">
             <button class="dropbtn">Установи</button>
             <div class="dropdown-content">
@@ -32,9 +34,6 @@
                 <a href="/institution/освіта">Освіта</a>
             </div>
         </div>
-
-        <a href="/about" class="dropdown dropbtn" >Про громаду</a>
-        <a href="/контакти" class="dropdown dropbtn" >Контакти</a>
     </div>
 </div>
 

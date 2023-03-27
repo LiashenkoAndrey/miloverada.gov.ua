@@ -7,7 +7,7 @@
 <body>
 
 <div th:fragment="carousel-item (url, title, text)">
-  <img th:src="${url}"  class="d-block w-100"  alt="...">
+  <img th:src="${url}"  class="d-block w-100 carousel-images"  alt="...">
   <div class="carousel-caption d-none d-md-block">
     <h5 th:text="${title}"></h5>
     <p th:text="${text}"></p>

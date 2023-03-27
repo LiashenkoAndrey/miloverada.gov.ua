@@ -32,7 +32,7 @@
                 <button class="btn btn-success mb-3 ms-3" th:onclick="'enableFormAndInjectAction(\'/administration/group/null/employee/new\', \'Додати\')'">Додати працівника</button>
                 <div>
                     <div class="row ms-4 me-4 mb-2 p-2" style="background-color: white; border-radius: 3px;" th:each="main_employee : ${main_employees}">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 text-center">
                             <img th:src="'/upload/image/' + ${main_employee.image_id}" height="130" width="130"  style="display: inline-block;" alt="...">
                         </div>
 
@@ -49,7 +49,7 @@
 
                 <button class="btn btn-success mb-2 ms-3" onclick="enableFormAndDoPostRequest('Додати', '/administration/group/new', 'Назва групи')">Додати групу</button>
 
-                <div class="accordion accordion-flush m-4" id="accordionFlushExample">
+                <div class="accordion accordion-flush m-2" id="accordionFlushExample">
 
 
                     <div class="accordion-item" th:each="group : ${groups}">

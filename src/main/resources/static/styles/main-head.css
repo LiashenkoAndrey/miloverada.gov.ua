@@ -1,5 +1,6 @@
 /* Dropdown Button */
 .dropbtn {
+    border-radius: 3px;
     background-color: #636a94;
     color: white;
     padding: 16px;
@@ -41,8 +42,7 @@
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 #head_nav {
-    position: relative;
-    bottom: 70px;
+
 }
 
 #head_nav a {
@@ -57,7 +57,5 @@
       margin: 3px;
     }
 
-    #head_nav {
-        bottom: 0px;
-    }
+
   }

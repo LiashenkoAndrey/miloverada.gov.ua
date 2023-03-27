@@ -9,7 +9,7 @@
 
 <ul class="p-0 position-relative" style="list-style: none" th:fragment="printDocuments(group)">
   <li class="li-doc links" th:each="document : ${group.document_list}">
-    <a th:href="@{'/administration/group/' + ${group.id} + '/document/' + ${document.id}}" th:text="${document.title}">Title</a>
+    <a th:href="@{'/administration/group/' + ${group.id} + '/document/' + ${document.id}}" style="font-size: 20px" th:text="${document.title}">Title</a>
     <a th:href="@{'/upload/document/' + ${document.document_filename}}">
       <i class="bi bi-download download h4 ms-2"></i>
     </a>
