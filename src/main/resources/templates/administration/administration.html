@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
 <link rel="stylesheet" th:href="@{/styles/notifications.css}">
 <link rel="stylesheet" th:href="@{/styles/document.css}">
@@ -29,7 +29,7 @@
         <div>
             <div >
                 <h2 class="text-center p-3">Керівництво</h2>
-                <button class="btn btn-success mb-3 ms-3" th:onclick="'enableFormAndInjectAction(\'/administration/group/null/employee/new\', \'Додати\')'">Додати працівника</button>
+                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-3 ms-3" th:onclick="'enableFormAndInjectAction(\'/administration/group/null/employee/new\', \'Додати\')'">Додати працівника</button>
                 <div>
                     <div class="row ms-4 me-4 mb-2 p-2" style="background-color: white; border-radius: 3px;" th:each="main_employee : ${main_employees}">
                         <div class="col-sm-2 text-center">
@@ -40,14 +40,14 @@
                             <h3 th:text="${main_employee.position}"></h3>
                             <p class="h4" th:text="${main_employee.first_name} + ' ' + ${main_employee.last_name}">Марія В. В</p>
                         </div>
-                        <div class="p-1 mx-1" style="width: 110px">
+                        <div class="p-1 mx-1"  style="width: 110px" sec:authorize="hasAuthority('ADMIN')">
                             <button class="btn btn-info m-1" style="width: 100px" th:onclick="'enableFormAndInjectAction(\'/administration/employee/' + ${main_employee.id} + '/update\', \'Оновити\')'">Оновити</button>
                             <button class="btn btn-danger m-1" style="width: 100px"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити працівника\',\'Так, видалити\',\'/administration/employee/' + ${main_employee.id} + '/delete\',\'null\')'">Видалити</button>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn-success mb-2 ms-3" onclick="enableFormAndDoPostRequest('Додати', '/administration/group/new', 'Назва групи')">Додати групу</button>
+                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-2 ms-3" onclick="enableFormAndDoPostRequest('Додати', '/administration/group/new', 'Назва групи')">Додати групу</button>
 
                 <div class="accordion accordion-flush m-2" id="accordionFlushExample">
 
@@ -80,9 +80,9 @@
                                         </div>
                                     </div>
 
-                                    <div>
+                                    <div sec:authorize="hasAuthority('ADMIN')">
                                         <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${group})}"></div>
-                                        <button class="btn btn-success mt-2" th:onclick="'enableFormAndDoPostRequest(\'Додати\',\'/administration/group/' + ${group.id} + '/sub-group/new\', \'Назва підгрупи\')'">Додати підгрупу</button>
+                                        <button  class="btn btn-success mt-2" th:onclick="'enableFormAndDoPostRequest(\'Додати\',\'/administration/group/' + ${group.id} + '/sub-group/new\', \'Назва підгрупи\')'">Додати підгрупу</button>
                                     </div>
                                 </div>
                             </div>

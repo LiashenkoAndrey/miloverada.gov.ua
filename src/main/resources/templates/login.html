@@ -9,16 +9,17 @@
 <body >
 <div id="login-form-wrap">
   <h2>Вхід для адміністратора</h2>
+  <h3 class="text-danger p-2" th:if="errorMessage" th:text="${errorMessage}"></h3>
   <form id="login-form" th:method="post" th:action="@{/login}">
     <p>
-    <input type="text" id="username" name="login" placeholder="Логін" required><i class="validation"><span></span><span></span></i>
+    <input type="text"  name="username" placeholder="Логін" required><i class="validation"><span></span><span></span></i>
     </p>
     <p>
-    <input type="email" id="email" name="password" placeholder="Пароль" required><i class="validation"><span></span><span></span></i>
+    <input type="password" name="password" placeholder="Пароль" required><i class="validation"><span></span><span></span></i>
 
     </p>
     <p>
-    <input type="submit" id="login" value="Вхід">
+    <input type="submit"  value="Вхід">
     </p>
   </form>
   <div id="create-account-wrap">

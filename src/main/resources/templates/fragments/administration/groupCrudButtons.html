@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-<div th:fragment="groupCrudButtons(group)">
+<div th:fragment="groupCrudButtons(group)" sec:authorize="hasAuthority('ADMIN')">
   <button class="btn btn-success mt-2" th:onclick="'enableFormAndSaveDocument(\'Назва документу\',\'Додати\',\'/administration/group/' + ${group.id} + '/document/new\', \'null\')'" >Додати файл</button>
   <button class="btn btn-success mt-2" th:onclick="'enableFormAndInjectAction(\'/administration/group/' + ${group.id} + '/employee/new\', \'Додати\')'">Додати працівника</button>
   <button class="btn btn-info mt-2" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/administration/group/' + ${group.id} + '/update\', \'Нова назва групи\')'">Змінити назву</button>

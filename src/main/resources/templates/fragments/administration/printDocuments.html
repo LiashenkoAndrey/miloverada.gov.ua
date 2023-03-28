@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,7 +13,7 @@
     <a th:href="@{'/upload/document/' + ${document.document_filename}}">
       <i class="bi bi-download download h4 ms-2"></i>
     </a>
-    <div style="display: inline-block; position: absolute; right: 0">
+    <div sec:authorize="hasAuthority('ADMIN')" style="display: inline-block; position: absolute; right: 0">
       <button class="btn btn-info p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndSaveDocument(\'Назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
       <button class=" btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
     </div>

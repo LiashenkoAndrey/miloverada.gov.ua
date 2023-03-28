@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -24,8 +24,8 @@
             <th th:text="${employee.last_name}"></th>
             <th th:text="${employee.phone_number}"></th>
             <th th:text="${employee.email}"></th>
-            <th><button class="btn btn-danger me-2"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/administration/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
-            <th><button class="btn btn-info " th:onclick="'enableFormAndInjectAction(\'/administration/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
+            <th sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-danger me-2"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/administration/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
+            <th sec:authorize="hasAuthority('ADMIN')"> <button class="btn btn-info " th:onclick="'enableFormAndInjectAction(\'/administration/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
         </tr>
 
         </tbody>

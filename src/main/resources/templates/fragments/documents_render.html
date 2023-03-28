@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div class="accordion accordion-flush" id="accordionFlushExample" th:fragment="document_render(group)">
-    <div class="text-center" th:unless="${group.getSubGroups().isEmpty()}" id="wrapper" style="padding: 50px;">
-        <div id="edit_icon_wrapper" style="padding: 10px">
+<div class="accordion accordion-flush m-3" id="accordionFlushExample" th:fragment="document_render(group)">
+    <div class="text-center p-4" th:unless="${group.getSubGroups().isEmpty()}" id="wrapper">
+        <div id="edit_icon_wrapper"  style="padding: 10px">
             <span id="element" th:text="${group.title}" class="h2"></span>
-            <img th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/n/group/' + ${group.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
+            <img th:src="@{/img/pencil.svg}" sec:authorize="hasAuthority('ADMIN')" id="edit_icon" width="22" height="22" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/n/group/' + ${group.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
         </div>
     </div>
 
-    <div class="accordion-item" th:each="sub_group : ${group.getSubGroups()}" th:inline="text">
+    <div class="accordion-item"  th:each="sub_group : ${group.getSubGroups()}" th:inline="text">
 
         <h2 class="accordion-header" id="flush-headingOne">
-            <button th:text="${sub_group.title}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${sub_group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${sub_group.id}">Title</button>
+            <button th:text="${sub_group.title}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${sub_group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${sub_group.id}" style="font-size: 22px">Title</button>
         </h2>
         <div th:id="'flush-collapse' + ${sub_group.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
@@ -27,13 +27,16 @@
                         <a th:href="@{'/upload/document/' + ${document.document_filename}}">
                             <i class="bi bi-download download h4 ms-2"></i>
                         </a>
-                        <button class="btn btn-info p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndSaveDocument(\'Нова назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
-                        <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
+
+                        <div sec:authorize="hasAuthority('ADMIN')"  >
+                            <button class="btn btn-info p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndSaveDocument(\'Нова назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
+                            <button class="delete-document btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
+                        </div>
                     </li>
                     <h3 th:if="${sub_group.documents.isEmpty()}">Документи ще не додані</h3>
                 </ol>
 
-                <div class="text-end">
+                <div class="text-end" sec:authorize="hasAuthority('ADMIN')"  >
                     <!-- add document button-->
                     <button class="btn btn-success mt-5" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableFormAndSaveDocument(\'Назва документу\',\'Додати\',\'/institution/n/group/' + ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/new\', \'null\')'" >Додати документ</button>
                     <!-- delete subgroup button-->

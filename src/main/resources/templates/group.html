@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
     <link rel="stylesheet" th:href="@{/styles/group.css}">
     <link rel="stylesheet" th:href="@{/styles/document.css}">
@@ -25,16 +25,14 @@
                     <h1 th:text="${group.title}">
                       Звіт сільського голови
                     </h1>
-                    <div class="text-end">
-                        <!-- add subgroup button-->
+                    <div class="text-end" sec:authorize="hasAuthority('ADMIN')">
                         <button class="btn btn-success mb-2 me-2" th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
 
                     </div>
                 </div>
 
                 <div th:replace="~{fragments/documents_render.html :: document_render(${group})}"></div>
-                <!-- delete group button -->
-                <button class="btn btn-danger mt-2 ms-2" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити групу\',\'Так, видалити\',\'/institution//group/' + ${group.id} + '/delete' + '\',\'/\')'" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
+                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger mt-2 ms-2" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити групу\',\'Так, видалити\',\'/institution//group/' + ${group.id} + '/delete' + '\',\'/\')'" style="color: azure; width: 170px; height: 40px; ">Видалити групу</button>
             </div>
         </div>
     </div>

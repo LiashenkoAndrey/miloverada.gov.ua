@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
 
@@ -14,18 +14,18 @@
                 <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
                 <div class="col" >
-                    <button class="btn btn-success m-1" onclick="enableForm('form')" >Змінити картинку</button>
+                    <button class="btn btn-success m-1" onclick="enableForm('form')" sec:authorize="hasAuthority('ADMIN')" >Змінити картинку</button>
                     <div th:replace="~{fragments/main/icons-bar.html :: icons-bar}"></div>
                 </div>
 
                 <div th:replace="~{fragments/main/carousel.html :: main-carousel}"></div>
 
                 <!-- news-wrapper -->
-                <h2 class="text-center mt-3" >Новини</h2>
+                <h2 class="text-center mt-3"  id="news-point">Новини</h2>
                 <div id="news-wrapper" >
                     <div class="mt-3 mb-3">
 
-                        <a href="/news/new" class="btn btn-success">Додати новину</a>
+                        <a href="/news/new" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
                     </div>
 
                     <div class="row"  style="margin-left: 15px" th:each="news_slice : ${divided_pages}" >

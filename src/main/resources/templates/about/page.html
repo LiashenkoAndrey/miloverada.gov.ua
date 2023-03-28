@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
 <link rel="stylesheet" th:href="@{/styles/notifications.css}">
 <link rel="stylesheet" th:href="@{/styles/news.css}">
@@ -13,7 +13,7 @@
 
     <div class="content container" style="background-color: rgba(219, 217, 217, 0.911); padding: 0;">
         <div class="container" style="font-size: 20px" >
-            <a th:href="@{/about/update}" class="btn btn-success" >Змінити</a>
+            <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/about/update}" class="btn btn-success" >Змінити</a>
             <!--                    <h5 th:text="${news.date_of_creation.returnDate()}" class="mt-2"></h5>-->
             <div th:utext="${about.main_text}" class="mt-5"></div>
         </div>

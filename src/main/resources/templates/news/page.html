@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
   <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
   <link rel="stylesheet" th:href="@{/styles/notifications.css}">
   <link rel="stylesheet" th:href="@{/styles/news.css}">
   <title>Милівська ОТГ</title>
 <body>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<!--notifications -->
 <div th:replace="~{fragments/notification.html :: notifications}"></div>
-
-<!--confirm-form-->
 <div th:replace="~{fragments/forms.html :: confirm-form}"></div>
 
 <div class="wrapper">
@@ -24,12 +20,12 @@
 
       <div class="col" style="max-width: 700px;">
 
-        <div class="mt-3">
+        <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
           <a th:href="@{/news/{news_id}/edit(news_id=${news.id})}" class="btn btn-success" >Змінити</a>
-          <button class="btn btn-danger" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
+          <button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
         </div>
 
-        <div class="container" >
+        <div class="container mt-3" >
           <h5 th:text="${news.date_of_creation.returnDate()}" class="mt-2"></h5>
           <img th:src="@{'/upload/image/' + ${news.image_id}}" width="490" height="280" alt="Зоображення новини" th:title="${news.date_of_creation.returnDate()}">
           <div th:text="${news.description}" class="m-2"></div>

@@ -3,7 +3,9 @@ package gov.milove.controllers;
 import gov.milove.domain.News;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ public class Main {
         this.newsService = newsService;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/")
     public String main(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
         page = page-1;

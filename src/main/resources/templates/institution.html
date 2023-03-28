@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
     <link rel="stylesheet" th:href="@{/styles/notifications.css}">
     <link rel="stylesheet" th:href="@{/styles/group.css}">
@@ -26,9 +26,9 @@
         <div class="row ">
             <div class="col">
                 <div>
-                    <div id="edit_icon_wrapper" class="text-center" style="padding: 10px">
+                    <div   class="text-center" style="padding: 10px">
                         <span id="element" th:text="${institution.title}" class="h2"></span>
-                        <img th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22"  th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/' + ${institution.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
+<!--                        <img sec:authorize="hasAuthority('ADMIN')"  th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22"  th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/' + ${institution.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">-->
                     </div>
                     <div class="p-3">
                         <pre>
@@ -51,17 +51,17 @@
                                         <th th:text="${employee.last_name}"></th>
                                         <th th:text="${employee.phone_number}"></th>
                                         <th th:text="${employee.email}"></th>
-                                        <th><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/установа/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
-                                        <th><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/установа/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
+                                        <th sec:authorize="hasAuthority('ADMIN')" ><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/установа/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
+                                        <th sec:authorize="hasAuthority('ADMIN')" ><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/установа/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
                                     </tr>
                                 </tbody>
                             </table>
                         </pre>
-                        <button class="btn btn-success mb-3" th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
+                        <button class="btn btn-success mb-3" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
                     </div>
                     <div class="text-end">
                         <!-- add subgroup button-->
-                        <button class="btn btn-success mb-2 me-2" th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
+                        <button class="btn btn-success mb-2 me-2" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
                     </div>
                     <div th:replace="~{fragments/documents_render.html :: document_render(${institution.getDocument_group()})}"></div>
                 </div>
