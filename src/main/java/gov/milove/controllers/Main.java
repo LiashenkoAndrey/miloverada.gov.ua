@@ -1,5 +1,6 @@
 package gov.milove.controllers;
 
+import gov.milove.controllers.util.ControllerUtil;
 import gov.milove.domain.News;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
@@ -27,32 +28,14 @@ public class Main {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/")
-    public String main(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
-        page = page-1;
+    public String main(Model model) {
         model.addAttribute("groups",documentGroupService.findAll());
 
-        Page<News> pages = newsService.getPagesList(page);
-
-        List<List<News>> dividedPages = new ArrayList<>();
-        Iterator<News> iterator = pages.iterator();
-
-        for (int i = 0; i < 3; i++) {
-            List<News> newsList = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                if (iterator.hasNext()) {
-                    newsList.add(iterator.next());
-                }
-            }
-            dividedPages.add(newsList);
-        }
-        
-        model.addAttribute("divided_pages", dividedPages);
-        model.addAttribute("pagesQuantity", pages.getTotalPages());
-        model.addAttribute("currentPage", page);
+        // get last 9 news
+        Page<News> pages = newsService.getPagesList(0, 9);
+        model.addAttribute("divided_pages", ControllerUtil.packageNews(pages,9));
         return "main";
     }
-
-
 
 
 }

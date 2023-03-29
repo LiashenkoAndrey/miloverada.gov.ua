@@ -21,30 +21,28 @@
                 <div th:replace="~{fragments/main/carousel.html :: main-carousel}"></div>
 
                 <!-- news-wrapper -->
-                <h2 class="text-center mt-3"  id="news-point">Новини</h2>
+                <h2 class="text-center mt-3"  id="news-point">Останні новини</h2>
                 <div id="news-wrapper" >
                     <div class="mt-3 mb-3">
 
                         <a href="/news/new" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
                     </div>
 
-                    <div class="row"  style="margin-left: 15px" th:each="news_slice : ${divided_pages}" >
+                    <div class="row" th:each="news_slice : ${divided_pages}" >
                         <div class="col-md-4 mb-4" th:each="news : ${news_slice}" >
                             <div>
                                 <!-- time -->
                                 <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.date_of_creation.returnDate()}"></span></div>
-                                <img th:src="@{'/upload/image/' + ${news.image_id}}" width="290" height="180" th:title="${news.date_of_creation.returnDate()}">
+                                <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.date_of_creation.returnDate()}">
                             </div>
                             <!-- description-->
-                            <div style="width: 300px; font-size: 20px">
-                                <a th:href="@{'/news/' + ${news.id}}" class="link" th:text="${news.description}"></a>
+                            <div style="width: 300px;">
+                                <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}"></a>
                             </div>
                         </div>
                     </div>
-
-                    <div th:replace="~{fragments/main/pagination.html :: pagination}"></div>
-
                 </div>
+                <a th:href="@{/news/all}" style="display: block" class="text-center link h4">&#8594; Переглянути всі новини &#8592;</a>
             </div>
         </div>
 

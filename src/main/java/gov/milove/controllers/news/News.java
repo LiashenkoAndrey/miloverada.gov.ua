@@ -1,7 +1,9 @@
-package gov.milove.controllers;
+package gov.milove.controllers.news;
 
+import gov.milove.controllers.util.ControllerUtil;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,19 @@ public class News {
     @GetMapping("/new")
     public String newNewsForm() {
         return "news/new";
+    }
+
+    @GetMapping("/all")
+    public String newsAll(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+        page = page-1;
+        model.addAttribute("groups",documentGroupService.findAll());
+
+        Page<gov.milove.domain.News> pages = newsService.getPagesList(page, 18);
+
+        model.addAttribute("divided_pages", ControllerUtil.packageNews(pages, 18));
+        model.addAttribute("pagesQuantity", pages.getTotalPages());
+        model.addAttribute("currentPage", page);
+        return "news/all";
     }
 
     @PostMapping("/new")

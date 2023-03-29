@@ -23,9 +23,15 @@ public class NewsService {
         this.imageService = imageService;
     }
 
-
-    public Page<News> getPagesList(int page) {
-        return newsRepository.findAll(PageRequest.of(page,9));
+    /**
+     * Find news by page number and newsAmount
+     * if pagesAmount == 0 then pagesAmount == 9
+     * @param page number of page
+     * @param newsAmount amount of news in one page
+     * @return page of news
+     */
+    public Page<News> getPagesList(int page, int newsAmount) {
+        return newsRepository.findAll(PageRequest.of(page, newsAmount));
     }
 
     public void saveNews(String description, String main_text, MultipartFile image) {

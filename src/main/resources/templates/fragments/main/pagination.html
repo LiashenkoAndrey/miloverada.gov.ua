@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div th:fragment="pagination">
+<div th:fragment="pagination(path)">
   <div class="mt-5 mb-4 text-center" th:if="${currentPage > 5}">
     <a th:unless="${currentPage < pagesQuantity -5}"
        th:href="@{/news/all(page=${1})}"
@@ -27,7 +27,7 @@
   </div>
 
   <div class="mt-5 mb-4 text-center" th:unless="${currentPage > 5}" th:inline="text">
-    <a th:href="@{/(page=${i})}"
+    <a th:href="@{${path}(page=${i})}"
        th:text="${i}"
        th:each="i : ${#numbers.sequence(1,currentPage + 5)}"
        th:if="${i <= pagesQuantity}"

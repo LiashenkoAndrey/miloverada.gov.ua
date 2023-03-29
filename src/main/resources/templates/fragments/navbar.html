@@ -10,7 +10,7 @@
   <div class="sticky">
     <div th:each="group : ${groups}"  style="position: relative;">
       <img th:src="@{/img/arrow-left.png}" class="arrows" alt="arrow">
-      <a th:href="@{'/institution/n/group/' + ${group.id}}"  th:text="${group.title}" >Document</a>
+      <a th:href="@{'/institution/n/group/' + ${group.id}}" class="link"  th:text="${group.title}" >Document</a>
     </div>
   </div>
 </nav>
