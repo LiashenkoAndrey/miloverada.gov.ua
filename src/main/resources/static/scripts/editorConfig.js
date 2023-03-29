@@ -21,9 +21,7 @@ tinymce.init({
         });
     }
 });
-function showContent() {
-    console.log(tinymce.activeEditor.getContent())
-}
+
 
 // adding event listener for invisible form
 input = document.getElementById('uploadImage');
@@ -55,8 +53,4 @@ function injectTextAndSendForm() {
     let content = tinymce.activeEditor.getContent();
     document.querySelector("#main_text").innerHTML = content;
     document.querySelector("#submit-form").click();
-}
-
-function update() {
-
 }

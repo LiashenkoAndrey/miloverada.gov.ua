@@ -78,8 +78,15 @@ body {
   }
 
 
+.inst-title {
+    display: inline-block;
 
+    text-transform: lowercase
+}
 
+.inst-title::first-letter {
+  text-transform: uppercase
+}
 
 #main-title {
   display: block;

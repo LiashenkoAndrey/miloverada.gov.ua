@@ -6,12 +6,6 @@
 </head>
 <body>
 <div class="accordion accordion-flush m-3" id="accordionFlushExample" th:fragment="document_render(group)">
-    <div class="text-center p-4" th:unless="${group.getSubGroups().isEmpty()}" id="wrapper">
-        <div id="edit_icon_wrapper"  style="padding: 10px">
-            <span id="element" th:text="${group.title}" class="h2"></span>
-            <img th:src="@{/img/pencil.svg}" sec:authorize="hasAuthority('ADMIN')" id="edit_icon" width="22" height="22" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/n/group/' + ${group.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
-        </div>
-    </div>
 
     <div class="accordion-item"  th:each="sub_group : ${group.getSubGroups()}" th:inline="text">
 
