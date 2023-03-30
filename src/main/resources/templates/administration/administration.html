@@ -12,6 +12,8 @@
 <!--notifications -->
 <div th:replace="~{fragments/notification.html :: notifications}"></div>
 
+<div th:replace="~{fragments/google_analytics.html :: google_analytics}"></div>
+
 <!-- forms -->
 <div th:replace="~{fragments/forms.html :: formWithOneInput}"></div>
 <div th:replace="~{fragments/forms.html :: confirm-form}"></div>
@@ -27,7 +29,7 @@
 
     <div class="content container" >
         <div>
-            <div >
+            <div>
                 <h2 class="text-center p-3">Керівництво</h2>
                 <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-3 ms-3" th:onclick="'enableFormAndInjectAction(\'/administration/group/null/employee/new\', \'Додати\')'">Додати працівника</button>
                 <div>

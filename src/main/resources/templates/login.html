@@ -8,7 +8,8 @@
   <link rel="stylesheet" th:href="@{/styles/login.css}">
 
 </head>
-<body >
+<body>
+<div th:replace="~{fragments/google_analytics.html :: google_analytics}"></div>
 <div id="login-form-wrap">
   <h2>Вхід для адміністратора</h2>
   <h3 th:if="errorMessage" th:text="${errorMessage}"></h3>
