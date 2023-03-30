@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F52EX816KE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F52EX816KE');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" th:href="@{/img/tab_icon.png}">
   <meta charset="UTF-8">
@@ -9,7 +17,7 @@
 
 </head>
 <body>
-<div th:replace="~{fragments/google_analytics.html :: google_analytics}"></div>
+
 <div id="login-form-wrap">
   <h2>Вхід для адміністратора</h2>
   <h3 th:if="errorMessage" th:text="${errorMessage}"></h3>
