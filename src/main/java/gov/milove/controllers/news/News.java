@@ -47,8 +47,9 @@ public class News {
     @PostMapping("/new")
     public String newNews(@RequestParam("description") String description,
                           @RequestParam("main_text") String main_text,
-                          @RequestParam("image") MultipartFile file) {
-        newsService.saveNews(description, main_text, file);
+                          @RequestParam("image") MultipartFile file,
+                          @RequestParam("date") String date ){
+        newsService.saveNews(description, main_text, file, date);
 
         return "redirect:/";
     }

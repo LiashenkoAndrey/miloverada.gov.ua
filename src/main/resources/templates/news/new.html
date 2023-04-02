@@ -28,12 +28,31 @@
                     <div class="tinymce-body" id="input" style="height: 600px" ></div>
                 </div>
 
-                <button class="btn btn-success" onclick="injectTextAndSendForm()">Додати</button>
                 <input type="submit" id="submit-form" style="display: none" class="btn btn-success mt-2" value="Додати">
                 <textarea style="display: none" id="main_text" class="form-control"  name="main_text"></textarea>
+
+
+                <div class="input-group">
+                    <label class="input-group-text">Country</label>
+                    <select onchange="yesnoCheck(this);" class="form-select">
+                        <option value="">Поточна дата</option>
+                        <option value="custom">Вказати</option>
+                    </select>
+                </div>
+
+                <div id="ifYes" style="display: none;" class="m-3">
+                    <label for="date" class="form-label">Дата</label>
+                    <input type="date" class="form-control" id="date" name="date" required >
+                </div>
+
+                <button class="btn btn-success" onclick="injectTextAndSendForm()">Додати</button>
             </form>
         </div>
     </div>
+    <script>
+        function fillContent() {
+        }
+    </script>
     <div th:replace="~{fragments/footer.html :: footer}"></div>
 </div>
 

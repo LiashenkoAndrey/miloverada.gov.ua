@@ -22,8 +22,8 @@
         <div class="col-md-4 mb-4" th:each="news : ${news_slice}" >
           <div>
             <!-- time -->
-            <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.date_of_creation.returnDate()}"></span></div>
-            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.date_of_creation.returnDate()}">
+            <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.created.toLocalDate()}"></span></div>
+            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
           </div>
           <!-- description-->
           <div style="width: 300px;">

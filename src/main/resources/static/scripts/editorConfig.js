@@ -17,7 +17,9 @@ tinymce.init({
         });
 
         editor.on('init', () => {
-            editor.setContent(fillContent());
+            if (fillContent() != null) {
+                editor.setContent(fillContent());
+            }
         });
     }
 });
@@ -53,4 +55,12 @@ function injectTextAndSendForm() {
     let content = tinymce.activeEditor.getContent();
     document.querySelector("#main_text").innerHTML = content;
     document.querySelector("#submit-form").click();
+}
+
+function yesnoCheck(that) {
+    if (that.value == "custom") {
+        document.getElementById("ifYes").style.display = "block";
+    } else {
+        document.getElementById("ifYes").style.display = "none";
+    }
 }

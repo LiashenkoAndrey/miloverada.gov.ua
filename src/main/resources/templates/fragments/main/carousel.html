@@ -9,20 +9,7 @@
 <div th:fragment="carousel-item (url, title, text)">
   <img th:src="${url}"  class="d-block w-100 carousel-images"  alt="...">
   <div class="carousel-caption d-none d-md-block">
-    <h5 th:text="${title}" class="quote"></h5>
-      <style>
-          .quote {
-              text-shadow: 0 0 30px #000000,
-              0 0 29px #000000,
-              0 0 1.8px #000000,
-              0 0 30px #000000,
-              0 0 28px #171717,
-              0 0 3.6px #020101,
-              0 0 30px #000000,
-              0 0 29px #000000,
-              0 0 6px #000000;
-          }
-      </style>
+    <p th:text="${title}" class="quote h5"></p>
     <p th:text="${text}" class="quote"></p>
   </div>
 </div>

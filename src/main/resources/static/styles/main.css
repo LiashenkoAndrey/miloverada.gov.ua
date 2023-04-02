@@ -182,9 +182,8 @@ body {
   height: 90px;
 }
 
-.nav-img-wrapper div a p {
-  font-size: 16px;
-  font-palette: dark;
+.nav-img-wrapper div a h2 {
+  font-size: 17px;
   font-style: italic;
   font-weight: bolder;
 }
@@ -231,3 +230,15 @@ body {
   font-size: 22px;
 }
 
+
+.quote {
+  text-shadow: 0 0 30px #000000,
+  0 0 29px #000000,
+  0 0 1.8px #000000,
+  0 0 30px #000000,
+  0 0 28px #171717,
+  0 0 3.6px #020101,
+  0 0 30px #000000,
+  0 0 29px #000000,
+  0 0 6px #000000;
+}

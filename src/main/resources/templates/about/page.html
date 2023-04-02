@@ -8,11 +8,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="wrapper">
+    <div th:replace="~{fragments/header.html :: header}"></div>
 
     <div class="content container" >
         <div class="container" style="font-size: 20px" >
             <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/about/update}" class="btn btn-success" >Змінити</a>
-            <!--                    <h5 th:text="${news.date_of_creation.returnDate()}" class="mt-2"></h5>-->
             <div th:utext="${about.main_text}" class="mt-5"></div>
         </div>
     </div>

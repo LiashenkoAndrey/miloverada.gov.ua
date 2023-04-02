@@ -26,10 +26,17 @@
         </div>
 
         <div class="container mt-3" >
-          <h5 th:text="${news.date_of_creation.returnDate()}" class="mt-2"></h5>
-          <img th:src="@{'/upload/image/' + ${news.image_id}}" class="img-fluid"  width="490" height="280" alt="Зоображення новини" th:title="${news.date_of_creation.returnDate()}">
-          <div th:text="${news.description}" class="m-2"></div>
-          <div th:utext="${news.main_text}" class="mt-5"></div>
+          <h1 th:text="${news.description}" class="m-2"></h1>
+          <div>
+            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="img-fluid"  alt="Зоображення новини" th:title="${news.created.toLocalDate()}">
+          </div>
+          <div style="font-style: italic; font-weight: bold" class="mt-2">
+            <span >Опубліковано: <span th:text="${news.created.toLocalDate()}"></span></span>
+            <br>
+            <span style="font-size: 14px" th:if="${news.last_updated}">Оновлено: <span th:text="${news.last_updated.toLocalDate()}"></span></span>
+          </div>
+
+          <div th:utext="${news.main_text}" class="mt-5" style="font-size: 22px"></div>
         </div>
       </div>
     </div>

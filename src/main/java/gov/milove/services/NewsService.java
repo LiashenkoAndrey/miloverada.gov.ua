@@ -7,9 +7,14 @@ import gov.milove.repositories.NewsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -25,24 +30,23 @@ public class NewsService {
 
     /**
      * Find news by page number and newsAmount
-     * if pagesAmount == 0 then pagesAmount == 9
+     * if pagesAmount == 0 then pagesAmount = 9
      * @param page number of page
      * @param newsAmount amount of news in one page
      * @return page of news
      */
     public Page<News> getPagesList(int page, int newsAmount) {
-        return newsRepository.findAll(PageRequest.of(page, newsAmount));
+        return newsRepository.findAll(PageRequest.of(page, newsAmount).withSort(Sort.Direction.DESC, "created"));
     }
 
-    public void saveNews(String description, String main_text, MultipartFile image) {
+    public void saveNews(String description, String main_text, MultipartFile image, String date) {
         String savedImageId = imageService.saveImage(image);
-        News news = new News();
-        news.setImage_id(savedImageId);
-        news.setMain_text(main_text);
-        news.setDescription(description);
-        news.setDate_of_creation(new CustomDate());
-        newsRepository.save(news);
-        System.out.println("News saved!!!");
+        newsRepository.save(News.builder()
+                        .description(description)
+                        .main_text(main_text)
+                        .image_id(savedImageId)
+                        .created(date == null ? LocalDateTime.now() : LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")), LocalTime.now()))
+                .build());
     }
 
 
@@ -72,6 +76,7 @@ public class NewsService {
 
         if (description != null) news.setDescription(description);
         if (main_text != null) news.setMain_text(main_text);
+        news.setLast_updated(LocalDateTime.now());
         newsRepository.save(news);
     }
 }

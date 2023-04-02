@@ -1,15 +1,20 @@
 package gov.milove.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class News {
 
-    public News(Long id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +26,8 @@ public class News {
 
     private String image_id;
 
-    @Embedded
-    private CustomDate date_of_creation;
+    private LocalDateTime created;
 
-    public News() {
+    private LocalDateTime last_updated;
 
-    }
 }
