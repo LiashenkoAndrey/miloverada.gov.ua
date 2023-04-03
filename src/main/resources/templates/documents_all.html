@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
+
+<title>Милівська ОТГ</title>
+<body>
+
+
+<div class="wrapper">
+    <div th:replace="~{fragments/header.html :: header}"></div>
+
+    <div class="content container" >
+            <div th:each="group : ${groups}"  style="position: relative;">
+                <img th:src="@{/img/arrow-left.png}" class="arrows" alt="arrow">
+                <h3>
+                    <a th:href="@{'/institution/n/group/' + ${group.id}}" class="link h5"  th:text="${group.title}" >Document</a>
+                </h3>
+            </div>
+    </div>
+
+    <div th:replace="~{fragments/footer.html :: footer}"></div>
+</div>
+
+<script th:replace="~{fragments/bootstrap.html :: second}"></script>
+</body>
+</html>

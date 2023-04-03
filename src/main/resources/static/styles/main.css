@@ -164,6 +164,7 @@ body {
 }
 
 .nav-img-wrapper div {
+  margin-bottom: 48px;
   text-align: center;
   width: 80%;
 }

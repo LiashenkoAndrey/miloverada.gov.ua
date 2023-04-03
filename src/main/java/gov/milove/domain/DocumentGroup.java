@@ -29,7 +29,7 @@ public class DocumentGroup {
     @OneToMany(mappedBy = "document_group", cascade = CascadeType.ALL)
     private List<SubGroup> subGroups;
 
-
+    private boolean is_general;
     public DocumentGroup() {
 
     }

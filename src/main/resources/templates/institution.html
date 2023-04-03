@@ -6,7 +6,6 @@
     <link rel="stylesheet" th:href="@{/styles/document.css}">
     <title>Милівська ОТГ</title>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
     #file-label, #file {display: none;}
@@ -28,7 +27,6 @@
                 <div>
                     <div   class="text-center" style="padding: 10px">
                         <span th:text="${institution.title}" class="h2 inst-title"></span>
-<!--                        <img sec:authorize="hasAuthority('ADMIN')"  th:src="@{/img/pencil.svg}" id="edit_icon" width="22" height="22"  th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/' + ${institution.id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">-->
                     </div>
                     <div class="p-3">
                         <pre>

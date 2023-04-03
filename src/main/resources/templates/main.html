@@ -11,7 +11,7 @@
             <div class="row">
                 <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
-                <div class="col" >
+                <div class="col mt-5" >
                     <button class="btn btn-success m-1" onclick="enableForm('form')" sec:authorize="hasAuthority('ADMIN')" >Змінити картинку</button>
                     <div th:replace="~{fragments/main/icons-bar.html :: icons-bar}"></div>
                 </div>
