@@ -11,34 +11,32 @@
             <div class="row">
                 <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
+                <div class="col mt-5" >
+                    <!-- news-wrapper -->
+                    <h2 class="text-center mt-3"  id="news-point">Останні новини</h2>
+                    <div id="news-wrapper" >
+                        <div class="mt-3 mb-3">
 
-                <!-- news-wrapper -->
-                <h2 class="text-center mt-3"  id="news-point">Останні новини</h2>
-                <div id="news-wrapper" >
-                    <div class="mt-3 mb-3">
+                            <a href="/news/new" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
+                        </div>
 
-                        <a href="/news/new" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
-                    </div>
-
-                    <div class="row" th:each="news_slice : ${divided_pages}" >
-                        <div class="col-md-4 mb-4" th:each="news : ${news_slice}" >
-                            <div>
-                                <!-- time -->
-                                <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.created.toLocalDate()}"></span></div>
-                                <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
-                            </div>
-                            <!-- description-->
-                            <div style="width: 300px;">
-                                <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}"></a>
+                        <div class="row" th:each="news_slice : ${divided_pages}" >
+                            <div class="col-md-4 mb-4" th:each="news : ${news_slice}" >
+                                <div>
+                                    <!-- time -->
+                                    <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.created.toLocalDate()}"></span></div>
+                                    <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
+                                </div>
+                                <!-- description-->
+                                <div style="width: 300px;">
+                                    <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <a th:href="@{/news/all}" style="display: block" class="text-center link h4">&#8594; Переглянути всі новини &#8592;</a>
+                    <a th:href="@{/news/all}" style="display: block" class="text-center link h4">&#8594; Переглянути всі новини &#8592;</a>
 
-<!--                <div class="col mt-5" >-->
-<!--                    <div th:replace="~{fragments/main/icons-bar.html :: icons-bar}"></div>-->
-<!--                </div>-->
+                </div>
 
                 <div th:replace="~{fragments/main/carousel.html :: main-carousel}"></div>
 
