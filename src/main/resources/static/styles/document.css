@@ -4,6 +4,7 @@
 }
 
 .links {
+    font-size: 28px;
     margin: 4px;
     padding: 2px;
     background-color: rgba(216, 215, 215, 0.355);
@@ -16,4 +17,13 @@
 
 #links a:hover {
     background-color: rgba(156, 155, 155, 0.911);
+}
+
+.download-icon {
+    margin-left: 20px;
+}
+
+.download-icon:hover {
+    border-radius: 3px;
+    background-color: #adb0b2;
 }

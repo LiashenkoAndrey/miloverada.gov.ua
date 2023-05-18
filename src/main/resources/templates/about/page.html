@@ -10,7 +10,7 @@
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
 
-    <div class="content container" >
+    <div class="content container" style="font-family: sans-serif;" >
         <div class="container" style="font-size: 20px" >
             <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/about/update}" class="btn btn-success" >Змінити</a>
             <div th:utext="${about.main_text}" class="mt-5"></div>

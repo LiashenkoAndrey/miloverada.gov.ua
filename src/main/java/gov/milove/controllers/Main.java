@@ -22,11 +22,9 @@ public class Main {
     public String main(Model model) {
         model.addAttribute("groups", docGroupRepo.findGeneralGroupsDto());
 
-        // get last 9 news
         Page<News> pages = newsService.getPagesList(0, 9);
-        model.addAttribute("divided_pages", ControllerUtil.packageNews(pages,9));
+        model.addAttribute("newsList", pages.toList());
         return "main";
     }
-
 
 }

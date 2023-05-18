@@ -6,16 +6,16 @@
 </head>
 <body>
 
-<nav class="h5 col-sm-2 text-dark ms-4 mt-2 " id="nav" th:fragment="navbar">
+<div th:fragment="navbar">
   <div class="sticky">
-    <div th:each="group : ${groups}"  style="position: relative;">
-      <img th:src="@{/img/arrow-left.png}" class="arrows" alt="arrow">
-        <h3>
-            <a th:href="@{'/institution/n/group/' + ${group.id}}" class="link h5"  th:text="${group.title}" >Document</a>
-        </h3>
+    <div th:each="group : ${groups}">
+        <a th:href="@{'/institution/n/group/' + ${group.id}}" style="text-decoration: none" >
+            <img th:src="@{/img/arrow-left.png}" class="arrows" style="display: inline-block" alt="arrow">
+            <span class="link h5" style="display: inline; position: relative; top: 2px"  th:text="${group.title}" >Document</span>
+        </a>
     </div>
   </div>
-</nav>
+</div>
 
 </body>
 </html>

@@ -36,9 +36,9 @@ public class News {
         page = page-1;
         model.addAttribute("groups",documentGroupService.findAll());
 
-        Page<gov.milove.domain.News> pages = newsService.getPagesList(page, 18);
+        Page<gov.milove.domain.News> pages = newsService.getPagesList(page, 20);
 
-        model.addAttribute("divided_pages", ControllerUtil.packageNews(pages, 18));
+        model.addAttribute("newsList", pages.toList());
         model.addAttribute("pagesQuantity", pages.getTotalPages());
         model.addAttribute("currentPage", page);
         return "news/all";

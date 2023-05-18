@@ -26,8 +26,8 @@
                 <iframe style="display: block; width: 100%; height: 800px;"  th:src="'https://docs.google.com/gview?embedded=true&url=http://miloverada.gov.ua/upload/document/' + ${document.document_filename}"></iframe>
             </div>
             <div>
-                <a  class="m-3 h2 link" th:href="@{'/upload/document/' + ${document.document_filename}}">
-                    <i class="bi bi-download download"></i>
+                <a  class="m-3 h2 link" th:href="@{'/upload/document/' + ${document.document_filename}}" title="Завантажити файл">
+                    <img th:src="@{/img/download.svg}" width="31" height="31" class="download-icon" alt="Завантажити">
                      Завантажити
                 </a>
             </div>

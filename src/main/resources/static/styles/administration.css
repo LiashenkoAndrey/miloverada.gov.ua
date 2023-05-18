@@ -1,0 +1,11 @@
+
+#accordionFlushExample {
+    margin: 20px;
+}
+
+
+@media screen and (max-width: 361px) {
+    #accordionFlushExample {
+        margin: 0 0 30px 0;
+    }
+}

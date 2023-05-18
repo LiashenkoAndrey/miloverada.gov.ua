@@ -21,16 +21,16 @@
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
 
-    <div class="content container" >
+    <div class="content container"  style="min-height: 650px">
         <div class="row ">
             <div class="col">
                 <div>
                     <div   class="text-center" style="padding: 10px">
-                        <span th:text="${institution.title}" class="h2 inst-title"></span>
+                        <span th:text="${institution.title}" style="font-size: 35px" class="h2 inst-title"></span>
                     </div>
                     <div class="p-3">
                         <pre>
-                            <table class="table">
+                            <table class="table" style="background-color: white; font-size: 18px; font-family: serif">
                                 <thead class="table-head">
                                     <tr>
                                         <th>Установа</th>
@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="employee : ${employee_list}" >
+                                    <tr th:each="employee : ${employee_list}" class="table-items-wrapper" >
                                         <th th:text="${employee.sub_institution}"></th>
                                         <th th:text="${employee.position}"></th>
                                         <th th:text="${employee.first_name}"></th>
@@ -55,11 +55,11 @@
                                 </tbody>
                             </table>
                         </pre>
-                        <button class="btn btn-success mb-3" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
+                        <button class="btn btn-success mb-3 admin-btn" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
                     </div>
                     <div class="text-end">
                         <!-- add subgroup button-->
-                        <button class="btn btn-success mb-2 me-2" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
+                        <button class="btn btn-success mb-2 me-2 admin-btn" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
                     </div>
                     <div class="text-center p-4" th:unless="${institution.getDocument_group().getSubGroups().isEmpty()}" id="wrapper">
                         <div id="edit_icon_wrapper"  style="padding: 10px">

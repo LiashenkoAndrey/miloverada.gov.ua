@@ -14,8 +14,8 @@
       <i class="bi bi-download download h4 ms-2"></i>
     </a>
     <div sec:authorize="hasAuthority('ADMIN')" style="display: inline-block; position: absolute; right: 0">
-      <button class="btn btn-info p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndSaveDocument(\'Назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
-      <button class=" btn btn-danger p-1" style="font-size: 14px;" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
+      <button class="btn btn-info p-1 admin-btn" th:onclick="@{'enableFormAndSaveDocument(\'Назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
+      <button class=" btn btn-danger p-1 admin-btn"  th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
     </div>
   </li>
 </ul>

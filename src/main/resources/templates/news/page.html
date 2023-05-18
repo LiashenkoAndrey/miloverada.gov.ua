@@ -13,33 +13,36 @@
 <div class="wrapper">
   <div th:replace="~{fragments/header.html :: header}"></div>
 
-  <div class="content container" >
-    <div class="row ">
+  <div class="content container" id="content-container">
 
-      <div th:replace="~{fragments/navbar.html :: navbar}"></div>
+    <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
-      <div class="col" style="max-width: 700px;">
+    <div>
 
-        <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
-          <a th:href="@{/news/{news_id}/edit(news_id=${news.id})}" class="btn btn-success" >Змінити</a>
-          <button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
+      <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
+        <a th:href="@{/news/{news_id}/edit(news_id=${news.id})}" class="btn btn-success admin-btn" >Змінити</a>
+        <button class="btn btn-danger admin-btn"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити новину\',\'Так, видалити\',\'/news/' + ${news.id} + '/delete' + '\',\'/\')'" >Видалити</button>
+      </div>
+
+      <h1 th:text="${news.description}" class="m-2" style="font-size: 35px"></h1>
+
+      <div>
+        <img th:src="@{'/upload/image/' + ${news.image_id}}" class="img-fluid"  alt="Зоображення новини" th:title="${news.created.toLocalDate()}">
+      </div>
+
+      <div style="font-style: italic; font-weight: bold; margin: 10px" class="mt-2">
+        <div style="font-size: 25px">
+          <span >Опубліковано: <span th:text="${news.created.toLocalDate()}"></span></span>
         </div>
 
-        <div class="container mt-3" >
-          <h1 th:text="${news.description}" class="m-2"></h1>
-          <div>
-            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="img-fluid"  alt="Зоображення новини" th:title="${news.created.toLocalDate()}">
-          </div>
-          <div style="font-style: italic; font-weight: bold" class="mt-2">
-            <span >Опубліковано: <span th:text="${news.created.toLocalDate()}"></span></span>
-            <br>
-            <span style="font-size: 14px" th:if="${news.last_updated}">Оновлено: <span th:text="${news.last_updated.toLocalDate()}"></span></span>
-          </div>
-
-          <div th:utext="${news.main_text}" class="mt-5" style="font-size: 22px"></div>
+        <div style="font-size: 20px;">
+          <span th:if="${news.last_updated}">Оновлено: <span th:text="${news.last_updated.toLocalDate()}"></span></span>
         </div>
       </div>
+
+      <div  th:utext="${news.main_text}" class="mt-5" style="font-size: 22px; font-family: 'Helvetica', serif; margin: 10px"></div>
     </div>
+
   </div>
 
   <div th:replace="~{fragments/footer.html :: footer}"></div>

@@ -7,10 +7,10 @@
 <body>
 
 <div th:fragment="groupCrudButtons(group)" sec:authorize="hasAuthority('ADMIN')">
-  <button class="btn btn-success mt-2" th:onclick="'enableFormAndSaveDocument(\'Назва документу\',\'Додати\',\'/administration/group/' + ${group.id} + '/document/new\', \'null\')'" >Додати файл</button>
-  <button class="btn btn-success mt-2" th:onclick="'enableFormAndInjectAction(\'/administration/group/' + ${group.id} + '/employee/new\', \'Додати\')'">Додати працівника</button>
-  <button class="btn btn-info mt-2" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/administration/group/' + ${group.id} + '/update\', \'Нова назва групи\')'">Змінити назву</button>
-  <button class="btn btn-danger  mt-2" th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити підгрупу\',\'Так видалити\',\'/administration/group/' + ${group.id} + '/delete\',\'null\')'">Видалити</button>
+  <button class="btn btn-success mt-2 admin-btn" th:onclick="'enableFormAndSaveDocument(\'Назва документу\',\'Додати\',\'/administration/group/' + ${group.id} + '/document/new\', \'null\')'" >Додати файл</button>
+  <button class="btn btn-success mt-2 admin-btn" th:onclick="'enableFormAndInjectAction(\'/administration/group/' + ${group.id} + '/employee/new\', \'Додати\')'">Додати працівника</button>
+  <button class="btn btn-info mt-2 admin-btn" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/administration/group/' + ${group.id} + '/update\', \'Нова назва групи\')'">Змінити назву</button>
+  <button class="btn btn-danger mt-2 admin-btn" th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити підгрупу\',\'Так видалити\',\'/administration/group/' + ${group.id} + '/delete\',\'null\')'">Видалити</button>
 </div>
 
 </body>

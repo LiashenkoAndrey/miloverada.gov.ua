@@ -11,27 +11,19 @@
   <div class="content container">
 
       <!-- news-wrapper -->
-      <h2 class="text-center mt-3"  id="news-point">Новини</h2>
-    <div id="news-wrapper" >
-      <div class="mt-3 mb-3">
-
-        <a href="/news/new" class="btn btn-success" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
-      </div>
-
-      <div class="row" th:each="news_slice : ${divided_pages}" >
-        <div class="col-md-4 mb-4" th:each="news : ${news_slice}" >
-          <div>
-            <!-- time -->
-            <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px" th:text="${news.created.toLocalDate()}"></span></div>
-            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
-          </div>
-          <!-- description-->
-          <div style="width: 300px;">
-            <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}"></a>
-          </div>
+    <h2 class="text-center mt-3" style="font-size: 35px">Новини</h2>
+    <div style="padding: 10px">
+      <a href="/news/new" class="btn btn-success admin-btn"  style="margin: 20px 0 20px 0; display: block" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
+      <div id="news-container">
+        <div class="news" th:each="news : ${newsList}" >
+          <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
+          </a>
+          <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
+          <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toLocalDate()}"></span></div>
         </div>
       </div>
     </div>
+
     <div th:replace="~{fragments/main/pagination.html :: pagination('/news/all')}"></div>
   </div>
 
