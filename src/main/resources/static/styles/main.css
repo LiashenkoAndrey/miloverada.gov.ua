@@ -91,6 +91,18 @@ body {
       display: block !important
     }
 
+    .dropdown {
+      font-size: 20px;
+    }
+
+    .dropdown-content a {
+      font-size: 20px;
+    }
+
+    .link  {
+      font-size: 24px;
+    }
+
     .news {
       padding: 5px;
     }
