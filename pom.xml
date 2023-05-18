@@ -6,7 +6,7 @@
 
     <groupId>milove</groupId>
     <artifactId>milove.otg.gov.ua</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -177,20 +177,45 @@
                 </configuration>
             </plugin>
 
+<!--            <plugin>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <descriptorRefs>-->
+<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--                    </descriptorRefs>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <classpathPrefix>libs/</classpathPrefix>-->
+<!--                            <mainClass>gov.milove.Runner</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
                 <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                                    <execution>
+                                        <phase>package</phase>
+                                        <goals>
+                                            <goal>single</goal>
+                                        </goals>
+                                    </execution>
+                                </executions>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <finalName>release-0.2</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -198,10 +223,12 @@
                             <mainClass>gov.milove.Runner</mainClass>
                         </manifest>
                     </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
             </plugin>
-
-
 
         </plugins>
     </build>
