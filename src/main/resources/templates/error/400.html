@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
@@ -8,12 +7,12 @@
 <body>
 <div class="wrapper" >
 
-    <div class="content container" style="margin: 50px">
-        <h2 class="text-center mt-5 mb-2" style="font-size: 40px; font-weight: bold">Нажаль сталася внутрішня помилка</h2>
-        <a th:href="@{/}" style="display: block" class="text-center link h4">На головну</a>
+  <div class="content container" style="margin: 50px">
+    <h2 class="text-center mt-5 mb-2" style="font-size: 40px; font-weight: bold">Сторінка не знайдена</h2>
+    <a th:href="@{/}" style="display: block" class="text-center link h4">На головну</a>
 
-    </div>
-    <div th:replace="~{fragments/footer.html :: footer}"></div>
+  </div>
+  <div th:replace="~{fragments/footer.html :: footer}"></div>
 </div>
 
 <script th:src="@{/scripts/documentService.js}"></script>

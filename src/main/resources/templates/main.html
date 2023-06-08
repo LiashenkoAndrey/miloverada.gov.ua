@@ -7,7 +7,7 @@
     <div class="wrapper">
         <div th:replace="~{fragments/header.html :: header}"></div>
 
-        <div class="content container" id="content-container">
+        <div class="content container-sm" id="content-container">
             <div th:replace="~{fragments/navbar.html :: navbar}"></div>
 
             <div>
@@ -18,7 +18,7 @@
                         <div class="news" th:each="news : ${newsList}" >
                             <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
                             </a>
-                            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
+                            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" style="padding-right: 20px" th:title="${news.created.toLocalDate()}">
                             <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toLocalDate()}"></span></div>
                         </div>
                     </div>
