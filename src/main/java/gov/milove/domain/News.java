@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class News {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,4 +29,5 @@ public class News {
 
     private LocalDateTime last_updated;
 
+    private Boolean is_banner;
 }

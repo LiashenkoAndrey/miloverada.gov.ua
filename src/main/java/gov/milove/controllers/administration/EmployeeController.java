@@ -7,6 +7,7 @@ import gov.milove.services.administration.AdministrationGroupService;
 import gov.milove.services.ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,7 @@ public class EmployeeController {
 
 
     @PostMapping("/group/{group_id}/employee/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> create(
             @ModelAttribute("main_employee") AdministrationEmployee employee,
             @RequestParam(name = "file", required = false) MultipartFile file,
@@ -56,6 +58,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/{employee_id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
             @PathVariable("employee_id") Long id,
             @ModelAttribute("main_employee") AdministrationEmployee updatedEmployee,
@@ -80,6 +83,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{employee_id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("employee_id") Long employee_id) {
         try {
             administrationEmployeeService.deleteById(employee_id);

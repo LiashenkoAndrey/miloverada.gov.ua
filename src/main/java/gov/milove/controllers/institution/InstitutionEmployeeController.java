@@ -9,6 +9,7 @@ import gov.milove.services.institution.InstitutionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class InstitutionEmployeeController {
     }
 
     @PostMapping("/{institution_id}/employee/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newEmployee(
             @PathVariable("institution_id") Long institution_id,
             @ModelAttribute("employee") InstitutionEmployee employee) {
@@ -47,6 +49,7 @@ public class InstitutionEmployeeController {
 
 
     @GetMapping("/employee/{id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employee_id) {
         try {
             institutionEmployeeService.deleteById(employee_id);
@@ -59,6 +62,7 @@ public class InstitutionEmployeeController {
 
 
     @PostMapping("/employee/{id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateEmployee(
             @PathVariable("id") Long employee_id,
             @ModelAttribute("employee") InstitutionEmployee employee) {

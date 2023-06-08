@@ -1,11 +1,11 @@
 package gov.milove.controllers.news;
 
-import gov.milove.controllers.util.ControllerUtil;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +45,7 @@ public class News {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String newNews(@RequestParam("description") String description,
                           @RequestParam("main_text") String main_text,
                           @RequestParam("image") MultipartFile file,
@@ -55,6 +56,7 @@ public class News {
     }
 
     @GetMapping("/{news_id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteNews(@PathVariable("news_id") Long id) {
         boolean success = newsService.deleteNews(id);
         if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
@@ -76,6 +78,7 @@ public class News {
 
 
     @GetMapping("/{news_id}/edit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String editNews(@PathVariable("news_id") Long news_id, Model model) {
         Optional<gov.milove.domain.News> news = newsService.getNewsById(news_id);
 
@@ -88,6 +91,7 @@ public class News {
     }
 
     @PostMapping("/{news_id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String updateNews(@RequestParam("description") String description,
                              @RequestParam("main_text") String main_text,
                              @RequestParam("image") MultipartFile file,

@@ -7,6 +7,7 @@ import gov.milove.services.administration.AdministrationGroupService;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class GroupController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newGroup(@ModelAttribute("newGroup") AdministrationGroup newGroup) {
         try {
             service.save(newGroup);
@@ -36,6 +38,7 @@ public class GroupController {
     }
 
     @PostMapping("/{group_id}/sub-group/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newSubGroup(
             @PathVariable("group_id") Long group_id,
             @ModelAttribute("newGroup") AdministrationGroup newGroup) {
@@ -54,6 +57,7 @@ public class GroupController {
 
 
     @PostMapping("/{group_id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newSubGroup(
             @PathVariable("group_id") Long group_id,
             @RequestParam("title") String title) {

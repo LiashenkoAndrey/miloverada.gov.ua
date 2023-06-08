@@ -6,6 +6,7 @@ import gov.milove.services.document.DocumentService;
 import gov.milove.services.document.DocumentSubGroupService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class Document {
 
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> saveDocument(@RequestParam("file") MultipartFile file,
                                @RequestParam("title") String title,
                                @PathVariable("sub_group_id") Long subGroupId) {

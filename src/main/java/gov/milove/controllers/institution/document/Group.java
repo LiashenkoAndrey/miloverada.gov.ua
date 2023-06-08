@@ -5,6 +5,7 @@ import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.document.DocumentSubGroupService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,12 +48,14 @@ public class Group {
 
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createNewGroup(@RequestParam("title") String title, @PathVariable("inst_title") String inst_title) {
         documentGroupService.createGroup(title);
         return "redirect:/";
     }
 
     @PostMapping("/{group_id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> edit(@RequestParam("title") String title, @PathVariable("group_id") Long id) {
         doc_group_repo.updateTitle(title, id);
         return ok("Оновлення успішне");

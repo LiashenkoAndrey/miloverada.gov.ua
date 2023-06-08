@@ -4,6 +4,7 @@ import gov.milove.exceptions.ContactEmployeeException;
 import gov.milove.services.ContactEmployeeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class ContactEmployee {
     }
 
     @PostMapping("/employee/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> create(@ModelAttribute("employee") gov.milove.domain.ContactEmployee employee ){
 
         try {
@@ -40,6 +42,7 @@ public class ContactEmployee {
     }
 
     @PostMapping("/employee/{employee_id}/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
             @PathVariable("employee_id") Long id,
             @ModelAttribute("employee") gov.milove.domain.ContactEmployee updatedEmployee){
@@ -58,6 +61,7 @@ public class ContactEmployee {
     }
 
     @GetMapping("/employee/{employee_id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("employee_id") Long employee_id) {
         try {
             service.deleteById(employee_id);

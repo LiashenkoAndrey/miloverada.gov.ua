@@ -2,6 +2,7 @@ package gov.milove.controllers.institution.document;
 
 import gov.milove.services.document.DocumentSubGroupService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class SubGroup {
     }
 
     @PostMapping("/group/{group_id}/sub-group/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> createNewSubGroup (
             @PathVariable("group_id") Long group_id,
             @RequestParam("title") String title) {
@@ -28,6 +30,7 @@ public class SubGroup {
     }
 
     @GetMapping("/sub-group/{subgroup_id}/delete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteSubGroup (@PathVariable("subgroup_id") Long id) {
         boolean success = subGroupService.deleteSubGroup(id);
         if (success) return ok("Видалення успішне");

@@ -4,6 +4,7 @@ import gov.milove.domain.CustomDate;
 import gov.milove.repositories.AboutRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +34,14 @@ public class About {
     }
 
     @GetMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getUpdatePage(Model model) {
         model.addAttribute("about", aboutRepo.findById(1L).orElseThrow(EntityNotFoundException::new));
         return "about/edit";
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updatePage(@RequestParam("main_text") String main_text) {
         try {
             gov.milove.domain.About about = aboutRepo.findById(1L)
