@@ -2,7 +2,7 @@
 <html lang="en">
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
     <link rel="stylesheet" th:href="@{/styles/news.css}">
-    <title>Милівська ОТГ</title>
+    <title>Милівська сільська територіальна громада</title>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -10,20 +10,20 @@
     <div th:replace="~{fragments/header.html :: header}"></div>
 
     <div class="content container">
-        <div class="container" >
+        <div class="container pb-2" >
 
             <h3 class="text-center mt-3">Додати новину</h3>
 
-            <form th:action="@{/news/new}" th:method="post" class="container" enctype="multipart/form-data" >
+            <form th:action="@{/news/new}" id="form" th:method="post" class="container" enctype="multipart/form-data" >
                 <input type="file" id="uploadImage"  style="display: none">
 
-                <label for="description" class="form-label">Короткий опис</label>
-                <input type="text" class="form-control" id="description" name="description" maxlength="100" minlength="4">
-                <label for="file" class="form-label">Зоображення</label>
+                <label for="description" class="form-label"  style="font-size: 30px">Короткий опис</label>
+                <input type="text" class="form-control" id="description" style="font-size: 25px" name="description" maxlength="100" minlength="4">
+                <label for="file" class="form-label mt-3" style="font-size: 30px">Зоображення</label>
                 <input type="file" id="file" name="image" class="form-control">
 
                 <br>
-                <label for="input" class="form-label">Основний текст</label>
+                <label for="input" class="form-label" style="font-size: 30px">Основний текст</label>
                 <div class="demo-inline" >
                     <div class="tinymce-body" id="input" style="height: 600px" ></div>
                 </div>
@@ -32,11 +32,11 @@
                 <textarea style="display: none" id="main_text" class="form-control"  name="main_text"></textarea>
 
 
-                <div class="input-group">
-                    <label class="input-group-text">Country</label>
+                <div class="input-group mt-3" >
+                    <label class="input-group-text" style="font-size: 25px">Час</label>
                     <select onchange="yesnoCheck(this);" class="form-select">
-                        <option value="">Поточна дата</option>
-                        <option value="custom">Вказати</option>
+                        <option value="" style="font-size: 25px">Поточна дата</option>
+                        <option value="custom" style="font-size: 25px">Вказати</option>
                     </select>
                 </div>
 
@@ -45,7 +45,7 @@
                     <input type="date" class="form-control" id="date" name="date" required >
                 </div>
 
-                <button class="btn btn-success" onclick="injectTextAndSendForm()">Додати</button>
+                <button class="btn btn-success mt-5" style="font-size: 30px" onclick="injectTextAndSendForm()">Додати</button>
             </form>
         </div>
     </div>

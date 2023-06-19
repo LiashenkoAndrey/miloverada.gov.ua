@@ -4,9 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>milove</groupId>
-    <artifactId>milove.otg.gov.ua</artifactId>
-    <version>0.0.2</version>
+    <groupId>miloverada</groupId>
+    <artifactId>miloverada.gov.ua</artifactId>
+    <version>0.3</version>
+
+    <developers>
+        <developer>
+            <name>Andrew</name>
+            <roles>
+                <role>java developer</role>
+            </roles>
+            <email>a.liashenko@e-u.edu.ua</email>
+            <url>https://github.com/LiashenkoAndrey</url>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -51,37 +62,29 @@
             <version>42.5.4</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.12</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-legacy -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
             <version>4.9.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-core</artifactId>
             <version>4.9.0</version>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.mongodb/bson -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>bson</artifactId>
             <version>4.9.0</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>junit</groupId>
@@ -100,6 +103,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>3.0.4</version>
+            <scope>test</scope>
         </dependency>
 
 
@@ -121,6 +125,17 @@
             <version>3.1.1.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.7</version>
+        </dependency>
 
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
@@ -129,8 +144,6 @@
         </dependency>
 
     </dependencies>
-
-
 
     <build>
         <pluginManagement>

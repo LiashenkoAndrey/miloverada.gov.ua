@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
 <div th:fragment="carousel-item (url, title, text)">
-  <img th:src="${url}"  class="d-block w-100 carousel-images"  alt="...">
+  <img th:src="${url}"  class="d-block w-100 carousel-images" style="border-radius: 10px"  alt="...">
   <div class="carousel-caption d-none d-md-block">
     <p th:text="${title}" class="quote" style="font-size: 33px"></p>
     <p th:text="${text}" class="quote" style="font-size: 30px"></p>
@@ -18,8 +11,7 @@
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Тарас Шевченко"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Григорій Сковорода"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Володимир Зеленський"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Михайло Грушевський"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Михайло Грушевський"></button>
     </div>
     <div class="carousel-inner">
         <div th:insert="~{fragments/main/carousel.html :: carousel-item ('/upload/image/64903c63a1ce257259ba542d', 'Тарас Шевченко', 'Нема на світі України, Немає другого Дніпра.')}" class="carousel-item active"></div>
@@ -35,6 +27,3 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
-</body>
-</html>

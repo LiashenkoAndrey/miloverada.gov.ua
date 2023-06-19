@@ -10,9 +10,9 @@
     gtag('config', 'G-F52EX816KE');
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" th:href="@{/img/tab_icon.png}">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/main-icon.svg}">
   <meta charset="UTF-8">
-  <title>Вхід</title>
+  <title>Вхід для адміністратора</title>
   <link rel="stylesheet" th:href="@{/styles/login.css}">
 
 </head>
@@ -23,10 +23,10 @@
   <h3 th:if="errorMessage" th:text="${errorMessage}"></h3>
   <form id="login-form" th:method="post" th:action="@{/login}">
     <p>
-    <input type="text"  name="username" placeholder="Логін" required><i class="validation"><span></span><span></span></i>
+    <input type="text"  name="username" placeholder="Логін" required maxlength="255"><i class="validation"><span></span><span></span></i>
     </p>
     <p>
-    <input type="password" name="password" placeholder="Пароль" required><i class="validation"><span></span><span></span></i>
+    <input type="password" name="password" placeholder="Пароль" required maxlength="255"><i class="validation"><span></span><span></span></i>
 
     </p>
     <p>

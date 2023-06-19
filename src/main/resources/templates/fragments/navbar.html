@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-<div th:fragment="navbar">
+<div th:fragment="navbar" style="background-color: rgb(0 0 0 / 3%);">
   <div class="sticky">
     <div th:each="group : ${groups}">
         <a th:href="@{'/institution/n/group/' + ${group.id}}" style="text-decoration: none" >
@@ -16,6 +9,3 @@
     </div>
   </div>
 </div>
-
-</body>
-</html>
