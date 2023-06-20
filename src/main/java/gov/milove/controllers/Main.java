@@ -1,7 +1,7 @@
 package gov.milove.controllers;
 
-import gov.milove.controllers.util.ControllerUtil;
 import gov.milove.domain.News;
+import gov.milove.domain.dto.NewsDTO;
 import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.services.NewsService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class Main {
     public String main(Model model) {
         model.addAttribute("groups", docGroupRepo.findGeneralGroupsDto());
 
-        Page<News> pages = newsService.getPagesList(0, 9);
+        Page<NewsDTO> pages = newsService.getPagesList(0, 9);
         model.addAttribute("newsList", pages.toList());
         return "main";
     }

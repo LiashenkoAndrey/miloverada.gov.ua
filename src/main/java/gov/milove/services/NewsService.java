@@ -1,9 +1,12 @@
 package gov.milove.services;
 
 import gov.milove.domain.News;
+import gov.milove.domain.dto.NewsDTO;
 import gov.milove.repositories.NewsRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,15 +20,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class NewsService {
 
     private final NewsRepository newsRepository;
     private final ImageService imageService;
 
-    public NewsService(NewsRepository newsRepository, ImageService imageService) {
-        this.newsRepository = newsRepository;
-        this.imageService = imageService;
-    }
 
     /**
      * Find news by page number and newsAmount
@@ -34,8 +34,9 @@ public class NewsService {
      * @param newsAmount amount of news in one page
      * @return page of news
      */
-    public Page<News> getPagesList(int page, int newsAmount) {
-        return newsRepository.findAll(PageRequest.of(page, newsAmount).withSort(Sort.Direction.DESC, "created"));
+
+    public Page<NewsDTO> getPagesList(int page, int newsAmount) {
+        return newsRepository.getPageOfDTO(PageRequest.of(page, newsAmount).withSort(Sort.Direction.DESC, "created"));
     }
 
     public void saveNews(String description, String main_text, MultipartFile image, String date) {

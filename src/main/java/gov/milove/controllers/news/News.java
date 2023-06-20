@@ -1,5 +1,6 @@
 package gov.milove.controllers.news;
 
+import gov.milove.domain.dto.NewsDTO;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
 import org.springframework.data.domain.Page;
@@ -34,9 +35,8 @@ public class News {
     @GetMapping("/all")
     public String newsAll(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
         page = page-1;
-        model.addAttribute("groups",documentGroupService.findAll());
 
-        Page<gov.milove.domain.News> pages = newsService.getPagesList(page, 20);
+        Page<NewsDTO> pages = newsService.getPagesList(page, 20);
 
         model.addAttribute("newsList", pages.toList());
         model.addAttribute("pagesQuantity", pages.getTotalPages());

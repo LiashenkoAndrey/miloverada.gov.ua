@@ -29,7 +29,7 @@ public class AdministrationController {
         model.addAttribute("main_employees", employeeService.findAllWhereGroupIdIsNull());
         model.addAttribute("groups", groupService.findAllGroups());
         model.addAttribute("newGroup", new AdministrationGroup());
-        return "administration/administration";
+        return "administration";
     }
 
 }

@@ -1,5 +1,6 @@
 package gov.milove.domain;
 
+import gov.milove.domain.dto.NewsDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,4 +31,5 @@ public class News {
     private LocalDateTime last_updated;
 
     private Boolean is_banner;
+
 }
