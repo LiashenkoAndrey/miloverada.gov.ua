@@ -19,7 +19,6 @@ public class Document {
 
     private String title;
 
-//    @Column(name = "document_filename")
     private String document_filename;
 
     @ManyToOne

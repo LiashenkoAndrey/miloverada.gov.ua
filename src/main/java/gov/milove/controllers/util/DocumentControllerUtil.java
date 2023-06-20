@@ -21,14 +21,14 @@ public class DocumentControllerUtil {
         this.documentService = documentService;
     }
 
-    @PostMapping("/{document_id}/update")
+    @PostMapping("/update")
     public ResponseEntity<String> updateDocument(
             @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam(name = "title",required = false) String title,
-            @PathVariable("document_id") String document_id) {
+            @RequestParam("filename") String filename) {
 
         try {
-            documentService.updateDocument(document_id, file, title);
+            documentService.updateDocument(filename, file, title);
             return ok("Оновлення успішне");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -37,11 +37,11 @@ public class DocumentControllerUtil {
     }
 
 
-    @GetMapping("/{document_id}/delete")
-    public ResponseEntity<String> deleteDocument(@PathVariable("document_id") String document_id) {
+    @GetMapping("/delete")
+    public ResponseEntity<String> deleteDocument(@RequestParam("filename") String filename) {
 
         try {
-            documentService.deleteDocumentByFilename(document_id);
+            documentService.deleteDocumentByFilename(filename);
             return ok("Файл успішно видалений");
         } catch (DocumentCrudServiceException ex) {
             ex.printStackTrace();

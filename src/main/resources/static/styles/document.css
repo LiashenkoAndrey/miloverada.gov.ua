@@ -10,6 +10,16 @@
     background-color: rgba(216, 215, 215, 0.355);
 }
 
+
+.filename {
+    color: black;
+}
+
+.filename:hover {
+    cursor: pointer;
+    color: #2273b8;
+}
+
 .links a {
     text-decoration: none;
     color: black;
@@ -20,6 +30,8 @@
 }
 
 .download-icon {
+    width: 40px;
+    height: 40px;
     margin-left: 20px;
 }
 

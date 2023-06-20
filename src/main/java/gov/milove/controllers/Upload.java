@@ -44,7 +44,8 @@ public class Upload {
         byte[] file = documentService.getDocumentBinaryById(id);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("content-disposition", "inline; filename=\"" + id + "\"");
+        headers.set("Access-Control-Allow-Origin", "*");
+        headers.set("content-disposition", "inline");
         headers.set("content-length", String.valueOf(file.length));
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)

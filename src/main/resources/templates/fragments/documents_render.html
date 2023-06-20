@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
+
+
 <div class="accordion accordion-flush m-3" id="accordionFlushExample" th:fragment="document_render(group)">
 
     <div class="accordion-item"  th:each="sub_group : ${group.getSubGroups()}" th:inline="text">
@@ -16,30 +18,91 @@
             <div class="accordion-body">
 
                 <ol class="position-relative">
-                    <li class="li-doc links" th:each="document : ${sub_group.documents}">
-                        <a th:href="@{'/institution/1/group/'+ ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/' + ${document.id}}" th:text="${document.title}">Title</a>
-                        <a th:href="@{'/upload/document/' + ${document.document_filename}}" title="Завантажити файл">
-                            <img th:src="@{/img/download.svg}" width="31" height="31" class="download-icon" alt="Завантажити">
-                        </a>
+                    <li class="li-doc links"  th:each="document : ${sub_group.documents}">
+                        <div th:if="${#strings.contains(document.document_filename,'zip')}" >
+                            <img th:src="@{/img/documents_formats/zip.png}" width="50" height="50" alt="Документ">
+
+                            <span class="filename"  th:filename="${document.document_filename}" th:groupId="${group.id}" th:subGroupId="${sub_group.id}" th:documentId="${document.id}" onclick="
+                                unzipAndPrintAsList(
+                                    this.parentElement,
+                                    this.getAttribute('filename'),
+                                    this.getAttribute('documentId'),
+                                    this.getAttribute('groupId'),
+                                    this.getAttribute('subGroupId'))"
+                                  th:text="${document.document_filename}"  aria-placeholder="Розпакувати архів">
+                            </span>
+
+                            <a th:href="@{'/upload/document/' + ${document.document_filename}}" title="Завантажити файл">
+                                <img th:src="@{/img/download.png}" class="download-icon" alt="Завантажити">
+                            </a>
+                        </div>
+
+                        <div th:unless="${#strings.contains(document.document_filename,'zip')}">
+                            <img th:src="@{/img/documents_formats/word.svg}" width="50" height="50" th:if="${#strings.contains(document.document_filename, 'docx')}" alt="Документ">
+                            <img th:src="@{/img/documents_formats/exel.svg}" width="50" height="50" th:if="${#strings.contains(document.document_filename, 'xlsx')}" alt="Документ">
+                            <img th:src="@{/img/documents_formats/pdf.png}" width="50" height="50" th:if="${#strings.contains(document.document_filename, 'pdf')}" alt="Документ">
+                            <img th:src="@{/img/documents_formats/some_document.svg}" width="50" height="50" th:if="${#strings.contains(document.document_filename, 'xlsx') == false and #strings.contains(document.document_filename, 'docx') == false and #strings.contains(document.document_filename, 'pdf') == false} " alt="Документ">
+                            <a th:href="@{/document/view(
+                                documentId=${document.id},
+                                groupId=${group.id},
+                                subGroupId=${sub_group.id})}
+                                " th:text="${document.title}" class="filename">Title
+                            </a>
+                            <a th:href="@{'/upload/document/' +  ${document.document_filename}}" style="text-decoration: none">
+                                <img th:src="@{/img/download.png}" class="download-icon" alt="Завантажити">
+                            </a>
+                        </div>
 
                         <div sec:authorize="hasAuthority('ADMIN')"  >
-                            <button class="btn btn-info p-1 admin-btn" th:onclick="@{'enableFormAndSaveDocument(\'Нова назва документу\',\'Оновити\',\'/document/' + ${document.document_filename} + '/update\',\'null\')'}">Оновити</button>
-                            <button class="delete-document btn btn-danger p-1 admin-btn" th:onclick="@{'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити документ?\',\'Так видалити\',\'/document/' + ${document.document_filename} + '/delete\',\'null\')'}">Видалити</button>
+                            <button class="btn btn-info p-1 admin-btn" th:filename="${document.document_filename}" onclick="
+                                enableFormAndSaveDocument(
+                                    'Нова назва документу',
+                                    'Оновити',
+                                    '/document/update/?filename=' + this.getAttribute('filename'),
+                                    'null'
+                                    )">Оновити
+                            </button>
+
+                            <button class="delete-document btn btn-danger p-1 admin-btn" th:filename="${document.document_filename}" onclick="
+                                enableFormAndDoGetRequest(
+                                    'Ви впевненні що хочете видалити документ?',
+                                    'Так видалити',
+                                    '/document/delete?filename=' + this.getAttribute('filename'),
+                                    'null'
+                                    )">Видалити
+                            </button>
                         </div>
                     </li>
                     <h3 th:if="${sub_group.documents.isEmpty()}" style="font-size: 35px">Документи ще не додані</h3>
                 </ol>
 
-                <div class="text-end" sec:authorize="hasAuthority('ADMIN')"  >
+                <div class="text-end"  sec:authorize="hasAuthority('ADMIN')"  >
                     <!-- add document button-->
-                    <button class="btn btn-success mt-5 admin-btn" th:id="'btn-new-document' + ${sub_group.id}" th:onclick="'enableFormAndSaveDocument(\'Назва документу\',\'Додати\',\'/institution/n/group/' + ${group.id} + '/sub-group/' + ${sub_group.id} + '/document/new\', \'null\')'" >Додати документ</button>
+                    <button class="btn btn-success mt-5 admin-btn" th:subGroupId="${sub_group.id}"  th:id="'btn-new-document' + ${sub_group.id}" onclick="
+                        enableFormAndSaveDocument(
+                            'Назва документу',
+                            'Додати',
+                            '/document/new?subGroupId=' + this.getAttribute('subGroupId'),
+                            'null'
+                            )">Додати документ
+                    </button>
+
                     <!-- delete subgroup button-->
-                    <button class="btn btn-danger mt-5 admin-btn" th:onclick="'enableFormAndDoGetRequest(\'Ви впевнені що хочете видалити підгрупу?\',\'Так, видалити\',\'/institution/n/sub-group/' + ${sub_group.id} + '/delete' + '\',\'null\')'" >Видалити підгрупу</button>
+                    <button class="btn btn-danger mt-5 admin-btn" th:subGroupId="${sub_group.id}" onclick="
+                        enableFormAndDoGetRequest(
+                            'Ви впевнені що хочете видалити підгрупу?',
+                            'Так, видалити',
+                            '/sub-group/delete?id=' + this.getAttribute('subGroupId'),
+                            'null'
+                            )">Видалити підгрупу
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <h3 class="text-center" th:if="${group.getSubGroups().isEmpty()}">Документи ще не додані</h3>
 </div>
+
+
 </body>
 </html>

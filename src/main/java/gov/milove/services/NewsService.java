@@ -29,10 +29,9 @@ public class NewsService {
 
     /**
      * Find news by page number and newsAmount
-     * if pagesAmount == 0 then pagesAmount = 9
      * @param page number of page
      * @param newsAmount amount of news in one page
-     * @return page of news
+     * @return page of news DTOs
      */
 
     public Page<NewsDTO> getPagesList(int page, int newsAmount) {
