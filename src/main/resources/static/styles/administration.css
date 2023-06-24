@@ -5,15 +5,10 @@
     }
 }
 
-#accordionFlushExample {
-    margin: 5px;
-
-}
 
 
 .main-employee {
     gap: 20px;
     background-color: white;
     display: flex;
-    /*grid-template-columns: auto 1fr 1fr;*/
 }

@@ -7,7 +7,7 @@
 <body>
 
 
-<div class="accordion accordion-flush m-3" id="accordionFlushExample" th:fragment="document_render(group)">
+<div class="accordion accordion-flush " id="accordionFlushExample" th:fragment="document_render(group)">
 
     <div class="text-center">
         <div class="editable_wrapper" style="padding: 10px">
@@ -24,7 +24,7 @@
 
         </div>
         <div class="text-end" sec:authorize="hasAuthority('ADMIN')">
-            <button class="btn btn-success me-2 ms-2 admin-btn" th:groupId="${group.id}" onclick="new PostRequestFormBuilder()
+            <button class="btn btn-success me-2 ms-2 mb-3 admin-btn" th:groupId="${group.id}" onclick="new PostRequestFormBuilder()
                              .param({label:'Назва підгрупи', name:'subGroupTitle'})
                              .pathParam('groupId', this.getAttribute('groupId'))
                              .setUrl('/subGroup/new')
@@ -59,7 +59,7 @@
         <div th:id="'flush-collapse' + ${sub_group.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
 
-                <ol class="position-relative">
+                <ol class="position-relative" style="padding-left: 15px;">
                     <li class="li-doc links"  th:each="document : ${sub_group.documents}">
                         <div th:if="${#strings.contains(document.document_filename,'zip')}" >
                             <img th:src="@{/img/documents_formats/zip.png}" width="50" height="50" alt="Документ">

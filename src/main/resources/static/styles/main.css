@@ -270,3 +270,23 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.tableData td {
+  white-space: pre-wrap;
+}
+
+.tr th {
+  font-weight: normal;
+}
+
+.accordion-body {
+  padding: 5px; !important;
+}
+
+
+
+
+
+#accordionFlushExample {
+  margin: 10px;
+}

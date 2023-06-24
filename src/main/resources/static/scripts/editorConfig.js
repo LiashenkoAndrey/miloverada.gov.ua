@@ -62,7 +62,7 @@ function yesnoCheck(that) {
 }
 
 
-function newNews() {
+function newNews(id) {
     let fromData = new FormData();
 
     let description = document.querySelector("#description").value;
@@ -82,6 +82,7 @@ function newNews() {
     fromData.append("description", description)
     fromData.append('image', imageInput.files[0])
     fromData.append('mainText', mainText);
+    fromData.append('newsId', id )
 
     if (document.querySelector("#dateSelect").value === "custom") {
         let data = document.querySelector('#date').value;

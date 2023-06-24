@@ -129,7 +129,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody style="font-family: serif; font-size: 18px">
-                                                            <tr th:each="employee : ${group.employee_list}" >
+                                                            <tr th:each="employee : ${group.employee_list}" class="tableData" >
                                                                     <td class="position" th:text="${employee.position}"></td>
                                                                     <td class="first_name" th:text="${employee.first_name}"></td>
                                                                     <td class="last_name" th:text="${employee.last_name}"></td>
@@ -205,11 +205,6 @@
         </div>
     </div>
 
-    <style>
-        .tr th {
-            font-weight: normal;
-        }
-    </style>
 
     <div th:replace="~{fragments/footer.html :: footer}"></div>
 

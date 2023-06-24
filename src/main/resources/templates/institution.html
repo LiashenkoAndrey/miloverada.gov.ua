@@ -34,13 +34,13 @@
                                     </tr>
                                 </thead>
                                 <tbody style="font-family: serif; font-size: 18px">
-                                    <tr th:each="employee : ${employee_list}" >
-                                        <th class="sub_institution" th:text="${employee.sub_institution}"></th>
-                                        <th class="position" th:text="${employee.position}"></th>
-                                        <th class="first_name" th:text="${employee.first_name}"></th>
-                                        <th class="last_name" th:text="${employee.last_name}"></th>
-                                        <th class="phone_number" th:text="${employee.phone_number}"></th>
-                                        <th class="email" th:text="${employee.email}"></th>
+                                    <tr th:each="employee : ${employee_list}" class="tableData" >
+                                        <td class="sub_institution" th:text="${employee.sub_institution}"></td>
+                                        <td class="position" th:text="${employee.position}"></td>
+                                        <td class="first_name" th:text="${employee.first_name}"></td>
+                                        <td class="last_name" th:text="${employee.last_name}"></td>
+                                        <td class="phone_number" th:text="${employee.phone_number}"></td>
+                                        <td class="email" th:text="${employee.email}"></td>
 
 
                                         <td  sec:authorize="hasAuthority('ADMIN')" style="display: flex">
@@ -84,7 +84,7 @@
                             }
                         </style>
 
-                        <button th:institutionId="${institution.id}" class="btn btn-success mb-3 admin-btn" sec:authorize="hasAuthority('ADMIN')" onclick="
+                        <button th:institutionId="${institution.id}" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" onclick="
                                 new PostRequestFormBuilder()
                                                  .param({label: 'Установа', name: 'sub_institution'})
                                                  .param({label: 'Посада', name: 'position'})
