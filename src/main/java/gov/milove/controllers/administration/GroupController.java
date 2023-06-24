@@ -16,7 +16,7 @@ import static gov.milove.controllers.util.ControllerUtil.ok;
 
 
 @Controller
-@RequestMapping("administration/group")
+@RequestMapping("administration")
 public class GroupController {
 
     private final AdministrationGroupService service;
@@ -25,7 +25,7 @@ public class GroupController {
         this.service = service;
     }
 
-    @PostMapping("/new")
+    @PostMapping("/group/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newGroup(@ModelAttribute("newGroup") AdministrationGroup newGroup) {
         try {
@@ -33,14 +33,14 @@ public class GroupController {
             return ok("Група успішно додана");
         } catch (Exception ex) {
             ex.printStackTrace();
-            return error("Виникли проблеми з додаванням групи :(");
+            return error("Виникли проблеми з додаванням групи");
         }
     }
 
-    @PostMapping("/{group_id}/sub-group/new")
+    @PostMapping("/subGroup/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newSubGroup(
-            @PathVariable("group_id") Long group_id,
+            @RequestParam("groupId") Long group_id,
             @ModelAttribute("newGroup") AdministrationGroup newGroup) {
 
         try {
@@ -56,10 +56,10 @@ public class GroupController {
     }
 
 
-    @PostMapping("/{group_id}/update")
+    @PostMapping("/subGroup/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newSubGroup(
-            @PathVariable("group_id") Long group_id,
+            @RequestParam("subGroupId") Long group_id,
             @RequestParam("title") String title) {
 
         try {
@@ -74,8 +74,8 @@ public class GroupController {
         }
     }
 
-    @GetMapping("/{group_id}/delete")
-    public ResponseEntity<String> deleteGroup(@PathVariable("group_id") Long group_id) {
+    @GetMapping("/subGroup/delete")
+    public ResponseEntity<String> deleteGroup(@RequestParam("groupId") Long group_id) {
         try {
             service.deleteById(group_id);
             return ok("Підгрупа успішно видалена");

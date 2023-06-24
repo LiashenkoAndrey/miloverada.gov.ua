@@ -1,17 +1,21 @@
 
-let edit_icon_wrapper = document.querySelector("#edit_icon_wrapper");
-let icon = document.querySelector('#edit_icon');
-
-if (edit_icon_wrapper != null && icon != null) {
-
-    edit_icon_wrapper.addEventListener('mouseover', function () {
-        icon.style.display = 'inline';
-    });
+let editableWrappers = document.getElementsByClassName("editable_wrapper");
 
 
+for (let i = 0; i < editableWrappers.length; i++) {
+    let elem = editableWrappers[i];
+    let img = elem.getElementsByTagName('img')[0];
 
-    edit_icon_wrapper.addEventListener('mouseleave', function () {
-        icon.style.display = 'none';
-    });
+    if (img !== undefined) {
+        elem.addEventListener('mouseover', function () {
+            img.style.display = 'inline';
+        });
 
+        elem.addEventListener('mouseleave', function () {
+            img.style.display = 'none';
+        });
+
+    }
 }
+
+

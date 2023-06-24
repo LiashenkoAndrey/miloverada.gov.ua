@@ -51,16 +51,64 @@ async function doUploadImage() {
     }))
 }
 
-function injectTextAndSendForm() {
-    let content = tinymce.activeEditor.getContent();
-    document.querySelector("#main_text").innerHTML = content;
-    document.querySelector("#submit-form").click();
-}
+
 
 function yesnoCheck(that) {
-    if (that.value == "custom") {
+    if (that.value === "custom") {
         document.getElementById("ifYes").style.display = "block";
     } else {
         document.getElementById("ifYes").style.display = "none";
     }
+}
+
+
+function newNews() {
+    let fromData = new FormData();
+
+    let description = document.querySelector("#description").value;
+    let imageInput = document.querySelector("#file");
+    let mainText = tinymce.activeEditor.getContent();
+
+    if (description.length < 4) {
+        alert("Опис занадто короткий, має бути мінімум 4 символи.")
+        return;
+    }
+
+    if (imageInput.files.length === 0) {
+        alert("Завантажте зоображення")
+        return;
+    }
+
+    fromData.append("description", description)
+    fromData.append('image', imageInput.files[0])
+    fromData.append('mainText', mainText);
+
+    if (document.querySelector("#dateSelect").value === "custom") {
+        let data = document.querySelector('#date').value;
+        if (data === '') {
+            alert("Дата має бути вказана")
+            return;
+        }
+        fromData.append("date", data)
+    }
+
+    postRequest(fromData, '/news/new', '/');
+}
+
+function editNews(newsId) {
+    let fromData = new FormData();
+    let description = document.querySelector("#description").value;
+    let imageInput = document.querySelector("#file");
+
+    fromData.append('mainText', tinymce.activeEditor.getContent());
+
+    if (imageInput.files.length !== 0) {
+        fromData.append('image', imageInput.files[0])
+    }
+
+    if (description !== '') {
+        fromData.append("description", description)
+    }
+
+    postRequest(fromData, '/news/update?newsId=' + newsId, '/news/' + newsId);
 }

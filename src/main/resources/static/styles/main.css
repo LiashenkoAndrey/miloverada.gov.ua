@@ -43,24 +43,24 @@ body {
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
     background-color: rgb(233 233 233 / 83%);
   }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-	background-color: rgba(0, 0, 0, 0);
-  }
-   
+
+::-webkit-scrollbar-thumb:horizontal{
+  color: #2a2a2a;
+}
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
-
+    height: 2px;
 	background-color: #3b3a3a;
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
-    background: #555; 
+    background: #555;
   }
 
 .inst-title {
@@ -196,12 +196,15 @@ body {
 }
 
 
-#edit_icon {
+.editable {
+  transition-duration: 160ms;
+  display: none;
+  bottom: 15px;
   position: relative;
 
 }
 
-#edit_icon:hover {
+.editable:hover {
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -256,4 +259,14 @@ body {
 
 .admin-btn {
   font-size: 22px;
+}
+
+.modalWrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
 }

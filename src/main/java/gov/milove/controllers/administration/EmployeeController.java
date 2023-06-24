@@ -2,10 +2,14 @@ package gov.milove.controllers.administration;
 
 import gov.milove.domain.Employee;
 import gov.milove.domain.administration.AdministrationEmployee;
+import gov.milove.repositories.implementation.ImageRepositoryImpl;
 import gov.milove.services.administration.AdministrationEmployeeService;
 import gov.milove.services.administration.AdministrationGroupService;
 import gov.milove.services.ImageService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,8 +20,11 @@ import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/administration")
 public class EmployeeController {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     private final AdministrationEmployeeService administrationEmployeeService;
 
@@ -25,24 +32,16 @@ public class EmployeeController {
 
     private final ImageService imageService;
 
-    public EmployeeController(AdministrationEmployeeService administrationEmployeeService, AdministrationGroupService administrationGroupService, ImageService imageService) {
-        this.administrationEmployeeService = administrationEmployeeService;
-        this.administrationGroupService = administrationGroupService;
-        this.imageService = imageService;
-    }
 
-
-
-    @PostMapping("/group/{group_id}/employee/new")
+    @PostMapping("/employee/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> create(
             @ModelAttribute("main_employee") AdministrationEmployee employee,
             @RequestParam(name = "file", required = false) MultipartFile file,
-            @PathVariable("group_id") String group_id) {
+            @RequestParam(value = "groupId", required = false) String group_id) {
 
         try {
-            if (group_id.equals("null")) {
-                System.out.println("inside!!!");
+            if (group_id == null) {
                 String savedImageId = imageService.saveImage(file);
                 employee.setImage_id(savedImageId);
                 administrationEmployeeService.save(employee);
@@ -53,14 +52,15 @@ public class EmployeeController {
             }
             return ok("Працівник успішно доданий");
         } catch (Exception ex) {
+            logger.error(ex.toString());
             return error("Виникли проблеми з додаванням");
         }
     }
 
-    @PostMapping("/employee/{employee_id}/update")
+    @PostMapping("/employee/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
-            @PathVariable("employee_id") Long id,
+            @RequestParam("employeeId") Long id,
             @ModelAttribute("main_employee") AdministrationEmployee updatedEmployee,
             @RequestParam(value = "file", required = false) MultipartFile file) {
 
@@ -77,18 +77,19 @@ public class EmployeeController {
             administrationEmployeeService.save(oldEmployee);
             return ok("Працівник успішно оновлений");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex.toString());
             return error("Виникли проблеми з оновленням");
         }
     }
 
-    @GetMapping("/employee/{employee_id}/delete")
+    @GetMapping("/employee/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> delete(@PathVariable("employee_id") Long employee_id) {
+    public ResponseEntity<String> delete(@RequestParam("employeeId") Long employee_id) {
         try {
             administrationEmployeeService.deleteById(employee_id);
             return ok("Працівник успішно видалений");
         } catch (Exception ex) {
+            logger.error(ex.toString());
             return error("Виникли проблеми з видаленням");
         }
     }

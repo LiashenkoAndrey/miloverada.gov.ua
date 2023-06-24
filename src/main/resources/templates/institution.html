@@ -2,21 +2,10 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
     <link rel="stylesheet" th:href="@{/styles/notifications.css}">
-    <link rel="stylesheet" th:href="@{/styles/group.css}">
     <link rel="stylesheet" th:href="@{/styles/document.css}">
-    <title>Милівська ОТГ</title>
+    <title th:replace="~{fragments/common.html :: generic-title}"></title>
 <body>
 
-<style>
-    #file-label, #file {display: none;}
-</style>
-
-<div th:replace="~{fragments/notification.html :: notifications}"></div>
-<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
-<div th:replace="~{fragments/forms.html :: employee-form}"></div>
-<div th:replace="~{fragments/forms.html :: formWithOneInput}"></div>
-<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
-<div th:replace="~{fragments/forms.html :: document}"></div>
 
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
@@ -28,44 +17,88 @@
                     <div   class="text-center" style="padding: 10px">
                         <span th:text="${institution.title}" style="font-size: 35px" class="h2 inst-title"></span>
                     </div>
-                    <div class="p-3">
-                        <pre>
-                            <table class="table" style="background-color: white; font-size: 18px; font-family: serif">
-                                <thead class="table-head">
-                                    <tr>
+                    <div style="padding: 5px">
+
+
+                           <pre>
+                            <table class="table" style="background-color: white; font-size: 23px;">
+                                <thead class="table-head table-striped" style="background-color: #0f2f5c; font-family: 'Gabriola'; color: white" >
+                                    <tr class="tr">
                                         <th>Установа</th>
                                         <th>Посада</th>
                                         <th>Ім'я</th>
                                         <th>Прізвище</th>
                                         <th>Телефон</th>
-                                        <th>Робочий email</th>
+                                        <th>Електронна пошта</th>
+                                        <th sec:authorize="hasAuthority('ADMIN')"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr th:each="employee : ${employee_list}" class="table-items-wrapper" >
-                                        <th th:text="${employee.sub_institution}"></th>
-                                        <th th:text="${employee.position}"></th>
-                                        <th th:text="${employee.first_name}"></th>
-                                        <th th:text="${employee.last_name}"></th>
-                                        <th th:text="${employee.phone_number}"></th>
-                                        <th th:text="${employee.email}"></th>
-                                        <th sec:authorize="hasAuthority('ADMIN')" ><button class="btn btn-danger"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити запис\',\'Так, видалити\',\'/установа/employee/' + ${employee.id} + '/delete\',\'null\')'">Видалити запис</button></th>
-                                        <th sec:authorize="hasAuthority('ADMIN')" ><button class="btn btn-info" th:onclick="'enableFormAndInjectAction(\'/установа/employee/' + ${employee.id} + '/update\', \'Оновити\')'">Оновити запис</button></th>
+                                <tbody style="font-family: serif; font-size: 18px">
+                                    <tr th:each="employee : ${employee_list}" >
+                                        <th class="sub_institution" th:text="${employee.sub_institution}"></th>
+                                        <th class="position" th:text="${employee.position}"></th>
+                                        <th class="first_name" th:text="${employee.first_name}"></th>
+                                        <th class="last_name" th:text="${employee.last_name}"></th>
+                                        <th class="phone_number" th:text="${employee.phone_number}"></th>
+                                        <th class="email" th:text="${employee.email}"></th>
+
+
+                                        <td  sec:authorize="hasAuthority('ADMIN')" style="display: flex">
+                                            <button th:employeeId="${employee.id}" class="btn btn-danger" style="width: 100px; height: 50px; margin-right: 3px"   onclick="
+                                               new GetRequestBuilder()
+                                                 .submitText('Ви впевненні що хочете видалити запис?')
+                                                 .param('employeeId', this.getAttribute('employeeId'))
+                                                 .url('/institution/employee/delete')
+                                                 .submitBtn('Так, видалити')
+                                                 .init()
+                                                 .build()
+                                                ">Видалити
+
+                                                </button>
+
+                                            <button th:employeeId="${employee.id}" style="width: 100px; height: 50px"   class="btn btn-info"  onclick="
+                                               new PostRequestFormBuilder()
+                                                 .param({label: 'Установа', name: 'sub_institution', oldValue: this.parentNode.parentNode.getElementsByClassName('sub_institution')[0].innerHTML, isRequired: false })
+                                                 .param({label: 'Посада', name: 'position', oldValue: this.parentNode.parentNode.getElementsByClassName('position')[0].innerHTML, isRequired: false })
+                                                 .param({label: 'Ім\'я', name: 'first_name', oldValue: this.parentNode.parentNode.getElementsByClassName('first_name')[0].innerHTML, isRequired: false})
+                                                 .param({label: 'Прізвище', name: 'last_name', oldValue: this.parentNode.parentNode.getElementsByClassName('last_name')[0].innerHTML, isRequired: false})
+                                                 .param({label: 'Робочий телефон', name: 'phone_number', oldValue: this.parentNode.parentNode.getElementsByClassName('phone_number')[0].innerHTML, isRequired: false})
+                                                 .param({label: 'Електронна пошта', name: 'email', oldValue: this.parentNode.parentNode.getElementsByClassName('email')[0].innerText, isRequired: false, type: 'email'})
+
+                                                 .pathParam('id', this.getAttribute('employeeId'))
+                                                 .setUrl('/institution/employee/update')
+                                                 .submitBtn('Оновити')
+                                                 .init()
+                                                 .build()
+                                                ">Оновити
+                                            </button>
+                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </pre>
-                        <button class="btn btn-success mb-3 admin-btn" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndInjectAction(\'/установа/' + ${institution.id} + '/employee/new\', \'Додати\')'">Додати запис</button>
-                    </div>
-                    <div class="text-end">
-                        <!-- add subgroup button-->
-                        <button class="btn btn-success mb-2 me-2 admin-btn" sec:authorize="hasAuthority('ADMIN')"  th:onclick="'enableFormAndDoPostRequest(\'Створити нову підгрупу\', \'/institution/n/group/'+ ${institution.document_group.id} + '/sub-group/new\',  \'Назва підгрупи\')'" >Додати підгрупу</button>
-                    </div>
-                    <div class="text-center p-4" th:unless="${institution.getDocument_group().getSubGroups().isEmpty()}" id="wrapper">
-                        <div id="edit_icon_wrapper"  style="padding: 10px">
-                            <span id="element" th:text="${institution.getDocument_group().title}" class="h2"></span>
-                            <img th:src="@{/img/pencil.svg}" sec:authorize="hasAuthority('ADMIN')" id="edit_icon" width="22" height="22" th:onclick="'enableFormAndDoPostRequest(\'Змінити\',\'/institution/n/group/' + ${institution.getDocument_group().id} + '/update\',\'Новий заголовок\')'" style="display: none;" alt="">
-                        </div>
+
+                        <style>
+                            .tr th {
+                                font-weight: normal;
+                            }
+                        </style>
+
+                        <button th:institutionId="${institution.id}" class="btn btn-success mb-3 admin-btn" sec:authorize="hasAuthority('ADMIN')" onclick="
+                                new PostRequestFormBuilder()
+                                                 .param({label: 'Установа', name: 'sub_institution'})
+                                                 .param({label: 'Посада', name: 'position'})
+                                                 .param({label: 'Ім\'я', name: 'first_name'})
+                                                 .param({label: 'Прізвище', name: 'last_name'})
+                                                 .param({label: 'Робочий телефон', name: 'phone_number', isRequired: false})
+                                                 .param({label: 'Електронна пошта', name: 'email', isRequired: false, type: 'email'})
+                                                 .pathParam('institutionId', this.getAttribute('institutionId'))
+                                                 .setUrl('/institution/employee/new')
+                                                 .submitBtn('Додати')
+                                                 .init()
+                                                 .build()
+                                                ">Додати запис
+                        </button>
                     </div>
                     <div th:replace="~{fragments/documents_render.html :: document_render(${institution.getDocument_group()})}"></div>
                 </div>
@@ -76,8 +109,6 @@
     <div th:replace="~{fragments/footer.html :: footer}"></div>
 </div>
 
-<script th:src="@{/scripts/documentService.js}"></script>
-<script th:src="@{/scripts/employeeService.js}"></script>
 <script th:src="@{/scripts/requests.js}"></script>
 <script th:src="@{/scripts/editText.js}"></script>
 <script th:src="@{/scripts/printZippedFiles.js}"></script>

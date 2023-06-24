@@ -1,6 +1,5 @@
 package gov.milove;
 
-import gov.milove.domain.CustomDate;
 import gov.milove.domain.News;
 import gov.milove.repositories.NewsRepository;
 import jakarta.persistence.EntityNotFoundException;

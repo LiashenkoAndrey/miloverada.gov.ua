@@ -1,8 +1,9 @@
-package gov.milove.controllers.news;
+package gov.milove.controllers;
 
 import gov.milove.domain.dto.NewsDTO;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.NewsService;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,18 +47,23 @@ public class News {
 
     @PostMapping("/new")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String newNews(@RequestParam("description") String description,
-                          @RequestParam("main_text") String main_text,
+    public ResponseEntity<String> newNews(@RequestParam("description") String description,
+                          @RequestParam("mainText") String main_text,
                           @RequestParam("image") MultipartFile file,
-                          @RequestParam("date") String date ){
-        newsService.saveNews(description, main_text, file, date);
+                          @RequestParam(value = "date", required = false) String date ){
 
-        return "redirect:/";
+        try {
+            newsService.saveNews(description, main_text, file, date);
+            return new ResponseEntity<>("Створення успішне", HttpStatus.OK);
+        } catch (ConstraintViolationException ex) {
+            return new ResponseEntity<>("Вказано неправильні параметри", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
-    @GetMapping("/{news_id}/delete")
+    @GetMapping("/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteNews(@PathVariable("news_id") Long id) {
+    public ResponseEntity<String> deleteNews(@RequestParam("newsId") Long id) {
         boolean success = newsService.deleteNews(id);
         if (success) return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
         else return new ResponseEntity<>("Виникли проблеми з видаленням", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,9 +83,9 @@ public class News {
     }
 
 
-    @GetMapping("/{news_id}/edit")
+    @GetMapping("/edit")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String editNews(@PathVariable("news_id") Long news_id, Model model) {
+    public String editNews(@RequestParam("newsId") Long news_id, Model model) {
         Optional<gov.milove.domain.News> news = newsService.getNewsById(news_id);
 
         if (news.isEmpty()) {
@@ -90,14 +96,14 @@ public class News {
         }
     }
 
-    @PostMapping("/{news_id}/update")
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String updateNews(@RequestParam("description") String description,
-                             @RequestParam("main_text") String main_text,
-                             @RequestParam("image") MultipartFile file,
-                             @PathVariable("news_id") Long news_id) {
+    public  ResponseEntity<String> updateNews(@RequestParam(value = "description", required = false) String description,
+                             @RequestParam("mainText") String main_text,
+                             @RequestParam(value = "image", required = false) MultipartFile file,
+                             @RequestParam("newsId") Long news_id) {
 
         newsService.updateNews(description, main_text, file, news_id);
-        return "redirect:/news/" + news_id;
+        return new ResponseEntity<>("Оновлення успішне", HttpStatus.OK);
     }
 }

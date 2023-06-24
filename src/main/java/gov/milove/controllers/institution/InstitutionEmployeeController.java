@@ -17,8 +17,9 @@ import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
-@RequestMapping("/установа")
+@RequestMapping("/institution")
 public class InstitutionEmployeeController {
+
 
     private final InstitutionService institutionService;
 
@@ -29,10 +30,10 @@ public class InstitutionEmployeeController {
         this.institutionEmployeeService = institutionEmployeeService;
     }
 
-    @PostMapping("/{institution_id}/employee/new")
+    @PostMapping("/employee/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> newEmployee(
-            @PathVariable("institution_id") Long institution_id,
+            @RequestParam("institutionId") Long institution_id,
             @ModelAttribute("employee") InstitutionEmployee employee) {
         try {
             Institution institution = institutionService.findInstitutionById(institution_id)
@@ -48,9 +49,9 @@ public class InstitutionEmployeeController {
     }
 
 
-    @GetMapping("/employee/{id}/delete")
+    @GetMapping("/employee/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employee_id) {
+    public ResponseEntity<String> deleteEmployee(@RequestParam("employeeId") Long employee_id) {
         try {
             institutionEmployeeService.deleteById(employee_id);
             return ok("Працівник успішно видалений");
@@ -61,10 +62,10 @@ public class InstitutionEmployeeController {
     }
 
 
-    @PostMapping("/employee/{id}/update")
+    @PostMapping("/employee/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateEmployee(
-            @PathVariable("id") Long employee_id,
+            @RequestParam("id") Long employee_id,
             @ModelAttribute("employee") InstitutionEmployee employee) {
 
         try {

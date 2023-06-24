@@ -1,6 +1,5 @@
 package gov.milove.services.document;
 
-import gov.milove.domain.CustomDate;
 import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.SubGroup;
@@ -11,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,11 +34,7 @@ public class DocumentSubGroupService {
         DocumentGroup documentGroup = documentGroupRepository.
                 findById(group_id).orElseThrow(EntityNotFoundException::new);
 
-        SubGroup newSubGroup = new SubGroup();
-        newSubGroup.setTitle(title);
-        newSubGroup.setDocument_group(documentGroup);
-        newSubGroup.setDate_of_creation(new CustomDate());
-        subGroupRepository.save(newSubGroup);
+        subGroupRepository.save(new SubGroup(title, documentGroup, new Date()));
     }
 
     public boolean deleteSubGroup(Long subGroupId) {

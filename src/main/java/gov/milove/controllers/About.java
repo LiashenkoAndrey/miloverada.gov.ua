@@ -1,6 +1,5 @@
 package gov.milove.controllers;
 
-import gov.milove.domain.CustomDate;
 import gov.milove.repositories.AboutRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

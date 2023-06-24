@@ -40,6 +40,8 @@ public class NewsService {
 
     public void saveNews(String description, String main_text, MultipartFile image, String date) {
         String savedImageId = imageService.saveImage(image);
+
+
         newsRepository.save(News.builder()
                         .description(description)
                         .main_text(main_text)
@@ -69,12 +71,12 @@ public class NewsService {
 
     public void updateNews(String description, String main_text, MultipartFile file, Long news_id) {
         News news = newsRepository.findById(news_id).orElseThrow(EntityNotFoundException::new);
-        if (!file.isEmpty()) {
+        if (file != null) {
             imageService.updateImage(file, news.getImage_id());
         }
 
         if (description != null) news.setDescription(description);
-        if (main_text != null) news.setMain_text(main_text);
+        news.setMain_text(main_text);
         news.setLast_updated(LocalDateTime.now());
         newsRepository.save(news);
     }

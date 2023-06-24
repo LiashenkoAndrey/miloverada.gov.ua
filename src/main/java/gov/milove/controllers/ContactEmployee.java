@@ -13,7 +13,7 @@ import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @Controller
-@RequestMapping("/контакти")
+@RequestMapping("/contacts")
 public class ContactEmployee {
 
     private final ContactEmployeeService service;
@@ -29,7 +29,7 @@ public class ContactEmployee {
         return "contacts";
     }
 
-    @PostMapping("/employee/new")
+    @PostMapping("/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> create(@ModelAttribute("employee") gov.milove.domain.ContactEmployee employee ){
 
@@ -41,10 +41,10 @@ public class ContactEmployee {
         }
     }
 
-    @PostMapping("/employee/{employee_id}/update")
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
-            @PathVariable("employee_id") Long id,
+            @RequestParam("id") Long id,
             @ModelAttribute("employee") gov.milove.domain.ContactEmployee updatedEmployee){
 
         try {
@@ -60,9 +60,9 @@ public class ContactEmployee {
         }
     }
 
-    @GetMapping("/employee/{employee_id}/delete")
+    @GetMapping("/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> delete(@PathVariable("employee_id") Long employee_id) {
+    public ResponseEntity<String> delete(@RequestParam("id") Long employee_id) {
         try {
             service.deleteById(employee_id);
             return ok("Працівник успішно видалений");

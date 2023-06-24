@@ -10,19 +10,6 @@
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<!--notifications -->
-<div th:replace="~{fragments/notification.html :: notifications}"></div>
-
-<!-- forms -->
-<div th:replace="~{fragments/forms.html :: formWithOneInput}"></div>
-<div th:replace="~{fragments/forms.html :: confirm-form}"></div>
-<div th:replace="~{fragments/forms.html :: employee-form}"></div>
-<div th:replace="~{fragments/forms.html :: document}"></div>
-
-<style>
-   #sub_institution, #sub_institution_title  {display: none;}
-</style>
-
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
 
@@ -30,56 +17,184 @@
         <div>
             <div>
                 <h2 class="text-center p-3">Керівництво</h2>
-                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-3 ms-3 admin-btn" th:onclick="'enableFormAndInjectAction(\'/administration/group/null/employee/new\', \'Додати\')'">Додати працівника</button>
+                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-3 ms-3 admin-btn" onclick="
+                     new PostRequestFormBuilder()
+                             .param({label: 'Посада', name: 'position'})
+                             .param({label: 'Ім\'я', name: 'first_name'})
+                             .param({label: 'Прізвище', name: 'last_name'})
+                             .param({label: 'Робочий телефон', name: 'phone_number', isRequired: false})
+                             .param({label: 'Електронна пошта', name: 'email', isRequired: false, type: 'email'})
+                             .param({label: 'Фото', name: 'file', type: 'file'})
+                             .setUrl('/administration/employee/new')
+                             .submitBtn('Додати')
+                             .init()
+                             .build()
+                ">Додати працівника</button>
                 <div>
-                    <div class="row ms-4 me-4 mb-2 p-2" style="background-color: white; border-radius: 3px;" th:each="main_employee : ${main_employees}">
-                        <div class="col-sm-2 text-center">
-                            <img th:src="'/upload/image/' + ${main_employee.image_id}"  height="130" width="130"  style="display: inline-block; border-radius: 3px" alt="...">
+                    <div class="mb-5 main-employee" th:each="main_employee : ${main_employees}" style="margin: 10px; padding: 3px">
+                        <div class="text-center">
+                            <img th:src="'/upload/image/' + ${main_employee.image_id}"  height="130" width="130"  alt="...">
                         </div>
 
-                        <div class="col mt-4" >
-                            <h3 th:text="${main_employee.position}" style="font-size: 28px; font-weight: bold"></h3>
-                            <p class="h4" style="font-size: 28px" th:text="${main_employee.first_name} + ' ' + ${main_employee.last_name}">Марія В. В</p>
+                        <div class="data1">
+                            <h3 class="position" th:text="${main_employee.position}" style="font-size: 28px; font-weight: bold"></h3>
+                            <span class="firstName" style="font-size: 24px;" th:text="${main_employee.first_name}"  ></span>
+                            <span class="lastName" style="font-size: 24px;" th:text="${main_employee.last_name}" ></span>
                         </div>
-                        <div class="p-1 mx-1"  style="width: 110px" sec:authorize="hasAuthority('ADMIN')">
-                            <button class="btn btn-info m-1 admin-btn" style="width: 100px" th:onclick="'enableFormAndInjectAction(\'/administration/employee/' + ${main_employee.id} + '/update\', \'Оновити\')'">Оновити</button>
-                            <button class="btn btn-danger m-1 admin-btn" style="width: 100px"  th:onclick="'enableFormAndDoGetRequest(\'Ви впевненні що хочете видалити працівника\',\'Так, видалити\',\'/administration/employee/' + ${main_employee.id} + '/delete\',\'null\')'">Видалити</button>
+                        <div class="data2" >
+                            <h3 style="font-size: 28px; font-weight: bold">Електронна пошта</h3>
+                            <span class="email" style="font-size: 24px;" th:text="${main_employee.email}"> </span>
+                            <br>
+                            <h3 style="font-size: 28px; font-weight: bold">Робочий телефон</h3>
+                            <span class="phone_number" style="font-size: 24px;" th:text="${main_employee.phone_number}"></span>
                         </div>
+
+                        <div>
+                            <button class="btn btn-info admin-btn" th:employeeId="${main_employee.id}"   style="width: 100px"  sec:authorize="hasAuthority('ADMIN')" onclick="
+                               new PostRequestFormBuilder()
+                                 .param({label: 'Посада', name: 'position', oldValue: this.parentNode.parentNode.getElementsByClassName('data1')[0].getElementsByClassName('position')[0].innerHTML, isRequired: false })
+                                 .param({label: 'Ім\'я', name: 'first_name', oldValue: this.parentNode.parentNode.getElementsByClassName('data1')[0].getElementsByClassName('firstName')[0].innerHTML, isRequired: false})
+                                 .param({label: 'Прізвище', name: 'last_name', oldValue: this.parentNode.parentNode.getElementsByClassName('data1')[0].getElementsByClassName('lastName')[0].innerHTML, isRequired: false})
+                                 .param({label: 'Робочий телефон', name: 'phone_number', oldValue: this.parentNode.parentNode.getElementsByClassName('data2')[0].getElementsByClassName('phone_number')[0].innerHTML, isRequired: false})
+                                 .param({label: 'Електронна пошта', name: 'email', oldValue: this.parentNode.parentNode.getElementsByClassName('data2')[0].getElementsByClassName('email')[0].innerHTML, isRequired: false, type: 'email'})
+                                 .param({label: 'Фото', name: 'file', type: 'file', isRequired: false})
+                                 .pathParam('employeeId', this.getAttribute('employeeId'))
+                                 .setUrl('/administration/employee/update')
+                                 .submitBtn('Змінити')
+                                 .init()
+                                 .build()
+                                ">Оновити
+                            </button>
+
+                            <button class="btn btn-danger admin-btn" th:employeeId="${main_employee.id}"  sec:authorize="hasAuthority('ADMIN')" onclick="
+                                    new GetRequestBuilder()
+                                     .submitText('Ви впевненні що хочете видалити працівника?')
+                                     .param('employeeId', this.getAttribute('employeeId'))
+                                     .url('/administration/employee/delete')
+                                     .submitBtn('Так, видалити')
+                                     .init()
+                                     .build()
+                                    ">Видалити
+                            </button>
+                        </div>
+
                     </div>
                 </div>
 
-                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-2 ms-3 admin-btn" onclick="enableFormAndDoPostRequest('Додати', '/administration/group/new', 'Назва групи')">Додати групу</button>
+                <button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success mb-2 ms-3 admin-btn" onclick="
+                        new PostRequestFormBuilder()
+                                 .param({label: 'Назва групи', name: 'title'})
+                                 .setUrl('/administration/group/new')
+                                 .submitBtn('Змінити')
+                                 .init()
+                                 .build()
+                    ">Додати групу
+                </button>
 
                 <div class="accordion accordion-flush"  id="accordionFlushExample">
                     <div class="accordion-item"  th:each="group : ${groups}">
                         <h2 class="accordion-header" th:id="'flush-heading' + ${group.id}">
-                            <!--title-->
-                            <button th:text="${group.title}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${group.id}"></button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${group.id}">
+                                <div class="editable_wrapper" >
+                                    <span class="h2" style="font-size: 30px" th:text="${group.title}" ></span>
+
+                                    <img th:src="@{/img/pencil.svg}" th:groupId="${group.id}"  sec:authorize="hasAuthority('ADMIN')" class="editable" width="22" height="22" onclick="
+                                         new PostRequestFormBuilder()
+                                             .param({label:'Змінити назву підгрупи', name:'title', oldValue: this.parentNode.getElementsByTagName('span')[0].innerHTML})
+                                             .pathParam('subGroupId', this.getAttribute('groupId'))
+                                             .setUrl('/administration/subGroup/update')
+                                             .submitBtn('Змінити')
+                                             .init()
+                                             .build()
+                                         ">
+                                </div>
+                            </button>
                         </h2>
                         <div th:id="'flush-collapse'+ ${group.id}" class="accordion-collapse collapse" th:aria-labelledby="'flush-heading' + ${group.id} " data-bs-parent="#accordionFlushExample">
 
-                            <div class="accordion-body">
-                                <div class="accordion accordion-flush col mt-3 me-4" id="accordionFlush2"  >
-                                    <div th:replace="~{fragments/administration/printTable.html :: printTable(${group.employee_list})}"></div>
-                                    <div th:replace="~{fragments/administration/printDocuments.html :: printDocuments(${group})}"></div>
+                            <div class="accordion-body" style="padding: 5px">
+                                <div class="accordion accordion-flush col " id="accordionFlush2"  >
 
-                                    <div class="accordion-item" th:each="sub_group : ${group.group_list}">
-                                        <h2 class="accordion-header" id="flush-headingOne">
-                                            <!--title-->
-                                            <button  th:text="${sub_group.title}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#flush-collapse' + ${sub_group.id}" aria-expanded="false" th:aria-controls="'flush-collapse' + ${sub_group.id}"></button>
-                                        </h2>
-                                        <div th:id="'flush-collapse' + ${sub_group.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlush2">
-                                            <div class="accordion-body">
-                                                <div th:replace="~{fragments/administration/printTable.html :: printTable(${sub_group.employee_list})}"></div>
-                                                <div th:replace="~{fragments/administration/printDocuments.html :: printDocuments(${sub_group})}"></div>
-                                                <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${sub_group})}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <style></style>
 
+                                      <pre><table th:unless="${group.employee_list.isEmpty() == true}" class="table" style="background-color: white; font-size: 23px;" >
+                                                        <thead class="table-head table-striped" style="background-color: #0f2f5c; font-family: 'Gabriola'; color: white" >
+                                                            <tr class="tr">
+                                                                <th>Посада</th>
+                                                                <th>Ім'я</th>
+                                                                <th>Прізвище</th>
+                                                                <th>Телефон</th>
+                                                                <th>Електронна пошта</th>
+                                                                <th  sec:authorize="hasAuthority('ADMIN')"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody style="font-family: serif; font-size: 18px">
+                                                            <tr th:each="employee : ${group.employee_list}" >
+                                                                    <td class="position" th:text="${employee.position}"></td>
+                                                                    <td class="first_name" th:text="${employee.first_name}"></td>
+                                                                    <td class="last_name" th:text="${employee.last_name}"></td>
+                                                                    <td class="phone_number" th:text="${employee.phone_number}"></td>
+                                                                    <td class="email" th:text="${employee.email}"></td>
+
+                                                                    <td  sec:authorize="hasAuthority('ADMIN')" style="display: flex">
+                                                                        <button th:employeeId="${employee.id}" class="btn btn-danger" style="width: 100px; height: 50px; margin-right: 3px"   onclick="
+                                                                                      new GetRequestBuilder()
+                                                                                         .submitText('Ви впевненні що хочете видалити запис?')
+                                                                                         .param('id', this.getAttribute('employeeId'))
+                                                                                         .url('/administration/delete')
+                                                                                         .submitBtn('Так, видалити')
+                                                                                         .init()
+                                                                                         .build()
+                                                                                        ">Видалити
+                                                                        </button>
+
+                                                                        <button th:employeeId="${employee.id}" style="width: 100px; height: 50px"   class="btn btn-info"  onclick="
+                                                                                       new PostRequestFormBuilder()
+                                                                                         .param({label: 'Посада', name: 'position', oldValue: this.parentNode.parentNode.getElementsByClassName('position')[0].innerHTML})
+                                                                                         .param({label: 'Ім\'я', name: 'first_name', oldValue: this.parentNode.parentNode.getElementsByClassName('first_name')[0].innerHTML})
+                                                                                         .param({label: 'Прізвище', name: 'last_name', oldValue: this.parentNode.parentNode.getElementsByClassName('last_name')[0].innerHTML})
+                                                                                         .param({label: 'Робочий телефон', name: 'phone_number', oldValue: this.parentNode.parentNode.getElementsByClassName('phone_number')[0].innerHTML, isRequired: false})
+                                                                                         .param({label: 'Електронна пошта', name: 'email', oldValue: this.parentNode.parentNode.getElementsByClassName('email')[0].innerHTML, isRequired: false, type: 'email'})
+
+                                                                                         .pathParam('employeeId', this.getAttribute('employeeId'))
+                                                                                         .setUrl('administration/employee/update')
+                                                                                         .submitBtn('Оновити')
+                                                                                         .init()
+                                                                                         .build()
+                                                                                        ">Оновити
+                                                                        </button>
+                                                                    </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table></pre>
                                     <div sec:authorize="hasAuthority('ADMIN')">
-                                        <div th:replace="~{fragments/administration/groupCrudButtons.html :: groupCrudButtons(${group})}"></div>
-                                        <button class="btn btn-success mt-2 admin-btn" th:onclick="'enableFormAndDoPostRequest(\'Додати\',\'/administration/group/' + ${group.id} + '/sub-group/new\', \'Назва підгрупи\')'">Додати підгрупу</button>
+
+                                        <button th:groupId="${group.id}"  class="btn btn-success  admin-btn" onclick="
+                                        new PostRequestFormBuilder()
+                                                         .param({label: 'Посада', name: 'position'})
+                                                         .param({label: 'Ім\'я', name: 'first_name'})
+                                                         .param({label: 'Прізвище', name: 'last_name'})
+                                                         .param({label: 'Робочий телефон', name: 'phone_number', isRequired: false})
+                                                         .param({label: 'Електронна пошта', name: 'email', type: 'email', isRequired: false})
+                                                         .pathParam('groupId', this.getAttribute('groupId'))
+                                                         .setUrl('/administration/employee/new')
+                                                         .submitBtn('Додати')
+                                                         .init()
+                                                         .build()
+                                                        ">Додати запис
+                                        </button>
+
+
+                                        <button class="btn btn-danger admin-btn" th:subGroupId="${group.id}" th:title="${group.title}" onclick="
+                                        new GetRequestBuilder()
+                                         .submitText('Ви впевнені що хочете видалити підгрупу?')
+                                         .param('groupId', this.getAttribute('subGroupId'))
+                                         .url('/administration/subGroup/delete')
+                                         .submitBtn('Так, видалити')
+                                         .init()
+                                         .build()
+                                        ">Видалити підгрупу
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -90,12 +205,17 @@
         </div>
     </div>
 
+    <style>
+        .tr th {
+            font-weight: normal;
+        }
+    </style>
+
     <div th:replace="~{fragments/footer.html :: footer}"></div>
 
 </div>
 
-<script th:src="@{/scripts/documentService.js}"></script>
-<script th:src="@{/scripts/administrationService.js}"></script>
+<script th:src="@{/scripts/editText.js}"></script>
 <script th:src="@{/scripts/employeeService.js}"></script>
 <script th:src="@{/scripts/requests.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

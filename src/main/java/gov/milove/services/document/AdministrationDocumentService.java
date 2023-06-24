@@ -36,6 +36,5 @@ public class AdministrationDocumentService extends DocumentCrudService {
                 .build();
 
         documentRepository.save(newDocument);
-        System.out.println("Document saved successfully! in AdministrationDocumentService");
     }
 }

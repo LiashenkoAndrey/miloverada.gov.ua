@@ -15,7 +15,7 @@ let saveData = (function () {
 
 
 
-function unzipAndPrintAsList(parent, nameOfFile, documentId , groupId, subGroupId) {
+function unzipAndPrintAsList(parent, nameOfFile) {
 
     parent.onclick = '';
     let d = document.createElement("p")

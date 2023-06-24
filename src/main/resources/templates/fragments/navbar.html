@@ -2,10 +2,17 @@
 <div th:fragment="navbar" style="background-color: rgb(0 0 0 / 3%);">
   <div class="sticky">
     <div th:each="group : ${groups}">
-        <a th:href="@{'/institution/n/group/' + ${group.id}}" style="text-decoration: none" >
+        <a th:href="@{'/documentGroup/view/' + ${group.id}}" style="text-decoration: none" >
             <img th:src="@{/img/arrow-left.png}" class="arrows" style="display: inline-block" alt="arrow">
             <span class="link h5" style="display: inline; position: relative; top: 2px"  th:text="${group.title}" >Document</span>
         </a>
     </div>
+      <button class="admin-btn btn btn-success mt-4" sec:authorize="hasAuthority('ADMIN')" onclick="new PostRequestFormBuilder()
+                             .param({label:'Назва групи документів', name: 'groupTitle'})
+                             .setUrl('/documentGroup/new')
+                             .submitBtn('Створити')
+                             .init()
+                             .build()
+                         ">Нова група документів</button>
   </div>
 </div>
