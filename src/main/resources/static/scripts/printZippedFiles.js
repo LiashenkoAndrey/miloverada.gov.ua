@@ -21,7 +21,7 @@ function unzipAndPrintAsList(parent, nameOfFile) {
     let d = document.createElement("p")
     parent.appendChild(d)
 
-    fetch('http://localhost/upload/document/' + nameOfFile, {
+    fetch('http://miloverada.gov.ua//upload/document/' + nameOfFile, {
     })
         .then(response => response.blob())
         .then((data) => {
