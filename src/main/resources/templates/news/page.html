@@ -48,6 +48,16 @@
       </div>
 
       <div  th:utext="${news.main_text}" class="mt-5" style="font-size: 22px; font-family: serif; margin: 10px"></div>
+
+      <h1 th:if="${!similarNews.isEmpty()}"  class="m-2 mt-5 mb-2" style="font-size: 35px; text-align: center; text-decoration: underline">Схожі новини</h1>
+      <div th:if="${!similarNews.isEmpty()}" id="news-container" style="padding: 0 10px 10px 0; margin-left: 30px">
+        <div class="news" th:each="news : ${similarNews}" >
+          <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
+          </a>
+          <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
+          <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toLocalDate()}"></span></div>
+        </div>
+      </div>
     </div>
 
   </div>

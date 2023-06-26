@@ -53,17 +53,15 @@ async function doUploadImage() {
 
 
 
-function yesnoCheck(that) {
-    if (that.value === "custom") {
-        document.getElementById("ifYes").style.display = "block";
-    } else {
-        document.getElementById("ifYes").style.display = "none";
-    }
+function customSelectCheck(value, id) {
+    let elem = document.getElementById(id);
+    if (value === "") elem.style.display = "block";
+    else elem.style.display = "none";
 }
 
 
 function newNews(id) {
-    let fromData = new FormData();
+    let formData = new FormData();
 
     let description = document.querySelector("#description").value;
     let imageInput = document.querySelector("#file");
@@ -79,10 +77,10 @@ function newNews(id) {
         return;
     }
 
-    fromData.append("description", description)
-    fromData.append('image', imageInput.files[0])
-    fromData.append('mainText', mainText);
-    fromData.append('newsId', id )
+    formData.append("description", description)
+    formData.append('image', imageInput.files[0])
+    formData.append('mainText', mainText);
+    formData.append('newsId', id )
 
     if (document.querySelector("#dateSelect").value === "custom") {
         let data = document.querySelector('#date').value;
@@ -90,26 +88,61 @@ function newNews(id) {
             alert("Дата має бути вказана")
             return;
         }
-        fromData.append("date", data)
+        formData.append("date", data)
     }
 
-    postRequest(fromData, '/news/new', '/');
+    let title = document.querySelector("#typeTitle").value;
+    let explanation = document.querySelector("#titleExplanation").value;
+    let selectedVal  = document.querySelector("#typeSelect").value;
+    if (selectedVal === "") {
+        if (title === "" || explanation === "") {
+            alert("Поля нового типу мають бути заповненими");
+            return;
+        }
+        formData.append("typeTitle", title);
+        formData.append("titleExplanation", explanation);
+    } else {
+        if (selectedVal !== 'notSelected') {
+            formData.append("newsTypeId", selectedVal)
+        }
+    }
+
+
+
+    postRequest(formData, '/news/new', '/');
 }
 
 function editNews(newsId) {
-    let fromData = new FormData();
+    let formData = new FormData();
     let description = document.querySelector("#description").value;
     let imageInput = document.querySelector("#file");
 
-    fromData.append('mainText', tinymce.activeEditor.getContent());
+    formData.append('mainText', tinymce.activeEditor.getContent());
 
     if (imageInput.files.length !== 0) {
-        fromData.append('image', imageInput.files[0])
+        formData.append('image', imageInput.files[0])
     }
 
     if (description !== '') {
-        fromData.append("description", description)
+        formData.append("description", description)
     }
 
-    postRequest(fromData, '/news/update?newsId=' + newsId, '/news/' + newsId);
+    let title = document.querySelector("#typeTitle").value;
+    let explanation = document.querySelector("#titleExplanation").value;
+    let selectedVal  = document.querySelector("#typeSelect").value;
+    if (selectedVal === "") {
+        if (title === "" || explanation === "") {
+            alert("Поля нового типу мають бути заповненими");
+            return;
+        }
+        formData.append("typeTitle", title);
+        formData.append("titleExplanation", explanation);
+    } else {
+        if (selectedVal !== 'notSelected') {
+            formData.append("newsTypeId", selectedVal)
+        }
+    }
+
+
+    postRequest(formData, '/news/update?newsId=' + newsId, '/news/' + newsId);
 }

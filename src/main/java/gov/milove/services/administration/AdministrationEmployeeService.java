@@ -6,22 +6,19 @@ import gov.milove.exceptions.AdministrationEmployeeServiceException;
 import gov.milove.repositories.administration.AdministrationEmployeeRepository;
 import gov.milove.services.ImageService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdministrationEmployeeService {
 
     private final ImageService imageService;
 
     private final AdministrationEmployeeRepository repository;
-
-    public AdministrationEmployeeService(ImageService imageService, AdministrationEmployeeRepository repository) {
-        this.imageService = imageService;
-        this.repository = repository;
-    }
 
     public List<AdministrationEmployee> findAllWhereGroupIdIsNull() {
         return repository.findAllWhereGroupIdIsNull();

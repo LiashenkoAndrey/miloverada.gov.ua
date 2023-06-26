@@ -29,13 +29,29 @@
 
             <div class="input-group mt-3" >
                 <label class="input-group-text" style="font-size: 25px">Дата</label>
-                <select id="dateSelect" onchange="yesnoCheck(this);" style="font-size: 25px" class="form-select">
-                    <option value="" style="font-size: 25px">Поточна</option>
-                    <option value="custom" style="font-size: 25px">Вказати</option>
+                <select id="dateSelect" onchange="customSelectCheck(this.value, 'specifyData');" style="font-size: 25px" class="form-select">
+                    <option value="current" style="font-size: 25px">Поточна</option>
+                    <option value="" style="font-size: 25px">Вказати</option>
                 </select>
             </div>
 
-            <div id="ifYes" style="display: none;" class="m-3">
+            <div class="input-group mt-3" >
+                <label class="input-group-text" style="font-size: 25px">Тема</label>
+                <select style="font-size: 25px" id="typeSelect" onchange="customSelectCheck(this.value, 'defineNewNewsType')" class="form-select">
+                    <option value="notSelected" selected>Не вказувати</option>
+                    <option th:each="type : ${allTypesList}" th:utext="${type.title} + ' - ' + ${type.titleExplanation}" th:value="${type.id}" style="font-size: 25px"></option>
+                    <option value="" style="font-size: 25px">Інший тип</option>
+                </select>
+            </div>
+
+            <div id="defineNewNewsType" style="display: none;" class="m-3">
+                <label for="typeTitle" style="font-size: 25px" class="form-label">Тип</label>
+                <input type="text" class="form-control" style="font-size: 25px" id="typeTitle" >
+                <label for="titleExplanation" style="font-size: 25px" class="form-label">Короткий опис</label>
+                <input type="text" class="form-control" style="font-size: 25px" id="titleExplanation"  >
+            </div>
+
+            <div id="specifyData" style="display: none;" class="m-3">
                 <label for="date" style="font-size: 25px" class="form-label">Вкажіть дату</label>
                 <input type="date" class="form-control" style="font-size: 25px" id="date" name="date" >
             </div>

@@ -28,15 +28,34 @@
 
             <label for="file" class="form-label" style="font-size: 30px">Змінити зоображення</label>
             <input type="file" id="file" name="image" class="form-control" style="font-size: 20px">
+            <br>
+
+            <div class="input-group mt-3" >
+                <label class="input-group-text" style="font-size: 25px">Тема</label>
+                <select style="font-size: 25px" id="typeSelect" onchange="customSelectCheck(this.value, 'defineNewNewsType')" class="form-select">
+                    <option value="notSelected" th:unless="${news.getNews_type_id()}" selected>Не вказувати</option>
+                    <option th:each="type : ${allTypesList}" th:utext="${type.title} + ' - ' + ${type.titleExplanation}" th:value="${type.id}" style="font-size: 25px"></option>
+                    <option value="notSelected">Не вказувати</option>
+                    <option value="" style="font-size: 25px">Інший тип</option>
+                </select>
+            </div>
+
+            <div id="defineNewNewsType" style="display: none;" class="m-3">
+                <label for="typeTitle" style="font-size: 25px" class="form-label">Тип</label>
+                <input type="text" class="form-control" style="font-size: 25px" id="typeTitle" >
+                <label for="titleExplanation" style="font-size: 25px" class="form-label">Короткий опис</label>
+                <input type="text" class="form-control" style="font-size: 25px" id="titleExplanation"  >
+            </div>
 
             <br>
             <label for="input" class="form-label" style="font-size: 30px">Основний текст</label>
             <div class="demo-inline">
                 <div class="tinymce-body" id="input" style="height: 600px" th:utext="${news.main_text}" ></div>
             </div>
-            <textarea style="display: none" id="main_text" class="form-control"  name="main_text"></textarea>
+            <textarea style="display: none" id="main_text" class="tinymce-body"  name="main_text"></textarea>
 
-            <button class="btn btn-success mt-3" style="font-size: 20px" th:onclick="'editNews('+ ${news.id} +')'">Оновити</button>
+
+            <button class="btn btn-success mt-3 mb-2" style="font-size: 20px" th:onclick="'editNews('+ ${news.id} +')'">Оновити</button>
 
             <!-- update news button -->
             <input type="submit" id="submit-form" style="display: none" class="btn btn-success mt-2 mb-2 admin-btn" value="Оновити">

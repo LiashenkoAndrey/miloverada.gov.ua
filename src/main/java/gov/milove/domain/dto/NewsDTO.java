@@ -1,6 +1,5 @@
 package gov.milove.domain.dto;
 
-import gov.milove.domain.News;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -66,5 +66,6 @@
 }
 
 .tinymce-body {
+    min-height: 600px;
     padding: 10px;
 }

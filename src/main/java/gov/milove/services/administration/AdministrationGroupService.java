@@ -6,6 +6,7 @@ import gov.milove.exceptions.AdministrationGroupServiceException;
 import gov.milove.repositories.administration.AdministrationGroupRepository;
 import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,16 @@ import java.util.Optional;
 @Service
 public class AdministrationGroupService {
 
-    private final AdministrationGroupRepository repository;
-    private final AdministrationEmployeeService employeeService;
-
-    private final DocumentService documentService;
-
     public AdministrationGroupService(AdministrationGroupRepository repository, AdministrationEmployeeService employeeService, @Qualifier("administrationDocumentService") DocumentService documentService) {
         this.repository = repository;
         this.employeeService = employeeService;
         this.documentService = documentService;
     }
+
+    private final AdministrationGroupRepository repository;
+    private final AdministrationEmployeeService employeeService;
+
+    private final DocumentService documentService;
 
     public List<AdministrationGroup> findAllGroups() {
         return repository.findAllWhereGroupIdIsNull();

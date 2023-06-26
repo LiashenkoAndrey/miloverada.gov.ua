@@ -1,6 +1,7 @@
 package gov.milove.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,17 +23,22 @@ public class News {
     private Long id;
 
     @Size(min = 4, max = 255)
+    @NotNull
     private String description;
 
     @Size(max = 40000)
+    @NotNull
     private String main_text;
 
+    @NotNull
     private String image_id;
 
+    @NotNull
     private LocalDateTime created;
 
     private LocalDateTime last_updated;
 
     private Boolean is_banner;
 
+    private Long news_type_id;
 }
