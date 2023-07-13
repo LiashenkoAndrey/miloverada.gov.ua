@@ -3,7 +3,7 @@ package gov.milove.services.document;
 import gov.milove.domain.Document;
 import gov.milove.exceptions.DocumentCrudServiceException;
 import gov.milove.repositories.document.DocumentRepository;
-import gov.milove.repositories.implementation.DocumentRepositoryMongo;
+import gov.milove.repositories.impl.DocumentRepositoryMongo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

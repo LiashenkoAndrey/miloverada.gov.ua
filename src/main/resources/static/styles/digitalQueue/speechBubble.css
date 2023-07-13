@@ -1,0 +1,22 @@
+.bubble
+{
+  position:relative;
+
+}
+
+.bubbletext
+{
+    font-family: cursive;
+    width: 87px;
+    line-height: 15px;
+    font-size: 14px;
+    color: black;
+    position: absolute;
+    right: -8px;
+    top: 22px;
+}
+
+.boubleWrapper {
+    position: absolute;
+    left: 65px;
+}

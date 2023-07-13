@@ -1,0 +1,120 @@
+
+#records {
+    row-gap: 15px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);
+    justify-content: center;
+
+    min-height: 110px;
+}
+
+.record {
+    position: relative;
+}
+
+#records h4 {
+    font-weight: bold;
+    font-size: 22px;
+    font-family: serif;
+}
+
+#records img {
+    rotate: 90deg;
+    width: 60px;
+    height: 50px;
+}
+
+#records img:hover {
+    cursor: not-allowed;
+}
+
+.empty-place {
+    width: 40px;
+    height: 50px;
+    background-color: rgb(67, 167, 42);
+    border-radius: 10px;
+    display: inline-block
+}
+
+.empty-place:hover {
+    cursor: pointer;
+    border: 3px solid black;
+}
+
+#inputs {
+    display: flex;
+    gap: 5px;
+}
+
+.form-control {
+    font-family: serif;
+    font-size: 20px;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.selectable {
+    -webkit-touch-callout: default; /* iOS Safari */
+    -webkit-user-select: auto; /* Safari */
+    -khtml-user-select: auto; /* Konqueror HTML */
+    -moz-user-select: auto; /* Old versions of Firefox */
+    -ms-user-select: auto; /* Internet Explorer/Edge */
+    user-select: auto; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.content {
+    align-self: center;
+}
+
+#recordWrapper {
+    margin-right: 10%;
+    margin-left: 5%;
+}
+
+@media screen and (max-width: 700px) {
+    #inputs {
+        display: block;
+    }
+
+    #records {
+        min-height: 372px;
+    }
+
+    .content {
+        align-self: auto;
+    }
+
+    #recordWrapper {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+}
+
+.content {
+    margin-bottom: 40px;
+    min-height: 565px;
+}
+
+#loadingIcon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.form-group label {
+    font-size: 25px;
+}

@@ -1,23 +1,26 @@
 
 
 #services {
+    justify-content: center;
     padding: 10px;
-    display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 20px;
 }
 
 .service {
+    position: relative;
     border-radius: 5px;
-    padding: 15px 0 15px 0;
     background-color: rgba(0, 0, 0, 0.142);
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .service-btn {
     transition-duration: 1s;
-    font-size: 20px;
+    font-size: 25px;
     color: white;
     background-color: rgb(29, 29, 160);
 }
@@ -42,3 +45,23 @@
     border: black solid 1px;
 }
 
+
+.service_name {
+    font-size: 28px;
+    padding: 3px;
+    margin-top: 3px;
+    text-align: center;
+}
+
+.makeRecord {
+    font-size: 23px;
+}
+
+.service_description {
+    margin: 10px 5px 0 5px;
+    font-size: 23px
+}
+
+.service {
+    width: 185px;
+}

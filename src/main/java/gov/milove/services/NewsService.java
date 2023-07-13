@@ -6,9 +6,7 @@ import gov.milove.domain.dto.NewsDTO;
 import gov.milove.exceptions.NewsServiceException;
 import gov.milove.repositories.NewsRepository;
 
-import gov.milove.repositories.implementation.ImageRepositoryImpl;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

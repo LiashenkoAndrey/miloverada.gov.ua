@@ -8,8 +8,15 @@ async function postRequest(formData ,url, redirectUrl) {
     }).then(response => {
         processResponse(response, redirectUrl);
     })
-
 }
+
+async function postRequest(formData, url) {
+    return await fetch(url, {
+        method: "POST",
+        body: formData
+    });
+}
+
 async function getRequest(url, redirectUrl) {
     await fetch(url, {
         method: "GET"

@@ -1,7 +1,7 @@
 package gov.milove.services;
 
 import gov.milove.repositories.ImageRepository;
-import gov.milove.repositories.implementation.ImageRepositoryImpl;
+import gov.milove.repositories.impl.ImageRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

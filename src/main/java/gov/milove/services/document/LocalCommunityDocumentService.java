@@ -5,7 +5,7 @@ import gov.milove.domain.Document;
 import gov.milove.domain.SubGroup;
 import gov.milove.repositories.document.DocumentRepository;
 import gov.milove.repositories.document.DocumentSubGroupRepository;
-import gov.milove.repositories.implementation.DocumentRepositoryMongo;
+import gov.milove.repositories.impl.DocumentRepositoryMongo;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

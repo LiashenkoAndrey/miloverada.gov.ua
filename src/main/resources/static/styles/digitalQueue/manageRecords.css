@@ -1,0 +1,192 @@
+#infoIcon {
+    margin-left: 3px;
+    padding: 1px 3px 3px 3px;
+}
+
+#infoIcon:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+}
+
+#reload:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 15px;
+}
+#loadingIcon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.time {
+    text-align: center;
+}
+
+#time-line {
+    border-top: 1px blue solid;
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+#timeCells tr td {
+    padding: 2px;
+    height: 30px;
+}
+
+#table-info th {
+    text-align: center;
+}
+
+.table-day-number {
+    font-size: 1.3rem;
+}
+
+.reserved {
+    margin-top: 2px;
+    height: 20px;
+    background-color: green;
+    border-radius: 10px;
+}
+
+.reserved:hover {
+    cursor: pointer;
+    height: 20px;
+    border: black solid 2px;
+    background-color: rgba(9, 239, 9, 0.673);
+    border-radius: 10px;
+}
+
+.disabledCell {
+    background-color: rgb(0 131 19 / 30%);
+}
+
+@media screen and (max-width: 700px) {
+    #tableAndSelectedPersonWrapper {
+        flex-wrap: wrap;
+    }
+
+    #date {
+        text-wrap: initial!important;
+    }
+
+    #contentWrapper {
+        margin: 0!important;
+    }
+
+    #infoAndUpdateInfoWrapper {
+        height: 55px!important;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+}
+
+
+#infoAndUpdateInfoWrapper {
+    border-bottom: 1px solid #ced4da;
+    height: 32px;
+}
+
+#infoWrapper {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+}
+
+#infoWrapper div {
+    align-self: center;
+}
+
+#tableTopPanelWrapper {
+    background-color: aliceblue;
+    font-family: 'Noto Sans',serif;
+}
+
+#tableTopPanel {
+    padding: 10px 20px 10px 20px ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#tableTopPanel div {
+    display: flex; flex-direction: row;
+}
+
+#serviceSelect {
+    margin-left: 20px;
+    height: 40px;
+    align-self: center;
+}
+
+#date {
+    align-self: center;
+    white-space: nowrap;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+
+.userInfoTitle {
+    font-weight: bold;
+}
+
+#contentWrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 20px 0 20px;
+}
+
+#tableAndSelectedPersonWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#tableWrapper {
+    position: relative;
+    flex-basis: 300%;
+}
+
+#table {
+    background-color: aliceblue;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+#loadingIcon {
+    display: none;
+}
+
+#selectedPersonWrapper {
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding: 10px;
+    background-color: #ffffff54;
+    position: relative;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.userDataVal {
+    font-size: 18px;
+    width: 200px;
+}
+
+.userDataName {
+    font-weight: bold;
+    width: 90px;
+}
+
+#userData {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rowItem {
+    display: flex;
+    flex-direction: row;
+}

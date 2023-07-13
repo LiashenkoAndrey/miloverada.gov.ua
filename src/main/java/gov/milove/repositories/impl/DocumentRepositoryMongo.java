@@ -1,4 +1,4 @@
-package gov.milove.repositories.implementation;
+package gov.milove.repositories.impl;
 
 
 import com.mongodb.client.FindIterable;

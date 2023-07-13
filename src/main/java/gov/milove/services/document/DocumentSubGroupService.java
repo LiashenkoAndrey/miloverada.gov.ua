@@ -4,7 +4,7 @@ import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.SubGroup;
 import gov.milove.repositories.document.DocumentGroupRepository;
-import gov.milove.repositories.implementation.DocumentRepositoryMongo;
+import gov.milove.repositories.impl.DocumentRepositoryMongo;
 import gov.milove.repositories.document.DocumentSubGroupRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
+  <title th:replace="~{fragments/common.html :: generic-title}"></title>
+  <link rel="stylesheet" th:href="@{/styles/digitalQueue/newRecord.css}">
+  <link rel="stylesheet" th:href="@{/styles/digitalQueue/speechBubble.css}">
+<body>
+  <div class="wrapper">
+    <div th:replace="~{fragments/header.html :: header}"></div>
+    <div class="content" >
+        <h2 class="text-center mt-3 mb-2" style="font-size: 35px; font-weight: bold">Запис до паспортного столу</h2>
+
+        <div style="width: 300px;  margin: 25px;" >
+          <label for="dateVal" class="col-form-label" style="font-size: 25px;">Дата</label>
+          <div style="display: flex; column-gap: 5px">
+            <button class="btn btn-light" onclick="stepUpDate(this, false)">&#8592;</button>
+            <input lang="uk" type="date" onchange="refreshRecords()" style="font-size: 18px;" class="form-control" id="dateVal" placeholder="Оберіть дату">
+            <button class="btn btn-light" onclick="stepUpDate(this, true)">&#8594;</button>
+          </div>
+        </div>
+
+        <h2 style="font-size: 25px; margin-left: 30px">Час</h2>
+        <div style="position: relative" id="recordWrapper">
+          <div id="records"></div>
+          <img th:src="@{/img/loading.gif}" class="noselect" style="display: none" id="loadingIcon" width="50" height="50" alt="">
+        </div>
+      
+        <div style="margin: 30px;" id="inputsWrapper">
+
+          <div id="inputs">
+            <div class="form-group">
+              <label for="lastName">Прізвище:</label>
+              <input type="text" oninput="clearError()" maxlength="255" min="3" class="form-control" id="lastName">
+            </div>
+
+            <div class="form-group">
+              <label for="firstName">Ім'я:</label>
+              <input type="text" oninput="clearError()" maxlength="255" min="3" class="form-control" id="firstName">
+            </div>
+
+            <div class="form-group">
+              <label for="surname">Ім'я по батькові</label>
+              <input type="text" oninput="clearError()" maxlength="255" min="3" class="form-control" id="surname">
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="phoneNumber">Телефон</label>
+            <input type="number" oninput="clearError()" aria-valuemax="10" max="10"  style="font-size: 25px; width: 250px; font-family: serif"  maxlength="255" min="3" class="form-control" id="phoneNumber">
+          </div>
+
+          <div class="form-group shadow-textarea mt-3" style="max-width: 650px">
+            <label for="note">Примітка</label>
+            <textarea class="form-control z-depth-1" id="note" rows="3" maxlength="1000" placeholder="Напишіть додаткову інформацію"></textarea>
+          </div>
+
+          <button class="btn btn-success mt-2" style="font-size: 25px;" type="submit" onclick="createRecord()">Записатися</button>
+          <h2 class="mt-3" id="errorMessage" style="color: red; min-height: 30px; min-width: 150px"></h2>
+
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer.html :: footer}"></div>
+  </div>
+
+  <script th:src="@{/scripts/digitalQueue/digitalQueueService.js}"></script>
+  <script th:src="@{/scripts/requests.js}"></script>
+  <script th:src="@{/scripts/digitalQueue/speechBubble.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

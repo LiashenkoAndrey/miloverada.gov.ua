@@ -2,7 +2,6 @@ package gov.milove.controllers.administration;
 
 import gov.milove.domain.Employee;
 import gov.milove.domain.administration.AdministrationEmployee;
-import gov.milove.repositories.implementation.ImageRepositoryImpl;
 import gov.milove.services.administration.AdministrationEmployeeService;
 import gov.milove.services.administration.AdministrationGroupService;
 import gov.milove.services.ImageService;

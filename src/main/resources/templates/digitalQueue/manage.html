@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
+<title th:replace="~{fragments/common.html :: generic-title}"></title>
+<link rel="stylesheet" th:href="@{/styles/digitalQueue/manageRecords.css}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{fragments/header.html :: header}"></div>
+    <div class="content container-sm" >
+
+        <div id="contentWrapper">
+            <div id="tableTopPanelWrapper">
+                <div id="infoAndUpdateInfoWrapper" >
+                    <div id="infoWrapper" >
+                        <div>
+                            <span class="userInfoTitle">ПІБ: </span>
+                            <span id="currentPersonFullName"></span>
+                            <span class="userInfoTitle">Телефон: </span>
+                            <span id="currentPersonPhoneNumber"></span>
+                        </div>
+
+                        <div id="infoIcon" onclick="printPersonData(this)">
+                            <img th:src="@{/img/information.svg}" width="25" height="25" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tableTopPanel">
+                    <div>
+                        <div><span id="date"></span></div>
+
+                        <select class="form-select" id="serviceSelect" onchange="changeService()">
+                            <option th:data-serviceId="${service.id}" th:each="service : ${services}" th:text="${service.name}" ></option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex;">
+                        <img th:src="@{/img/reload.svg}" width="50" height="50" onclick="changeService()" style="cursor: pointer; align-self: center;" id="reload" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div id="tableAndSelectedPersonWrapper">
+                <div id="tableWrapper">
+                    <table class="table table-bordered" id="table">
+                        <thead>
+                        <tr id="table-info" >
+                            <th></th>
+                            <th>
+                                <div class="table-day-name">Пн</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Вт</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Ср</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Чт</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Пт</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Сб</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                            <th>
+                                <div class="table-day-name">Нд</div>
+                                <div class="table-day-number">04</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="timeCells"></tbody>
+                    </table>
+                    <div id="time-line"></div>
+                    <img th:src="@{/img/loading.gif}" id="loadingIcon" class="noselect" width="50" height="50" alt="Перезавантажити данні">
+                </div>
+
+                <div id="selectedPersonWrapper">
+
+                    <div id="userData">
+                        <div class="rowItem">
+                            <span class="userDataName">ПІБ:</span>
+                            <span class="userDataVal" id="personName"></span>
+                        </div>
+
+                        <div class="rowItem">
+                            <span class="userDataName">Телефон:</span>
+                            <span class="userDataVal" id="personPhoneNumber"></span>
+                        </div>
+
+                        <div>
+                            <span class="userDataName">Коментар:</span>
+                            <p style="margin-top: 5px" id="personComment"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+        <div th:replace="~{fragments/footer.html :: footer}"></div>
+    </div>
+
+    <script th:src="@{/scripts/digitalQueue/manageRecords.js}"></script>
+    <script th:src="@{/scripts/utils.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

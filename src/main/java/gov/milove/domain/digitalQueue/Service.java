@@ -1,27 +1,43 @@
 package gov.milove.domain.digitalQueue;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Entity
-@Table("services")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@Table(name = "services", schema = "queue")
 public class Service {
 
+    public Service(String name, String description, String imageId) {
+        this.name = name;
+        this.description = description;
+        this.imageId = imageId;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Size(min = 4, max = 255)
     private String name;
 
-    public String description;
+    @NotNull
+    @Size(min = 5, max = 255)
+    private String description;
 
-    @OneToMany
-    private List<Record> records;
+    @NotNull
+    private String imageId;
+
 }
 
 
