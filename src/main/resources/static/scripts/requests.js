@@ -10,7 +10,7 @@ async function postRequest(formData ,url, redirectUrl) {
     })
 }
 
-async function postRequest(formData, url) {
+async function postRequestAndReturnPromise(formData, url) {
     return await fetch(url, {
         method: "POST",
         body: formData
@@ -109,6 +109,7 @@ class GetRequestBuilder {
                 '</div>' +
             '</div>';
 
+        document.querySelector("body").style.overflowY = 'hidden'
         wrapper.style.filter = 'blur(8px)';
         document.body.insertAdjacentHTML('beforeend', form)
     }
@@ -161,9 +162,9 @@ class PostRequestFormBuilder {
     createField(field) {
         if (field.type === undefined || field.type === 'email') {
             if (field.isRequired === undefined) field.isRequired = true;
-            return '<label for="'+ field.label +'" class="form-label">'+ field.label +'</label>\n' +
-            '<input type="' + (field.type === undefined  ? 'text' : 'email')  + '"' +
-                'class="form-control"' +
+            return '<label for="'+ field.label +'" class="formLabel">'+ field.label +'</label>\n' +
+            '<input type="' + (field.type === undefined  ? 'text' : 'email')  + '" ' +
+                'class="form-control modalInput" ' +
                 'value="' + (field.oldValue === undefined ? '' : field.oldValue) + '" ' +
                 'style="font-size: 25px" ' +
                 'id="'+ field.label +'" ' +
@@ -172,7 +173,7 @@ class PostRequestFormBuilder {
                 (field.isRequired ? 'required' : '') + '>';
 
         } else if (field.type === 'file') {
-            return '<label for="'+ field.label +'" class="form-label">'+ field.label +'</label>\n' +
+            return '<label for="'+ field.label +'" class="formLabel">'+ field.label +'</label>\n' +
                 '<input type="file" class="form-control" style="font-size: 25px" id="'+ field.label +'" name="'+ field.name +'">';
         }
     }
@@ -222,7 +223,6 @@ class PostRequestFormBuilder {
     }
 
     build() {
-        console.log(this.urlPath)
         let form =
                 '<div class="modalWrapper" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
                     '<div class="h1" >' +
@@ -230,18 +230,20 @@ class PostRequestFormBuilder {
                             '<button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
                         '</div>' +
                         '<h1>' + (this.title !== undefined ? this.title : '') + '</h1>'+
-                        '<div class="fields" style="background-color: #00000080;padding: 10px; color: white">'+ this.inputs + '</div>' +
+                        '<div class="fields" >'+ this.inputs + '</div>' +
                         '<button class="btn btn-success mt-2 h2 admin-btn" onclick="PostRequestFormBuilder.parseDataAndDoRequest(this.parentNode,\'' + this.urlPath + '\',' + this.redirectUrl + ')">'+ this.submitBtnVal +'</button>' +
                     '</div>' +
                 '</div>';
 
+        document.querySelector("body").style.overflowY = 'hidden';
         wrapper.style.filter = 'blur(8px)';
-        document.body.insertAdjacentHTML('beforeend', form)
+        document.body.insertAdjacentHTML('beforeend', form);
     }
 }
 
 class FormService {
     static disableForm(node) {
+        document.querySelector("body").style.overflowY = 'initial'
         node.style.display= "none";
         wrapper.style.filter = 'none';
     }

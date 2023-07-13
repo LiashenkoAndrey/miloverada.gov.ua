@@ -261,11 +261,23 @@ body {
   font-size: 22px;
 }
 
+.formLabel {
+  font-size: 25px;
+  margin: 10px 0 0 0;
+}
+
+.fields {
+  border-radius: 5px;
+  background-color: #00000080;
+  padding: 10px;
+  color: white
+}
+
 .modalWrapper {
   display: flex;
-  height: 100%;
+  height: 90%;
   width: 100%;
-  top: 0;
+  top: 20px;
   position: absolute;
   justify-content: center;
   align-items: center;
@@ -283,8 +295,15 @@ body {
   padding: 5px; !important;
 }
 
+@media screen and (min-width: 900px) {
+  .modalInput {
+    min-width: 700px;
+  }
 
-
+  .modalWrapper {
+    top: 0;
+  }
+}
 
 
 #accordionFlushExample {

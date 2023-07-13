@@ -176,7 +176,7 @@ function createRecord() {
         data.append("serviceId", urlParams.get("serviceId"))
 
 
-        postRequest(data, "/queue/record/new").then((r) => {
+        postRequestAndReturnPromise(data, "/queue/record/new").then((r) => {
             if (r.status === 200) {
                 console.log('OK!!!')
                 r.json().then((data) => {

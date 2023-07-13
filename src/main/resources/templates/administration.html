@@ -140,8 +140,8 @@
                                                                         <button th:employeeId="${employee.id}" class="btn btn-danger" style="width: 100px; height: 50px; margin-right: 3px"   onclick="
                                                                                       new GetRequestBuilder()
                                                                                          .submitText('Ви впевненні що хочете видалити запис?')
-                                                                                         .param('id', this.getAttribute('employeeId'))
-                                                                                         .url('/administration/delete')
+                                                                                         .param('employeeId', this.getAttribute('employeeId'))
+                                                                                         .url('/administration/employee/delete')
                                                                                          .submitBtn('Так, видалити')
                                                                                          .init()
                                                                                          .build()
@@ -157,7 +157,7 @@
                                                                                          .param({label: 'Електронна пошта', name: 'email', oldValue: this.parentNode.parentNode.getElementsByClassName('email')[0].innerHTML, isRequired: false, type: 'email'})
 
                                                                                          .pathParam('employeeId', this.getAttribute('employeeId'))
-                                                                                         .setUrl('administration/employee/update')
+                                                                                         .setUrl('/administration/employee/update')
                                                                                          .submitBtn('Оновити')
                                                                                          .init()
                                                                                          .build()
