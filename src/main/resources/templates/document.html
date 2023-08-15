@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <title>Милівська сільська територіальна громада</title>
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
+<title>Милівська 23 сільська територіальна громада</title>
+<link rel="stylesheet" th:href="@{/styles/loading.css}">
 <body>
-
     <div class="wrapper">
         <div th:replace="~{fragments/header.html :: header}"></div>
 
         <div class="content container">
-            <nav aria-label="breadcrumb" class="mt-2 ms-3">
+            <nav aria-label="breadcrumb" style="margin: 10px 0 0 20px;">
                 <ol class="breadcrumb" >
                     <li class="breadcrumb-item active" aria-current="page">
-                        <a th:href="@{/}" class="link h5" style="margin: 0; display: inline" >Головна</a>
+                        <a th:href="@{/}">Головна</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        <a th:href="${previousPageUrl}" class="link h5" style="margin: 0; display: inline; font-size: 30px" th:text="${previousPageTitle}"></a>
+                        <a th:href="${previousPageUrl}" th:text="${previousPageTitle}"></a>
                     </li>
-                    <li class="breadcrumb-item active h5" style="font-size: 30px" aria-current="page" th:text="${subGroupTitle}"></li>
-                    <li class="breadcrumb-item h5" aria-current="page" style="font-size: 30px" th:text="${document.title}"></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${subGroupTitle}"></li>
+                    <li class="breadcrumb-item" aria-current="page"  th:text="${document.title}"></li>
                 </ol>
             </nav>
 
             <div>
-                <div class="container" style="display: flex; gap: 20px">
-                    <p style="font-size: 25px; align-self: center">Якшо документ не завантажився натисніть кнопку</p>
-                    <button onclick="reloadFrame()" class="btn btn-success" style="font-size: 25px;height: 37px;margin: 0;padding: 0 7px 0 7px;">Перезавантажити</button>
+                <div class="container background-dark" style="display: flex; gap: 20px; align-items: center; padding: 10px 10px 10px 10px; justify-content: center">
+                    <span style="font-size: 20px; align-self: center">Якшо документ досі не завантажився натисніть кнопку</span>
+                    <button onclick="reloadFrame()" class="btn btn-primary background-blue-gradient" style="font-size: 25px;height: 37px;margin: 0;padding: 0 7px 0 7px;">Перезавантажити</button>
                 </div>
-                
-                <iframe style="display: block; width: 100%; height: 700px " id="iframe"  th:src="'https://docs.google.com/gview?embedded=true&url=http://miloverada.gov.ua/upload/document/' + ${document.document_filename}"></iframe>
+                <div style="position:relative;">
+                    <iframe style="display: block; width: 100%; height: 700px " id="iframe"  th:src="'https://docs.google.com/gview?embedded=true&url=http://miloverada.gov.ua/upload/document/' + ${document.document_filename}"></iframe>
+                    <img th:src="@{/img/loading.gif}" id="loadingIcon" class="noselect" width="50" height="50" alt="Перезавантажити данні">
+                </div>
             </div>
             <div>
                 <a  class="m-3 h2 link" th:href="@{'/upload/document/' + ${document.document_filename}}" title="Завантажити файл">
@@ -36,16 +37,39 @@
                      Завантажити
                 </a>
             </div>
-            
+
             <script>
+                let iframe = document.getElementById('iframe');
+                let loading = document.getElementById('loadingIcon')
+                startLoading();
+
                 function reloadFrame() {
-                    document.getElementById('iframe').src = document.getElementById('iframe').src
+                    startLoading()
+                    console.log("start loading! " + new Date().getSeconds())
+                    iframe.src = document.getElementById('iframe').src
                 }
-                
+
+                iframe.addEventListener('load', function () {
+                    stopLoading()
+                    console.log("end loading! " + new Date().getSeconds())
+                })
+
+                function startLoading() {
+                    iframe.style.filter = 'blur(3px)'
+                    iframe.style.pointerEvents = 'none'
+                    loading.style.display = 'block';
+                }
+
+                function stopLoading() {
+                    iframe.style.filter = 'none'
+                    iframe.style.pointerEvents = 'all'
+                    loading.style.display = 'none';
+                }
             </script>
         </div>
         <div th:replace="~{fragments/footer.html :: footer}"></div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

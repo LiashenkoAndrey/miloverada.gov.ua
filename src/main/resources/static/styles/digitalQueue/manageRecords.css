@@ -13,14 +13,7 @@
     background-color: rgba(0, 0, 0, 0.06);
     border-radius: 15px;
 }
-#loadingIcon {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-}
+
 
 .time {
     text-align: center;
@@ -157,9 +150,7 @@
     font-family: 'Noto Sans', sans-serif;
 }
 
-#loadingIcon {
-    display: none;
-}
+
 
 #selectedPersonWrapper {
     font-size: 16px;

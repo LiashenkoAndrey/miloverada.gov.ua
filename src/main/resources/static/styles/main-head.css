@@ -1,10 +1,10 @@
 .dropbtn {
     margin-top: 5px;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: #0000004c;
     color: white;
     padding: 12px;
-    font-size: 26px;
+    font-size: 23px;
     border: none;
     text-decoration: none;
 }
@@ -15,11 +15,12 @@
 }
 
 .dropdown-content {
+    border-radius: 5px;
     display: none;
     position: absolute;
     background-color: #f1f1f1;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
 }
 
@@ -32,6 +33,7 @@
 }
 
 .dropdown:hover .dropdown-content {
+    border-radius: 5px;
     display: block;
     z-index: 100; !important;
 }

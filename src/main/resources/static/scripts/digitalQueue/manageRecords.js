@@ -110,22 +110,22 @@ function updateContent(serviceId) {
     renderContent(serviceId);
 }
 
-let table = document.querySelector("#table");
+let iframe = document.querySelector("#table");
 let loading = document.querySelector("#loadingIcon");
 
 function startLoading() {
-    table.classList.remove("selectable")
-    table.classList.add("noselect")
-    table.style.filter = 'blur(3px)'
-    table.style.pointerEvents = 'none'
+    iframe.classList.remove("selectable")
+    iframe.classList.add("noselect")
+    iframe.style.filter = 'blur(3px)'
+    iframe.style.pointerEvents = 'none'
     loading.style.display = 'block';
 }
 
 function stopLoading() {
-    table.classList.add("selectable")
-    table.classList.remove("noselect")
-    table.style.filter = 'none'
-    table.style.pointerEvents = 'all'
+    iframe.classList.add("selectable")
+    iframe.classList.remove("noselect")
+    iframe.style.filter = 'none'
+    iframe.style.pointerEvents = 'all'
     loading.style.display = 'none';
 }
 
