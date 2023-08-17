@@ -14,7 +14,7 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public String saveImage(MultipartFile file) {
+    public String saveAndReturnId(MultipartFile file) {
         return imageRepository.saveImage(file);
     }
 
@@ -22,8 +22,10 @@ public class ImageService {
         return imageRepository.getImageById(id);
     }
 
-    public void updateImage(MultipartFile file, String image_id) {
-        imageRepository.updateImage(image_id, file);
+    public void updateImageIfPresent(MultipartFile file, String image_id) {
+        if (file != null) {
+            imageRepository.updateImage(file, image_id);
+        }
     }
 
     public void deleteImageById(String id) {

@@ -1,9 +1,8 @@
 package gov.milove.controllers;
 
-import gov.milove.domain.News;
 import gov.milove.domain.dto.NewsDTO;
 import gov.milove.repositories.document.DocumentGroupRepository;
-import gov.milove.services.NewsService;
+import gov.milove.services.impl.NewsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class Main {
 
-    private final NewsService newsService;
+    private final NewsServiceImpl newsService;
 
     private final DocumentGroupRepository docGroupRepo;
 

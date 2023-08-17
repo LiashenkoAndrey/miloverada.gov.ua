@@ -18,8 +18,8 @@
                         <div class="news" th:each="news : ${newsList}" >
                             <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
                             </a>
-                            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" style="padding-right: 20px" th:title="${news.created.toLocalDate()}">
-                            <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toLocalDate()}"></span></div>
+                            <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" style="padding-right: 20px" th:title="${news.created.toString()}">
+                            <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toString()}"></span></div>
                         </div>
                     </div>
                     <a th:href="@{/news/all}" style="display: block" class="text-center link h4 mt-5">&#8594; Переглянути всі новини &#8592;</a>

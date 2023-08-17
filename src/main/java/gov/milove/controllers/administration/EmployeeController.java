@@ -41,7 +41,7 @@ public class EmployeeController {
 
         try {
             if (group_id == null) {
-                String savedImageId = imageService.saveImage(file);
+                String savedImageId = imageService.saveAndReturnId(file);
                 employee.setImage_id(savedImageId);
                 administrationEmployeeService.save(employee);
             } else {
@@ -68,7 +68,7 @@ public class EmployeeController {
                     administrationEmployeeService.findById(id).orElseThrow(EntityNotFoundException::new);
 
             if (oldEmployee.getAdministration_group() == null && file != null) {
-                String savedImageId = imageService.saveImage(file);
+                String savedImageId = imageService.saveAndReturnId(file);
                 oldEmployee.setImage_id(savedImageId);
             }
             Employee.updateEmployee(updatedEmployee, oldEmployee);

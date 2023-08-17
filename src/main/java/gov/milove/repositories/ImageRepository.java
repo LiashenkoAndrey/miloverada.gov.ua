@@ -6,7 +6,7 @@ public interface ImageRepository {
 
     public String saveImage(MultipartFile file);
 
-    public void updateImage(String image_id, MultipartFile file);
+    public void updateImage(MultipartFile file, String image_id);
 
     public byte[] getImageById(String id);
 

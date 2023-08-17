@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <configuration>
+        <custom-converters>
+
+            <converter type="gov.milove.util.MapNullStringToNull">
+                <class-a>java.lang.String</class-a>
+                <class-b>java.lang.Long</class-b>
+            </converter>
+
+        </custom-converters>
+    </configuration>
+
+    <mapping>
+        <class-a>gov.milove.domain.dto.NewsDtoWithImageAndType</class-a>
+        <class-b>gov.milove.domain.News</class-b>
+        <field custom-converter="gov.milove.util.MapNullStringToNull">
+            <a>news_type_id</a>
+            <b>news_type_id</b>
+        </field>
+    </mapping>
+
+</mappings>
+

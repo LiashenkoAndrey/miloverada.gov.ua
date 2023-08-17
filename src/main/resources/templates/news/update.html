@@ -5,9 +5,9 @@
     <link rel="stylesheet" th:href="@{/styles/news.css}">
     <link rel="stylesheet" th:href="@{/styles/notifications.css}">
     <title th:replace="~{fragments/common.html :: generic-title}"></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="wrapper">
     <div th:replace="~{fragments/header.html :: header}"></div>
@@ -33,10 +33,11 @@
             <div class="input-group mt-3" >
                 <label class="input-group-text" style="font-size: 25px">Тема</label>
                 <select style="font-size: 25px" id="typeSelect" onchange="customSelectCheck(this.value, 'defineNewNewsType')" class="form-select">
-                    <option value="notSelected" th:unless="${news.getNews_type_id()}" selected>Не вказувати</option>
+                    <option th:if="${news.newsType != null}" th:utext="${news.newsType.title} + ' - ' + ${news.newsType.titleExplanation}" th:value="${news.newsType.id}"  selected></option>
                     <option th:each="type : ${allTypesList}" th:utext="${type.title} + ' - ' + ${type.titleExplanation}" th:value="${type.id}" style="font-size: 25px"></option>
-                    <option value="notSelected">Не вказувати</option>
-                    <option value="" style="font-size: 25px">Інший тип</option>
+                    <option th:unless="${news.newsType != null}" value="0" selected >Не вказувати</option>
+                    <option th:if="${news.newsType != null}" value="0">Не вказувати</option>
+                    <option value="custom" style="font-size: 25px">Інший тип</option>
                 </select>
             </div>
 
@@ -47,13 +48,17 @@
                 <input type="text" class="form-control" style="font-size: 25px" id="titleExplanation"  >
             </div>
 
+            <div class="m-3">
+                <label for="date" style="font-size: 25px" class="form-label">Вкажіть дату</label>
+                <input type="date" class="form-control" th:value="${news.created.toString()}" style="font-size: 25px" id="date" name="date" >
+            </div>
+
             <br>
             <label for="input" class="form-label" style="font-size: 30px">Основний текст</label>
             <div class="demo-inline">
                 <div class="tinymce-body" id="input" style="height: 600px" th:utext="${news.main_text}" ></div>
             </div>
             <textarea style="display: none" id="main_text" class="tinymce-body"  name="main_text"></textarea>
-
 
             <button class="btn btn-success mt-3 mb-2" style="font-size: 20px" th:onclick="'editNews('+ ${news.id} +')'">Оновити</button>
 
@@ -71,8 +76,10 @@
 
     <div th:replace="~{fragments/footer.html :: footer}"></div>
 </div>
+
     <script th:src="@{/scripts/editorConfig.js}"></script>
     <script th:src="@{/scripts/requests.js}"></script>
+    <script th:src="@{/scripts/newsService.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

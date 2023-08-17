@@ -4,8 +4,9 @@
   <link rel="stylesheet" th:href="@{/styles/notifications.css}">
   <link rel="stylesheet" th:href="@{/styles/news.css}">
   <title th:replace="~{fragments/common.html :: generic-title}"></title>
-<body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <body>
 
 <style>
   @media screen and (max-width: 600px) {
@@ -25,7 +26,7 @@
 
     <div>
       <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/news/edit(newsId=${news.id})}" class="btn btn-success admin-btn" >Змінити</a>
+        <a th:href="@{/news/update(newsId=${news.id})}" class="btn btn-success admin-btn" >Змінити</a>
 
         <button class="btn btn-danger admin-btn"  th:newsId="${news.id}" onclick="new GetRequestBuilder()
                              .url('/news/delete')
@@ -59,14 +60,14 @@
         <img th:src="@{'/upload/image/' + ${news.image_id}}"
              class="img-fluid"
              alt="Зоображення новини"
-             th:title="${news.created.toLocalDate()}">
+             th:title="${news.created.toString()}">
       </div>
 
       <div class="background-dark" style="font-style: italic; font-weight: bold; padding: 10px;">
 
         <div style="font-size: 25px">
           <span >Опубліковано:
-            <span th:text="${news.created.toLocalDate()}"></span>
+            <span th:text="${news.created.toString()}"></span>
           </span>
         </div>
 
@@ -88,8 +89,8 @@
         <div class="news" th:each="news : ${similarNews}" >
           <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
           </a>
-          <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toLocalDate()}">
-          <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toLocalDate()}"></span></div>
+          <img th:src="@{'/upload/image/' + ${news.image_id}}" class="new-img" th:title="${news.created.toString()}">
+          <div><img th:src="@{/img/calendar-event.svg}" class="img-fluid" style="display: inline-block"> <span style="margin-left: 2px; font-size: 30px" th:text="${news.created.toString()}"></span></div>
         </div>
       </div>
     </div>

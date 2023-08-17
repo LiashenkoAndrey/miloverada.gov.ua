@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @AllArgsConstructor
 @Getter
@@ -21,5 +22,5 @@ public class NewsDTO {
 
     private String image_id;
 
-    private LocalDateTime created;
+    private LocalDate created;
 }

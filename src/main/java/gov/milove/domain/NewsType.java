@@ -9,14 +9,21 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Immutable;
 
 @Getter
 @Immutable
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 public class NewsType {
+
+    public NewsType(String title, String titleExplanation) {
+        this.title = title;
+        this.titleExplanation = titleExplanation;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

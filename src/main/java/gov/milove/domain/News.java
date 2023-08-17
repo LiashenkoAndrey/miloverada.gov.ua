@@ -1,28 +1,29 @@
 package gov.milove.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
+import org.hibernate.annotations.Cascade;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 4, max = 255)
+    @Size(min = 4, max = 120)
     @NotNull
     private String description;
 
@@ -34,11 +35,12 @@ public class News {
     private String image_id;
 
     @NotNull
-    private LocalDateTime created;
+    private LocalDate created;
 
     private LocalDateTime last_updated;
 
     private Boolean is_banner;
 
-    private Long news_type_id;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private NewsType newsType;
 }

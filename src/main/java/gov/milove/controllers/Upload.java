@@ -28,7 +28,7 @@ public class Upload {
     @PostMapping("/image")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
-        String savedImageId = imageService.saveImage(file);
+        String savedImageId = imageService.saveAndReturnId(file);
         if (savedImageId.equals("error")) return ResponseEntity.internalServerError().body("error");
         else return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(savedImageId);
     }

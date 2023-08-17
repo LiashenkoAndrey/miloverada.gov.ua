@@ -27,7 +27,7 @@ async function getRequest(url, redirectUrl) {
 
 function processResponse(response, redirectUrl) {
     console.log(response.status)
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
         response.text().then(function (resp) {
             sendNotification(resp, true)
         })

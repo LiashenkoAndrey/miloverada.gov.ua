@@ -65,7 +65,7 @@ public class ImageRepositoryImpl implements ImageRepository {
      * @param file file
      */
     @Override
-    public void updateImage(String image_id, MultipartFile file) {
+    public void updateImage(MultipartFile file, String image_id) {
         try {
             collection.updateOne(
                     eq("_id", new ObjectId(image_id)),
