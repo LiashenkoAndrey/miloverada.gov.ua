@@ -37,8 +37,9 @@ public class NewsController {
 
 
     @GetMapping("/new")
-    public String newNewsForm(Model model) {
+    public String newNewsForm(@RequestParam("isBanner") Boolean isBanner, Model model) {
         model.addAttribute("allTypesList", newsTypeRepository.getAllTypes());
+        model.addAttribute("isBanner", isBanner);
         return "news/new";
     }
 

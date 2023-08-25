@@ -72,3 +72,26 @@ async function editNews(newsId) {
     });
     postRequest(formData, '/news/update', '/news/' + new URLSearchParams(location.search).get('newsId'));
 }
+
+function newBanner() {
+    if (description.value.length < 4) {
+        alert("Опис занадто короткий, має бути мінімум 4 символи.")
+        return;
+    }
+    postRequest(getBannerData, '/banner/new', '/');
+}
+
+function updateBanner() {
+    if (description.value.length < 4) {
+        alert("Опис занадто короткий, має бути мінімум 4 символи.")
+        return;
+    }
+    postRequest(getBannerData, '/banner/update', '/');
+}
+
+function getBannerData() {
+    let formData = new FormData();
+    formData.append('main_text', tinymce.activeEditor.getContent());
+    formData.append("description", description.value);
+    return formData;
+}

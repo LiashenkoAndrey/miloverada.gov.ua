@@ -1,0 +1,7 @@
+<div th:fragment="banner" class="sticky" >
+  <a th:href="@{/news/new(isBanner=true)}" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
+  <div class="news banner" >
+    <h4 style="padding: 5px" class="news-description">Фонд оборони і розвитку України -  наш партнер</h4>
+    <button style="padding: 5px" class="btn btn-primary bannerBtn">Перейти</button>
+  </div>
+</div>
