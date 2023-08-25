@@ -31,7 +31,6 @@ public class Banner {
     @NotNull
     private String mainText;
 
-    @NotNull
     private LocalDate createdOn;
 
     private LocalDateTime lastUpdated;

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/basic-head.html :: basic-head}"></head>
+<link rel="stylesheet" th:href="@{/styles/notifications.css}">
+<title th:replace="~{fragments/common.html :: generic-title}"></title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.2/tinymce.min.js" integrity="sha512-laacsEF5jvAJew9boBITeLkwD47dpMnERAtn4WCzWu/Pur9IkF0ZpVTcWRT/FUCaaf7ZwyzMY5c9vCcbAAuAbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<body>
+<style>
+    .disabledBannerLink {
+        font-size: 30px;
+        background-color: rgb(0 0 0 / 5%);
+        border-radius: 3px;
+        display: block;
+        padding-left: 5px;
+    }
+
+    .bannerLink {
+        padding: 5px
+    }
+
+    .trashBox {
+        display: initial;
+        padding: 15px 6px 15px 6px;
+    }
+
+    .trashBox:hover {
+        background-color: rgba(255, 255, 255, 0.38);
+        border-radius: 5px;
+    }
+
+</style>
+
+<div class="wrapper">
+    <div th:replace="~{fragments/header.html :: header}"></div>
+
+    <div class="content container" id="content-container" style="min-height: 500px;">
+
+        <div>
+            <a th:href="@{/banner/new}" style="margin: 5px" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
+
+            <div class="sticky">
+                <div class="banner" th:id="banner + ${banner.id}" th:each="banner : ${banners}">
+                    <span th:if="${banner.description.equals(selectedBanner.description)}"  class="disabledBannerLink" th:text="${banner.description}"></span>
+                    <a th:unless="${banner.description.equals(selectedBanner.description)}" th:href="@{/banner/view(id=${banner.id})}" class="link bannerLink" th:text="${banner.description}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/banner/update(id=${selectedBanner.id})}" class="btn btn-success admin-btn" >Змінити</a>
+
+                <div class="trashBox" >
+                    <img th:src="@{/img/trashBox.svg}" height="30" width="30" th:bannerId="${selectedBanner.id}" onclick="new DeleteRequestBuilder()
+                             .url('/banner/delete')
+                             .submitText('Ви впевнені що хочете видалити банер?')
+                             .submitBtn('Так, видалити')
+                             .redirectUrl('/')
+                             .param('id', this.getAttribute('bannerId'))
+                             .init()
+                             .build()
+                        ">
+                </div>
+            </div>
+
+            <nav aria-label="breadcrumb" style="margin: 10px 0 0 20px;">
+                <ol class="breadcrumb" >
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a th:href="@{/}">Головна</a>
+                    </li>
+
+                    <li class="breadcrumb-item" aria-current="page">
+                        <span>Важливе</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <h1 th:text="${selectedBanner.description}" style="font-size: 35px; margin-top: 20px; text-align: center"></h1>
+
+            <div class="background-dark" style="font-style: italic; font-weight: bold; padding: 10px;">
+                <div style="font-size: 25px">
+                    <span>Опубліковано:</span>
+                    <span th:text="${selectedBanner.createdOn.toString()}"></span>
+                </div>
+
+                <div th:if="${selectedBanner.lastUpdated}" style="font-size: 20px;">
+                    <span>Оновлено:</span>
+                    <span th:text="${selectedBanner.lastUpdated.toLocalDate()}"></span>
+                </div>
+            </div>
+
+            <div th:utext="${selectedBanner.mainText}"
+                 class="mt-3"
+                 id="newsTextWrapper"
+                 style="font-size: 22px; font-family: serif; margin: 10px">
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer.html :: footer}"></div>
+</div>
+
+
+
+<script th:src="@{/scripts/requests.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+</html>

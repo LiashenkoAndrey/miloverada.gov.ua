@@ -45,7 +45,7 @@ async function newNews() {
     formData.append('main_text', tinymce.activeEditor.getContent());
     formData.append("created", created.value);
 
-    postRequest(formData, '/news/new', '/');
+    doPostAndRedirect(formData, '/news/new', '/');
 }
 
 async function editNews(newsId) {
@@ -70,7 +70,7 @@ async function editNews(newsId) {
         method: "POST",
         body: formData
     });
-    postRequest(formData, '/news/update', '/news/' + new URLSearchParams(location.search).get('newsId'));
+    doPostAndRedirect(formData, '/news/update', '/news/' + new URLSearchParams(location.search).get('newsId'));
 }
 
 function newBanner() {
@@ -78,7 +78,17 @@ function newBanner() {
         alert("Опис занадто короткий, має бути мінімум 4 символи.")
         return;
     }
-    postRequest(getBannerData, '/banner/new', '/');
+
+    fetch("/banner/new", {
+        method: 'post',
+        body: JSON.stringify( {
+            description: description.value,
+            mainText: tinymce.activeEditor.getContent()
+        }),
+        headers: new Headers({'content-type': 'application/json'})
+    }).then(resp => {
+        processResponseAndRedirect(resp, "/")
+    })
 }
 
 function updateBanner() {
@@ -86,12 +96,16 @@ function updateBanner() {
         alert("Опис занадто короткий, має бути мінімум 4 символи.")
         return;
     }
-    postRequest(getBannerData, '/banner/update', '/');
-}
 
-function getBannerData() {
-    let formData = new FormData();
-    formData.append('main_text', tinymce.activeEditor.getContent());
-    formData.append("description", description.value);
-    return formData;
+    fetch("/banner/update", {
+        method: 'put',
+        body: JSON.stringify( {
+            description: description.value,
+            mainText: tinymce.activeEditor.getContent(),
+            id: new URLSearchParams(window.location.search).get("id")
+        }),
+        headers: new Headers({'content-type': 'application/json'})
+    }).then(resp => {
+        processResponseAndRedirect(resp, "/");
+    })
 }

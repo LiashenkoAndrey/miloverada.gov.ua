@@ -1,7 +1,18 @@
-<div th:fragment="banner" class="sticky" >
-  <a th:href="@{/news/new(isBanner=true)}" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
-  <div class="news banner" >
-    <h4 style="padding: 5px" class="news-description">Фонд оборони і розвитку України -  наш партнер</h4>
-    <button style="padding: 5px" class="btn btn-primary bannerBtn">Перейти</button>
+<div th:fragment="banner" class="sticky">
+  <a th:href="@{/banner/new}" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
+
+  <div class="banner" th:id="banner + ${banner.id}" th:each="banner : ${banners}"  >
+    <h4 style="padding: 5px" class="news-description" th:text="${banner.description}"></h4>
+
+    <a th:href="@{/banner/view(id=${banner.id})}" class="btn btn-primary bannerBtn">Перейти</a>
+    <img  sec:authorize="hasAuthority('ADMIN')" th:src="@{/img/trashBox.svg}" class="trashBox" height="30" width="30"  th:bannerId="${banner.id}" onclick="new DeleteRequestBuilder()
+                             .url('/banner/delete')
+                             .submitText('Ви впевнені що хочете видалити банер?')
+                             .submitBtn('Так, видалити')
+                             .param('id', this.getAttribute('bannerId'))
+                             .init()
+                             .deleteOnBuild(this.parentNode.getAttribute('id'))
+                             .build()
+                        ">
   </div>
 </div>

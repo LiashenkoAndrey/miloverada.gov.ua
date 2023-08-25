@@ -44,6 +44,7 @@ body {
   background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .content {
+    max-width: 1230px;
     border-radius: 15px;
     flex: 1 0 auto;
     background-color: rgb(233 233 233 / 83%);
@@ -326,67 +327,10 @@ body {
 }
 
 
-
-
-#bannerInContent {
-  padding-left: 20px;
-  display: none;
+.trashBox {
+  padding: 3px;
 }
 
-.banner {
-  border-radius: 6px;
-  margin: 5px;
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-#bannerOnRight {
-  width: 200px;
-}
-
-@media (max-width: 1200px) {
-  #bannerOnRight {
-    display: none;
-  }
-
-  .banner {
-    margin: 0;
-    background-color: rgba(0, 0, 0, 0);
-  }
-
-  #bannerInContent {
-    display: block;
-  }
-}
-
-@media (min-width: 1200px) {
-  #content-container {
-    margin-right: 0;
-  }
-}
-
-
-
-
-
-
-.bannerBtn {
-  font-size: 20px;
-  background: hsla(236, 100%, 8%, 1);
-
-  background: linear-gradient(90deg, hsla(236, 100%, 8%, 1) 0%, hsla(211, 100%, 28%, 1) 100%);
-
-  background: -moz-linear-gradient(90deg, hsla(236, 100%, 8%, 1) 0%, hsla(211, 100%, 28%, 1) 100%);
-
-  background: -webkit-linear-gradient(90deg, hsla(236, 100%, 8%, 1) 0%, hsla(211, 100%, 28%, 1) 100%);
-
-}
-
-.bannerBtn:hover {
-  background: hsla(46, 95%, 56%, 1);
-
-  background: linear-gradient(90deg, hsla(46, 95%, 56%, 1) 0%, hsla(350, 97%, 65%, 1) 100%);
-
-  background: -moz-linear-gradient(90deg, hsla(46, 95%, 56%, 1) 0%, hsla(350, 97%, 65%, 1) 100%);
-
-  background: -webkit-linear-gradient(90deg, hsla(46, 95%, 56%, 1) 0%, hsla(350, 97%, 65%, 1) 100%);
+.trashBox:hover {
+  background-color: rgba(237, 237, 237, 0.17);
 }

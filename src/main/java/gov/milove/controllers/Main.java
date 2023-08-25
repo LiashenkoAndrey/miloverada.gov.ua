@@ -1,10 +1,12 @@
 package gov.milove.controllers;
 
 import gov.milove.domain.dto.NewsDTO;
+import gov.milove.repositories.BannerRepository;
 import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.services.impl.NewsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +19,15 @@ public class Main {
 
     private final DocumentGroupRepository docGroupRepo;
 
+    private final BannerRepository bannerRepository;
+
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("groups", docGroupRepo.findGeneralGroupsDto());
 
         Page<NewsDTO> pages = newsService.getPagesList(0, 9);
         model.addAttribute("newsList", pages.toList());
+        model.addAttribute("banners", bannerRepository.findAll());
         return "main";
     }
 

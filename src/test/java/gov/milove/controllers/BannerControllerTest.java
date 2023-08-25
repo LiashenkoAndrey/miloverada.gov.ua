@@ -5,14 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gov.milove.domain.Banner;
 import gov.milove.repositories.BannerRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceUnit;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import jakarta.persistence.*;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BannerControllerTest {
 
     @Autowired
@@ -52,9 +47,11 @@ public class BannerControllerTest {
                 .createdOn(LocalDate.now())
                 .build();
         repository.save(banner);
+        System.out.println(repository.findAll());
     }
 
     @Test
+    @Order(1)
     public void createView() throws Exception {
         mockMvc.perform(get("/banner/new"))
                 .andExpect(status().isOk())
@@ -62,6 +59,7 @@ public class BannerControllerTest {
     }
 
     @Test
+    @Order(2)
     public void create() throws Exception {
         Banner banner = Banner.builder()
                 .createdOn(LocalDate.now())
@@ -91,7 +89,9 @@ public class BannerControllerTest {
 
 
     @Test
+    @Order(3)
     public void updateView() throws Exception {
+        System.out.println(repository.findAll());
         mockMvc.perform(get("/banner/update")
                         .param("id", "1")
                 )
@@ -100,8 +100,19 @@ public class BannerControllerTest {
     }
 
     @Test
-    public void updateBanner() throws Exception {
+    @Order(4)
+    public void pageView() throws Exception {
         System.out.println(repository.findAll());
+        mockMvc.perform(get("/banner/view")
+                        .param("id", "1")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("/banner/page"));
+    }
+
+    @Test
+    @Order(5)
+    public void updateBanner() throws Exception {
         Banner banner = repository.findById(1L).orElseThrow(EntityNotFoundException::new);
         banner.setDescription("new description");
 
@@ -123,6 +134,7 @@ public class BannerControllerTest {
     }
 
     @Test
+    @Order(6)
     public void deleteBanner() throws Exception {
         assertTrue(repository.existsById(1L));
         mockMvc.perform(delete("/banner/delete")
@@ -130,18 +142,19 @@ public class BannerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(result -> assertFalse(repository.existsById(1L)));
 
-        mockMvc.perform(delete("/banner/delete")
-                        .param("id", "1"))
+        mockMvc.perform(delete("/banner/delete"))
                 .andExpect(status().isBadRequest());
     }
 
     @AfterAll
     @Transactional
     public void deleteAfter() {
-        EntityManager entityManager = factory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.createNativeQuery("truncate table milove.public.banner");
-        entityManager.getTransaction().commit();
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.createNativeQuery("truncate table milove.public.banner").executeUpdate();
+        em.createNativeQuery("ALTER SEQUENCE milove.public.banner_id_seq RESTART WITH 1").executeUpdate();
+        transaction.commit();
     }
 
 

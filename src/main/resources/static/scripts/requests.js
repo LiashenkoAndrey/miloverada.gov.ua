@@ -1,38 +1,82 @@
 let wrapper = document.querySelector(".wrapper");
 
+async function doPostAndRedirect(formData , url, redirectUrl) {
+    await doPost(formData, url);
+    await doRedirect(redirectUrl);
+}
 
-async function postRequest(formData ,url, redirectUrl) {
+async function doPost(formData, url) {
     await fetch(url, {
         method: "POST",
         body: formData
     }).then(response => {
-        processResponse(response, redirectUrl);
+        processResponse(response);
     })
 }
 
-async function postRequestAndReturnPromise(formData, url) {
+async function doPostAndReturnPromise(formData, url) {
     return await fetch(url, {
         method: "POST",
         body: formData
     });
 }
 
-async function getRequest(url, redirectUrl) {
+async function doGetRequestAndRedirect(url, redirectUrl) {
     await fetch(url, {
         method: "GET"
     }).then(response => {
-        processResponse(response, redirectUrl);
+        processResponseAndRedirect(response, redirectUrl);
     })
 }
 
-function processResponse(response, redirectUrl) {
-    console.log(response.status)
-    if (response.status >= 200 && response.status < 300) {
-        response.text().then(function (resp) {
-            sendNotification(resp, true)
-        })
+async function doDeleteAndDeleteItem(url, id) {
+    await doDelete(url);
+    document.getElementById(id).remove();
+    document.getElementById(id).remove();
+    removeForm();
+}
 
-        sleepAndRedirect(1100, redirectUrl);
+async function doDeleteAndRedirect(url, redirectUrl) {
+    await doDelete(url).then(response => {
+        if (response.status >= 200 && response.status < 300) {
+            doRedirect(redirectUrl);
+        } else {
+            sendNotification("Помилка", false)
+        }
+    })
+}
+
+async function doDelete(url) {
+    return await fetch(url, {
+        method: "DELETE"
+    });
+}
+
+async function doDeleteAndProcessResponse(url) {
+    await fetch(url, {
+        method: "DELETE"
+    }).then(response => {
+        processResponse(response);
+    })
+}
+
+async function doDeleteAndProcessResponseAndRedirect(url, redirectUrl) {
+    await doDelete(url).then(response => {
+        processResponse(response);
+    })
+    await doRedirect(redirectUrl);
+}
+
+function processResponseAndRedirect(response, redirectUrl) {
+    console.log(response.status);
+    processResponse(response);
+    doRedirect(redirectUrl);
+}
+
+function processResponse(response) {
+    if (response.status >= 200 && response.status < 300) {
+        sendNotification("Успішно", true)
+
     } else if (response.status >= 500) {
         console.log(response.text().then(function (resp) {
             sendNotification(resp, false);
@@ -42,9 +86,8 @@ function processResponse(response, redirectUrl) {
     }
 }
 
-
-async function sleepAndRedirect(milliseconds, redirectUrl) {
-    await new Promise(r => setTimeout(r, milliseconds)); // sleep(n) seconds
+async function doRedirect(redirectUrl) {
+    await new Promise(r => setTimeout(r, 1100)); // sleep(n) seconds
     if (redirectUrl === undefined || redirectUrl === 'undefined') {
         document.location.reload();
     } else {
@@ -52,10 +95,7 @@ async function sleepAndRedirect(milliseconds, redirectUrl) {
     }
 }
 
-class GetRequestBuilder {
-    constructor() {
-    }
-
+class RequestBuilder {
     params = [];
 
     submitBtn(val) {
@@ -82,6 +122,63 @@ class GetRequestBuilder {
         this.params.push({name: name, value: value})
         return this;
     }
+}
+
+class DeleteRequestBuilder extends RequestBuilder {
+
+    init() {
+        let params = this.params;
+
+        for (let i = 0; i < params.length; i++) {
+            if (i !== 0) {
+                this.urlVal += "&" + params[i].name + "=" + params[i].value;
+            } else {
+                this.urlVal += "?" + params[i].name + "=" + params[i].value;
+            }
+        }
+        return this;
+    }
+
+    deleteOnBuild(id) {
+        this.deleteElementId = id
+        this.isDeleteOnBuildVal = true;
+        return this;
+    }
+
+    isDeleteOnBuild() {
+        return this.isDeleteOnBuildVal;
+    }
+
+    build() {
+        let submitBtn;
+        if (this.isDeleteOnBuild()) {
+            submitBtn = '<button class="btn btn-danger mt-2 h2 admin-btn" onclick="doDeleteAndDeleteItem(\'' + this.urlVal + '\',\'' + this.deleteElementId + '\')">'+ this.submitBtnVal +'</button>';
+        } else {
+            submitBtn = '<button class="btn btn-danger mt-2 h2 admin-btn" onclick="doDeleteAndProcessResponseAndRedirect(\'' + this.urlVal + '\',\'' + this.redirectUrlPath + '\')">'+ this.submitBtnVal +'</button>';
+        }
+
+        let form =
+            '<div id="form" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
+            '<div class="h1" style="right: 30%; left: 30%; top:30%; position: absolute">' +
+            '<div class="text-end">' +
+            '   <button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
+            '</div>' +
+            '<h1 style="color: black">' + this.submitText + '</h1>'+
+            submitBtn +
+            '</div>' +
+            '</div>';
+
+        printForm(form);
+    }
+}
+
+
+
+class GetRequestBuilder extends RequestBuilder {
+    constructor() {
+        super();
+        this.isDeleteOnBuildVal = false;
+    }
 
     init() {
         let params = this.params;
@@ -99,20 +196,30 @@ class GetRequestBuilder {
 
     build() {
         let form =
-            '<div style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
+            '<div id="form" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
                 '<div class="h1" style="right: 30%; left: 30%; top:30%; position: absolute">' +
                     '<div class="text-end">' +
                     '   <button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
                     '</div>' +
                     '<h1 style="color: black">' + this.submitText + '</h1>'+
-                    '<button class="btn btn-danger mt-2 h2 admin-btn" onclick="getRequest(\'' + this.urlVal + '\',\'' + this.redirectUrlPath + '\')">'+ this.submitBtnVal +'</button>' +
+                    '<button class="btn btn-danger mt-2 h2 admin-btn" onclick="doGetRequestAndRedirect(\'' + this.urlVal + '\',\'' + this.redirectUrlPath + '\')">'+ this.submitBtnVal +'</button>' +
                 '</div>' +
             '</div>';
 
-        document.querySelector("body").style.overflowY = 'hidden'
-        wrapper.style.filter = 'blur(8px)';
-        document.body.insertAdjacentHTML('beforeend', form)
+        printForm(form);
     }
+}
+
+function printForm(form) {
+    document.querySelector("body").style.overflowY = 'hidden'
+    wrapper.style.filter = 'blur(8px)';
+    document.body.insertAdjacentHTML('beforeend', form)
+}
+
+function removeForm() {
+    document.querySelector("body").style.overflowY = 'scroll';
+    document.querySelector("#form").remove();
+    wrapper.style.filter = 'none';
 }
 
 
@@ -203,7 +310,7 @@ class PostRequestFormBuilder {
                 formData.append(input.name, input.value);
             }
         }
-        postRequest(formData, url, redirect)
+        doPostAndRedirect(formData, url, redirect)
     }
 
     init() {
