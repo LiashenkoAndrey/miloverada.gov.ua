@@ -1,5 +1,5 @@
 
-name: execute commands in remove virtual machine
+name: remoteDeploy
 
 on:
   push:
