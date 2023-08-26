@@ -44,7 +44,6 @@ body {
   background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .content {
-    max-width: 1230px;
     border-radius: 15px;
     flex: 1 0 auto;
     background-color: rgb(233 233 233 / 83%);
@@ -101,6 +100,7 @@ body {
 }
 
   @media screen and (max-width: 900px) {
+
 
     #content-container {
       display: block !important
@@ -274,6 +274,7 @@ body {
 }
 
 .admin-btn {
+  border-radius: 3px;
   font-size: 22px;
 }
 

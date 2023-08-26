@@ -33,6 +33,10 @@
     #content-container {
         margin-right: 0;
     }
+
+    .content {
+        max-width: 80%;
+    }
 }
 
 

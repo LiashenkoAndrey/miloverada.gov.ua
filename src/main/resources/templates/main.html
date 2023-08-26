@@ -16,7 +16,7 @@
 
                     <h2 class="text-center mt-3 mb-2" style="font-size: 40px; font-weight: bold">Останні новини</h2>
                     <div style="padding: 0 10px 10px 0; margin-left: 30px">
-                        <a href="/news/new" class="btn btn-success admin-btn" style="margin: 20px 0 20px 0; display: block" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
+                        <a href="/news/new"  class="btn btn-success admin-btn" style="margin: 20px 0 20px 0; display: block; max-width: 150px" sec:authorize="hasAuthority('ADMIN')" >Додати новину</a>
                         <div id="news-container">
                             <div class="news" th:each="news : ${newsList}" >
                                 <a th:href="@{'/news/' + ${news.id}}" class="link news-description"  th:text="${news.description}">
