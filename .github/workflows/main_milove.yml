@@ -1,53 +1,37 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy WAR app to Azure Web App - milove
+name: execute commands in remove virtual machine
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+
+env:
+  TARGET_DIR: /home/
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v1
 
-      - name: Set up Java version
-        uses: actions/setup-java@v1
+      - name: ssh scp ssh pipelines
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
         with:
-          java-version: '17'
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies
-          path: '${{ github.workspace }}/target/milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies.jar'
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: milove.otg.gov.ua-0.0.1-SNAPSHOT-jar-with-dependencies
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'milove'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5C1FCF9525E1405B9FF902320B4692E1 }}
-          package: '*.jar'
+          host: ${{ secrets.DC_HOST }}
+          user: ${{ secrets.DC_USER }}
+          pass: ${{ secrets.DC_PASS }}
+          port: ${{ secrets.DC_PORT }}
+          connect_timeout: 10s
+          first_ssh: |-
+            sudo systemctl stop app.service
+            rm -r milove-otg.gov.ua
+            git clone https://github.com/LiashenkoAndrey/milove-otg.gov.ua.git;
+            sudo systemctl start app.service
+      
