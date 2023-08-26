@@ -7,23 +7,57 @@ on:
       - main
 
 
+# jobs:
+#   build:
+#     name: Build
+#     runs-on: ubuntu-latest
+
+    # steps:
+    #   - name: checkout
+    #     uses: actions/checkout@v1
+
+    #   - name: ssh scp ssh pipelines
+    #     uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+    #     env:
+    #       WELCOME: "ssh scp ssh pipelines"
+    #       LASTSSH: "Doing something after copying"
+    #     with:
+    #       host: 34.116.131.99
+    #       user: makcimkakakakaka
+    #       key: |-
+    #         -----BEGIN OPENSSH PRIVATE KEY-----
+    #         b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS
+    #         1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQRoMDOh+kDVkq29aDbb5Lf2uRtk2dwF
+    #         TTKdnKuf4k7+Llp8hJ1YXiqxj9eSC0hHGBNqT3DFv6emygZ9Qz5kAs9DAAAAqC4YtX4uGL
+    #         V+AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGgwM6H6QNWSrb1o
+    #         Ntvkt/a5G2TZ3AVNMp2cq5/iTv4uWnyEnVheKrGP15ILSEcYE2pPcMW/p6bKBn1DPmQCz0
+    #         MAAAAgRt7P2s7Wo9Q9DxxwInQeevOdgVEH43JbgzgHTKIy+DkAAAAPcm9vdEBtaWxvdmVy
+    #         YWRhAQ==
+    #         -----END OPENSSH PRIVATE KEY-----
+    #       connect_timeout: 10s
+    #       first_ssh: |-
+    #         sudo systemctl stop app.service
+    #         rm -r milove-otg.gov.ua
+    #         git clone https://github.com/LiashenkoAndrey/milove-otg.gov.ua.git;
+    #         sudo systemctl start app.service
+
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
     steps:
-      - name: checkout
-        uses: actions/checkout@v1
-
-      - name: ssh scp ssh pipelines
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-        env:
-          WELCOME: "ssh scp ssh pipelines"
-          LASTSSH: "Doing something after copying"
+      - name: ls -a via OPEN SSH Private Key
+        uses: fifsky/ssh-action@master
         with:
-          host: 34.116.131.99
-          user: makcimkakakakaka
+          command: |
+            ls
+            sudo systemctl stop app.service
+            rm -r milove-otg.gov.ua
+            git clone https://github.com/LiashenkoAndrey/milove-otg.gov.ua.git;
+            sudo systemctl start app.service
+          host: makcimkakakakaka
+          user: root
           key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS
@@ -34,10 +68,4 @@ jobs:
             MAAAAgRt7P2s7Wo9Q9DxxwInQeevOdgVEH43JbgzgHTKIy+DkAAAAPcm9vdEBtaWxvdmVy
             YWRhAQ==
             -----END OPENSSH PRIVATE KEY-----
-          connect_timeout: 10s
-          first_ssh: |-
-            sudo systemctl stop app.service
-            rm -r milove-otg.gov.ua
-            git clone https://github.com/LiashenkoAndrey/milove-otg.gov.ua.git;
-            sudo systemctl start app.service
       
