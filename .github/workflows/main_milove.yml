@@ -6,8 +6,6 @@ on:
     branches:
       - main
 
-env:
-  TARGET_DIR: /home/
 
 jobs:
   build:
@@ -24,10 +22,9 @@ jobs:
           WELCOME: "ssh scp ssh pipelines"
           LASTSSH: "Doing something after copying"
         with:
-          host: ${{ secrets.DC_HOST }}
-          user: ${{ secrets.DC_USER }}
-          pass: ${{ secrets.DC_PASS }}
-          port: ${{ secrets.DC_PORT }}
+          host: 34.116.131.99
+          user: makcimkakakakaka
+          key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDcHD2ODsGCvYaDg266zlZUiHBm7PAifmzaD5ZvAlCkWckkluRvS6TTVtWnMEXRCt5gY/lnj811NI0xnfurvtIw21+Wo3pbxsYLj8tYgH1+XQsXsrSX7MMht6zENgBiXyWqhtmE4ZzC3NvI3tS2hA4YxTXEHSh5IqXg/EKRcn3X+o7F4Ayy5kCHySlmCu8JEfOYVVZxbjXIIDiUIh5YPW/hyhGbJZh36t744Nd1lqk8QFyBPLQI9c2vrEC8Gw2Zwv3HVlM+PKYhc9zw2Axl95R5HtJ19MN5zQlNdVxSgmsAWIMOXAEqlFVP8DbXyvTKW9pxRal4jcQiBJiylJ/cZD3NPY2rn6FD2NKe0QDlED36PU9qHPN4jKyYqq7wUx7hayOu62Ehf977GCLlgFD62oLVD6qSQEhV7Yi8X7MlCqnvIxlkZOVpQJVbUV0nTX25uOpxyswYv7l8bfRPQWdbhGiyRcqjXTJDwWcKa07L+5AidCYCmZTVRgAA2ioF7ua6vp0= makcimkakakakaka@miloverada
           connect_timeout: 10s
           first_ssh: |-
             sudo systemctl stop app.service
