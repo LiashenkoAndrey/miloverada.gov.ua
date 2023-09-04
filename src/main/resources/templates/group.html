@@ -16,7 +16,7 @@
         <div>
             <div th:replace="~{fragments/documents_render.html :: document_render(${group})}"></div>
 
-            <button class="btn btn-danger me-2 mb-2 admin-btn" sec:authorize="hasAuthority('ADMIN')" th:groupId="${group.id}" th:groupTitle="${group.title}" onclick="new GetRequestBuilder()
+            <button style="margin-left: 10px" class="btn btn-danger me-2 mb-2 admin-btn" sec:authorize="hasAuthority('ADMIN')" th:groupId="${group.id}" th:groupTitle="${group.title}" onclick="new GetRequestBuilder()
                              .url('/documentGroup/delete')
                              .submitText('Ви впевнені що хочете видалити групу: ' + this.getAttribute('groupTitle'))
                              .submitBtn('Так, видалити')

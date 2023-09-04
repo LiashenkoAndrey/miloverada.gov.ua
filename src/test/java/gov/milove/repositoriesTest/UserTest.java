@@ -1,5 +1,6 @@
-package gov.milove.repositories;
+package gov.milove.repositoriesTest;
 
+import gov.milove.repositories.UserRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -73,13 +73,13 @@ async function editNews(newsId) {
     doPostAndRedirect(formData, '/news/update', '/news/' + new URLSearchParams(location.search).get('newsId'));
 }
 
-function newBanner() {
+function newTextBanner() {
     if (description.value.length < 4) {
         alert("Опис занадто короткий, має бути мінімум 4 символи.")
         return;
     }
 
-    fetch("/banner/new", {
+    fetch("/text-banner/new", {
         method: 'post',
         body: JSON.stringify( {
             description: description.value,
@@ -91,13 +91,13 @@ function newBanner() {
     })
 }
 
-function updateBanner() {
+function updateTextBanner() {
     if (description.value.length < 4) {
         alert("Опис занадто короткий, має бути мінімум 4 символи.")
         return;
     }
 
-    fetch("/banner/update", {
+    fetch("/text-banner/update", {
         method: 'put',
         body: JSON.stringify( {
             description: description.value,

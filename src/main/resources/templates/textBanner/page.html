@@ -9,14 +9,17 @@
 <body>
 <style>
     .disabledBannerLink {
-        font-size: 30px;
+        font-size: 22px;
         background-color: rgb(0 0 0 / 5%);
         border-radius: 3px;
         display: block;
         padding-left: 5px;
+        line-height: 33px;
     }
 
     .bannerLink {
+        font-size: 22px;
+        line-height: 33px;
         padding: 5px
     }
 
@@ -38,23 +41,23 @@
     <div class="content container" id="content-container" style="min-height: 500px;">
 
         <div>
-            <a th:href="@{/banner/new}" style="margin: 5px" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
+            <a th:href="@{/text-banner/new}" style="margin: 5px" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
 
             <div class="sticky">
                 <div class="banner" th:id="banner + ${banner.id}" th:each="banner : ${banners}">
                     <span th:if="${banner.description.equals(selectedBanner.description)}"  class="disabledBannerLink" th:text="${banner.description}"></span>
-                    <a th:unless="${banner.description.equals(selectedBanner.description)}" th:href="@{/banner/view(id=${banner.id})}" class="link bannerLink" th:text="${banner.description}"></a>
+                    <a th:unless="${banner.description.equals(selectedBanner.description)}" th:href="@{/text-banner/view(id=${banner.id})}" class="link bannerLink" th:text="${banner.description}"></a>
                 </div>
             </div>
         </div>
 
         <div>
             <div class="mt-1" sec:authorize="hasAuthority('ADMIN')">
-                <a th:href="@{/banner/update(id=${selectedBanner.id})}" class="btn btn-success admin-btn" >Змінити</a>
+                <a th:href="@{/text-banner/update(id=${selectedBanner.id})}" class="btn btn-success admin-btn" >Змінити</a>
 
                 <div class="trashBox" >
                     <img th:src="@{/img/trashBox.svg}" height="30" width="30" th:bannerId="${selectedBanner.id}" onclick="new DeleteRequestBuilder()
-                             .url('/banner/delete')
+                             .url('/text-banner/delete')
                              .submitText('Ви впевнені що хочете видалити банер?')
                              .submitBtn('Так, видалити')
                              .redirectUrl('/')

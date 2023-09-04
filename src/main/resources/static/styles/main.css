@@ -283,21 +283,19 @@ body {
   margin: 10px 0 0 0;
 }
 
-.fields {
-  border-radius: 5px;
-  background-color: #00000080;
-  padding: 10px;
-  color: white
-}
 
 .modalWrapper {
   display: flex;
-  height: 90%;
+  height: 100%;
   width: 100%;
   top: 20px;
   position: absolute;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
+  background-color: #00000080;
+  padding: 10px;
+  color: white
 }
 
 .tableData td {

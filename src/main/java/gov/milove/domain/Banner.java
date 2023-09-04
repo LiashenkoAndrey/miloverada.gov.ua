@@ -1,37 +1,29 @@
 package gov.milove.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
-@Table(name = "banner")
-public class Banner {
+@ToString
+@MappedSuperclass
+abstract public class Banner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
-    @Size(min = 4, max = 120)
-    @NotNull
-    private String description;
+    @CreationTimestamp
+    protected LocalDate createdOn;
 
-    @Size(max = 40000)
-    @NotNull
-    private String mainText;
-
-    private LocalDate createdOn;
-
-    private LocalDateTime lastUpdated;
+    @UpdateTimestamp
+    protected LocalDateTime lastUpdated;
 }

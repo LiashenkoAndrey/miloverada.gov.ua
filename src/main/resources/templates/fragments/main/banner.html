@@ -1,12 +1,28 @@
 <div th:fragment="banner" class="sticky">
-  <a th:href="@{/banner/new}" class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</a>
+  <button onclick="enableBannersCreationForm()"  class="btn btn-success admin-btn" sec:authorize="hasAuthority('ADMIN')" >Додати банер</button>
 
-  <div class="banner" th:id="banner + ${banner.id}" th:each="banner : ${banners}"  >
+
+  <div class="banner" th:id="banner + ${banner.id}" th:each="banner : ${textBanners}"  >
     <h4 style="padding: 5px" class="news-description" th:text="${banner.description}"></h4>
 
-    <a th:href="@{/banner/view(id=${banner.id})}" class="btn btn-primary bannerBtn">Перейти</a>
+    <a th:href="@{/text-banner/view(id=${banner.id})}" class="btn btn-primary bannerBtn">Переглянути</a>
     <img  sec:authorize="hasAuthority('ADMIN')" th:src="@{/img/trashBox.svg}" class="trashBox" height="30" width="30"  th:bannerId="${banner.id}" onclick="new DeleteRequestBuilder()
-                             .url('/banner/delete')
+                             .url('/text-banner/delete')
+                             .submitText('Ви впевнені що хочете видалити банер?')
+                             .submitBtn('Так, видалити')
+                             .param('id', this.getAttribute('bannerId'))
+                             .init()
+                             .deleteOnBuild(this.parentNode.getAttribute('id'))
+                             .build()
+                        ">
+  </div>
+
+  <div class="banner" th:id="banner + ${linkBanner.id}" th:each="linkBanner : ${linkBanners}"  >
+    <h4 style="padding: 5px" class="news-description" th:text="${linkBanner.text}"></h4>
+
+    <a target="_blank" th:href="${linkBanner.url}" class="btn btn-primary bannerBtn">Перейти →</a>
+    <img  sec:authorize="hasAuthority('ADMIN')" th:src="@{/img/trashBox.svg}" class="trashBox" height="30" width="30"  th:bannerId="${linkBanner.id}" onclick="new DeleteRequestBuilder()
+                             .url('/link-banner/delete')
                              .submitText('Ви впевнені що хочете видалити банер?')
                              .submitBtn('Так, видалити')
                              .param('id', this.getAttribute('bannerId'))

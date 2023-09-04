@@ -158,12 +158,12 @@ class DeleteRequestBuilder extends RequestBuilder {
         }
 
         let form =
-            '<div id="form" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
-            '<div class="h1" style="right: 30%; left: 30%; top:30%; position: absolute">' +
+            '<div class="modalWrapper" id="form" >' +
+            '<div>' +
             '<div class="text-end">' +
-            '   <button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
+            '   <button type="button" style="font-size: 20px" class="btn-close btn-close-white" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
             '</div>' +
-            '<h1 style="color: black">' + this.submitText + '</h1>'+
+            '<h1 style="color: white">' + this.submitText + '</h1>'+
             submitBtn +
             '</div>' +
             '</div>';
@@ -196,12 +196,12 @@ class GetRequestBuilder extends RequestBuilder {
 
     build() {
         let form =
-            '<div id="form" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
-                '<div class="h1" style="right: 30%; left: 30%; top:30%; position: absolute">' +
-                    '<div class="text-end">' +
-                    '   <button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
+            '<div class="modalWrapper" id="form" >' +
+                '<div>' +
+                    '<div class="text-end mb-4">' +
+                    '   <button style="font-size: 20px" type="button" class="btn-close btn-close-white" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
                     '</div>' +
-                    '<h1 style="color: black">' + this.submitText + '</h1>'+
+                    '<h1 style="color: white">' + this.submitText + '</h1>'+
                     '<button class="btn btn-danger mt-2 h2 admin-btn" onclick="doGetRequestAndRedirect(\'' + this.urlVal + '\',\'' + this.redirectUrlPath + '\')">'+ this.submitBtnVal +'</button>' +
                 '</div>' +
             '</div>';
@@ -331,10 +331,10 @@ class PostRequestFormBuilder {
 
     build() {
         let form =
-                '<div class="modalWrapper" style="height: 100%; width: 100%; top: 0; position:absolute; " >' +
-                    '<div class="h1" >' +
-                        '<div class="text-end">' +
-                            '<button type="button" class="btn-close" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
+                '<div class="modalWrapper">' +
+                    '<div>' +
+                        '<div class="text-end mb-4">' +
+                            '<button style="font-size: 20px" type="button" class="btn-close btn-close-white" onclick="FormService.disableForm(this.parentNode.parentNode.parentNode)" aria-label="Close"></button>' +
                         '</div>' +
                         '<h1>' + (this.title !== undefined ? this.title : '') + '</h1>'+
                         '<div class="fields" >'+ this.inputs + '</div>' +
@@ -342,16 +342,20 @@ class PostRequestFormBuilder {
                     '</div>' +
                 '</div>';
 
-        document.querySelector("body").style.overflowY = 'hidden';
-        wrapper.style.filter = 'blur(8px)';
-        document.body.insertAdjacentHTML('beforeend', form);
+        FormService.enableForm(form);
     }
 }
 
 class FormService {
+    static enableForm(form) {
+        document.querySelector("body").style.overflowY = 'hidden';
+        wrapper.style.filter = 'blur(8px)';
+        document.body.insertAdjacentHTML('beforeend', form);
+    }
+
     static disableForm(node) {
         document.querySelector("body").style.overflowY = 'initial'
-        node.style.display= "none";
+        node.remove();
         wrapper.style.filter = 'none';
     }
 }

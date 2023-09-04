@@ -2,6 +2,8 @@ package gov.milove.controllers;
 
 import gov.milove.domain.dto.NewsDTO;
 import gov.milove.repositories.BannerRepository;
+import gov.milove.repositories.LinkBannerRepository;
+import gov.milove.repositories.TextBannerRepository;
 import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.services.impl.NewsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,9 @@ public class Main {
 
     private final DocumentGroupRepository docGroupRepo;
 
-    private final BannerRepository bannerRepository;
+    private final TextBannerRepository textBannerRepository;
+
+    private final LinkBannerRepository linkBannerRepository;
 
     @GetMapping("/")
     public String main(Model model) {
@@ -27,7 +31,8 @@ public class Main {
 
         Page<NewsDTO> pages = newsService.getPagesList(0, 9);
         model.addAttribute("newsList", pages.toList());
-        model.addAttribute("banners", bannerRepository.findAll());
+        model.addAttribute("textBanners", textBannerRepository.findAll());
+        model.addAttribute("linkBanners", linkBannerRepository.findAll());
         return "main";
     }
 

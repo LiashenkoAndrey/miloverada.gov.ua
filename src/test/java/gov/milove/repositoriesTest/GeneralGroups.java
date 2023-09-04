@@ -1,4 +1,4 @@
-package gov.milove.repositories;
+package gov.milove.repositoriesTest;
 
 import gov.milove.domain.dto.DocumentGroupDto;
 import gov.milove.repositories.document.DocumentGroupRepository;
