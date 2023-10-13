@@ -1,0 +1,37 @@
+version: "1"
+services:
+  webserver:
+    image: miloverada-image
+    depends_on:
+      - db
+
+    ports:
+      - "80:80"
+    environment:
+      MOODLE_DOCKER_DBTYPE: pgsql
+      MOODLE_DOCKER_DBNAME: moodle
+      MOODLE_DOCKER_DBUSER: moodle
+      MOODLE_DOCKER_DBPASS: "m@0dl3ing"
+      HTTP_PROXY: "${HTTP_PROXY}"
+      HTTPS_PROXY: "${HTTPS_PROXY}"
+      NO_PROXY: "${NO_PROXY}"
+  db:
+    image: milove-db-v1:latest
+    volumes:
+      - milove-db-data-volume:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "komunist"
+      POSTGRES_DB: postgres
+      HTTP_PROXY: "${HTTP_PROXY}"
+      HTTPS_PROXY: "${HTTPS_PROXY}"
+      NO_PROXY: "${NO_PROXY}"
+
+    ports:
+      - "5432:5432"
+      - "5433:5432"
+
+volumes:
+  milove-db-data-volume:
+    external: true
