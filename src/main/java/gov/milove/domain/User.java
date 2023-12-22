@@ -1,6 +1,7 @@
 package gov.milove.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@Entity
 @Table(name = "users")
+@Entity
 public class User implements UserDetails {
 
     @Id

@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/news")
+@RestController
+@RequestMapping("/api/news")
 @RequiredArgsConstructor
 public class NewsController {
 
@@ -43,15 +43,8 @@ public class NewsController {
     }
 
     @GetMapping("/all")
-    public String newsAll(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
-        page = page-1;
-
-        Page<NewsDTO> pages = newsService.getPagesList(page, 20);
-
-        model.addAttribute("newsList", pages.toList());
-        model.addAttribute("pagesQuantity", pages.getTotalPages());
-        model.addAttribute("currentPage", page);
-        return "news/all";
+    public List<NewsDTO> newsAll(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
+        return newsService.getPagesList(page, size).toList();
     }
 
     @PostMapping("/new")
@@ -68,20 +61,26 @@ public class NewsController {
         return new ResponseEntity<>("Видалення успішне", HttpStatus.OK);
     }
 
-    @GetMapping("/{news_id}")
-    public String getFullNewsPage(@PathVariable("news_id") Long news_id, Model model) {
-        News news = newsRepository.findById(news_id).orElseThrow(NewsNotFoundException::new);
-        List<NewsDTO> similarNews = (news.getNewsType() != null ?
-                newsRepository.getLastNewsDTOByNewsTypeIdWithLimit(
-                news_id,
-                news.getNewsType().getId(),
-                PageRequest.of(0, 3).withSort(Sort.Direction.DESC, "created")
-                ).toList() : List.of());
+    @GetMapping("/{newsId}")
+    public News getFullNewsPage(@PathVariable("newsId") Long news_id) {
+        return newsRepository.findById(news_id).orElseThrow(NewsNotFoundException::new);
+    }
 
-        model.addAttribute("groups",documentGroupService.findAll());
-        model.addAttribute("similarNews", similarNews);
-        model.addAttribute("news", news);
-        return "news/page";
+    @GetMapping("/{newsId}/similar")
+    public List<NewsDTO> getSimilarNewsByNewsId(@PathVariable Long newsId) {
+        News news = newsRepository.findById(newsId).orElseThrow(NewsNotFoundException::new);
+
+        return (news.getNewsType() != null ?
+                newsRepository.getLastNewsDTOByNewsTypeIdWithLimit(
+                        newsId,
+                        news.getNewsType().getId(),
+                        PageRequest.of(0, 3).withSort(Sort.Direction.DESC, "created")
+                ).toList() : List.of());
+    }
+
+    @GetMapping("/latest")
+    public List<NewsDTO> getLatest(@RequestParam(defaultValue = "6", required = false) Integer pageSize) {
+        return newsRepository.getLatest(PageRequest.ofSize(pageSize)).toList();
     }
 
     @GetMapping("/update")

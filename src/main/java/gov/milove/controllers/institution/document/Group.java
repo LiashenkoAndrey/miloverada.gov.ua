@@ -1,31 +1,36 @@
 package gov.milove.controllers.institution.document;
 
 import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.DocumentDtoResultTransformer;
+import gov.milove.domain.dto.DocumentGroupDto;
 import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.services.document.DocumentGroupService;
-import gov.milove.services.document.DocumentSubGroupService;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.hibernate.query.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
-@Controller
-@RequestMapping("/documentGroup")
+@Log4j2
+@RestController
+@RequestMapping("/api/documentGroup")
 @RequiredArgsConstructor
 public class Group {
 
     private final DocumentGroupService documentGroupService;
 
     private final DocumentGroupRepository doc_group_repo;
-
 
     @GetMapping("/view/{groupId}")
     public String group(@PathVariable("groupId") Long group_id,
@@ -40,6 +45,28 @@ public class Group {
             return "error/404";
         }
     }
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @GetMapping("/all")
+    public Collection getAll() {
+        DocumentDtoResultTransformer transformer = new DocumentDtoResultTransformer();
+
+        List<DocumentGroupDto> documentGroupDtos = em.createQuery("""
+        select sub_group.id as s_id,
+               sub_group.title as s_title,
+               d.id as d_id,
+               d.title as d_title
+        from DocumentGroup d 
+        join d.subGroups sub_group order by d.id
+        """)
+                .unwrap(Query.class)
+                .setResultTransformer(transformer)
+                .getResultList();
+        return transformer.getDocumentGroupDtoMap().values();
+    }
+
 
 
     @PostMapping("/new")
@@ -63,5 +90,4 @@ public class Group {
         if (success) return ok("Видалення успішне");
         else return error("Виникли проблеми з видаленням");
     }
-
 }

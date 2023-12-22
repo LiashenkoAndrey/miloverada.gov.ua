@@ -1,5 +1,6 @@
 package gov.milove.controllers.institution.document;
 
+import gov.milove.domain.Document;
 import gov.milove.repositories.document.DocumentSubGroupRepository;
 import gov.milove.services.document.DocumentSubGroupService;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
-@Controller
-@RequestMapping("/subGroup")
+@RestController
+@RequestMapping("/api/subGroup")
 @RequiredArgsConstructor
 public class SubGroup {
 
@@ -33,11 +36,12 @@ public class SubGroup {
 
     @GetMapping("/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteSubGroup (@RequestParam("id") Long id) {
+    public ResponseEntity<String> deleteSubGroup (@RequestParam Long id) {
         boolean success = subGroupService.deleteSubGroup(id);
         if (success) return ok("Видалення успішне");
         else return error("Виникли проблеми з видаленням");
     }
+
 
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")

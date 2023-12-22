@@ -1,5 +1,6 @@
 package gov.milove.domain.dto;
 
+import gov.milove.domain.NewsType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,6 @@ public class NewsDTO {
     private String image_id;
 
     private LocalDate created;
+
+    private String newsType;
 }

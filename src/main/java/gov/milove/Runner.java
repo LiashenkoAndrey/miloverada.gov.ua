@@ -13,18 +13,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@PropertySource("classpath:prod_application.properties")
+@PropertySource("classpath:dev_application.properties")
 @SpringBootApplication
 @EnableTransactionManagement
 public class Runner {
+
     public static void main(String[] args) {
         SpringApplication.run(Runner.class, args);
-
     }
 
     @Bean
     public MongoDatabase connect() {
-
         ConnectionString connectionString = new ConnectionString("mongodb://eu-life-rootinfo:uSVtE7VF7VGbQv5@ac-u9efhpg-shard-00-00.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-01.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-02.jhfxdna.mongodb.net:27017/?ssl=true&replicaSet=atlas-14ato7-shard-0&authSource=admin&retryWrites=true&w=majority");
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)

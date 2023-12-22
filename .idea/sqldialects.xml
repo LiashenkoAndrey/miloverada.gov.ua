@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Desktop/data/about.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/administration_employee.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/administration_group.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/banner.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/contact_employee.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/document.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/document_group.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/insitution1.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/institution.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/institution_employee.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/link_banner.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/news.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/news_type.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/role.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/sub_group.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/text_banner.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/Desktop/data/users.sql" dialect="PostgreSQL" />
+  </component>
+</project>
