@@ -1,9 +1,11 @@
 package gov.milove.controllers.institution.document;
 
 import gov.milove.domain.dto.DocumentGroupDto;
+import gov.milove.repositories.document.DocumentRepository;
 import gov.milove.services.document.DocumentGroupService;
 import gov.milove.services.document.DocumentService;
 import gov.milove.services.document.DocumentSubGroupService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,24 +14,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
-@Controller
-@RequestMapping("/document")
+@RestController
+@RequestMapping("/api")
 public class Document {
 
     private final DocumentService documentService;
     private final DocumentGroupService documentGroupService;
     private final DocumentSubGroupService subGroupService;
 
+    private final DocumentRepository documentRepository;
 
-    public Document(@Qualifier("localCommunityDocumentService") DocumentService documentService, DocumentGroupService documentGroupService, DocumentSubGroupService subGroupService) {
+    public Document(@Qualifier("localCommunityDocumentService") DocumentService documentService, DocumentGroupService documentGroupService, DocumentSubGroupService subGroupService, DocumentRepository documentRepository) {
         this.documentService = documentService;
         this.documentGroupService = documentGroupService;
         this.subGroupService = subGroupService;
+        this.documentRepository = documentRepository;
     }
 
 
@@ -48,6 +53,10 @@ public class Document {
         }
     }
 
+    @GetMapping("/documents")
+    public List<gov.milove.domain.Document> getDocumentsBySubGroupId(@RequestParam Long subGroupId) {
+        return documentRepository.findAllBySubGroupId(subGroupId);
+    }
 
     @GetMapping("/view")
     public String displayDocument(

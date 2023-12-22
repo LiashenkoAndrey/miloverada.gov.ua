@@ -17,6 +17,8 @@ public interface DocumentSubGroupRepository extends JpaRepository<SubGroup, Long
     @Query("select u.title from SubGroup u where u.id =?1")
     String getTitleById(@Param("id") Long sub_group_id);
 
+
+
     @Transactional
     @Modifying
     @Query("update SubGroup s set s.title = :newTitle where s.id = :id")

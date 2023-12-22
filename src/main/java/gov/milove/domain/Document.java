@@ -13,6 +13,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class Document {
 
+    public Document(Long id, String title, String document_filename) {
+        this.id = id;
+        this.title = title;
+        this.document_filename = document_filename;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

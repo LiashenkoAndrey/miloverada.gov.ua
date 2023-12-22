@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    @Query("from Document d where d.sub_group =?1")
-    List<Document> findAllBySub_group(Long id);
+    @Query("select new gov.milove.domain.Document(d.id, d.title, d.document_filename) from Document d where d.sub_group.id = :id")
+    List<Document> findAllBySubGroupId(@Param("id") Long id);
 
     @Query("from Document d where d.document_filename =?1")
     Optional<Document> findByDocument_filename(String filename);
