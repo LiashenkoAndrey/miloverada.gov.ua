@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@PropertySource("classpath:dev_application.properties")
 @SpringBootApplication
 @EnableTransactionManagement
 public class Runner {

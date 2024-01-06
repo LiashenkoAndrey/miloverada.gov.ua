@@ -15,6 +15,13 @@ import org.hibernate.annotations.Formula;
 @Table(schema = "forum")
 public class Chat {
 
+    public Chat(String name, String description, String picture, Long topicId) {
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.topicId = topicId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,4 +1,4 @@
-package gov.milove.domain;
+package gov.milove.domain.dto.forum;
 
 import gov.milove.domain.forum.Message;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public class MessageDto {
     private String text;
 
     @NotNull
-    private Long senderId;
+    private String senderId;
 
     @NotNull
     private Long chatId;

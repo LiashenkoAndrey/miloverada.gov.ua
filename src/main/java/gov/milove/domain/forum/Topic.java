@@ -15,6 +15,11 @@ import java.util.List;
 @Table(schema = "forum")
 public class Topic {
 
+    public Topic(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
