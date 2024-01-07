@@ -39,6 +39,7 @@ public class Upload {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
     }
 
+
     @GetMapping("/document/{id}")
     public ResponseEntity<byte[]> getDocument(@PathVariable("id") String id) {
         byte[] file = documentService.getDocumentBinaryById(id);

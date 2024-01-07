@@ -47,15 +47,12 @@ public class MessageController {
         return saved;
     }
 
-    @MessageMapping("/userMessage/new")
     @Transactional
+    @MessageMapping("/userMessage/new")
     public void broadcastMessage(@Valid @Payload MessageDto dto) {
         log.info("new message: " + dto);
-
-        Message message = MessageDto.toEntity(dto);
-        message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
-        message.setChat(chatRepo.getReferenceById(dto.getChatId()));
-        Message saved = messageRepo.save(message);
+        log.info("IMAGES: size " + dto.getImagesDtoList().size());
+        Message saved = messageService.saveMessage(dto);
 
         String destination = "/chat/" + dto.getChatId();
         messagingTemplate.convertAndSend(destination, saved);
@@ -66,7 +63,7 @@ public class MessageController {
         log.info("setLastReadMessage: " + dto);
         if (messageRepo.lastReadMessageIsExist(dto.getChatId(), dto.getUserId())) {
             log.info("LastReadMessage exist, update...");
-//            messageRepo.updateLastReadMessage(dto.getChatId(), dto.getUserId(), dto.getMessageId());
+            messageRepo.updateLastReadMessage(dto.getChatId(), dto.getUserId(), dto.getMessageId());
         } else {
             log.info("LastReadMessage not exist, save...");
             messageRepo.saveLastReadMessage(dto.getChatId(), dto.getUserId(), dto.getMessageId());

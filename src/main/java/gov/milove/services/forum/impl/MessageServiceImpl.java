@@ -1,9 +1,12 @@
 package gov.milove.services.forum.impl;
 
+import gov.milove.domain.dto.forum.MessageDto;
 import gov.milove.domain.dto.forum.MessageRequestDto;
 import gov.milove.domain.forum.Message;
 import gov.milove.repositories.forum.ChatRepo;
+import gov.milove.repositories.forum.ForumUserRepo;
 import gov.milove.repositories.forum.MessageRepo;
+import gov.milove.services.forum.MessageImageService;
 import gov.milove.services.forum.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +27,12 @@ import static gov.milove.util.Util.decodeUriComponent;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepo messageRepo;
+
+    private final ForumUserRepo forumUserRepo;
+
+    private final ChatRepo chatRepo;
+
+    private final MessageImageService imageService;
 
     @Override
     public List<Message> getMessages(MessageRequestDto dto) {
@@ -48,5 +57,20 @@ public class MessageServiceImpl implements MessageService {
         List<Message> messages = messageRepo.findAllByChat_Id(dto.getChatId(), pageReq);
         Collections.reverse(messages);
         return messages;
+    }
+
+
+
+    @Override
+    public Message saveMessage(MessageDto dto) {
+        Message message = MessageDto.toEntity(dto);
+        message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
+        message.setChat(chatRepo.getReferenceById(dto.getChatId()));
+
+        if (!dto.getImagesDtoList().isEmpty()) {
+            log.info("image list " + dto.getImagesDtoList());
+            message.setImagesList(imageService.saveImages(dto.getImagesDtoList()));
+        }
+        return messageRepo.save(message);
     }
 }

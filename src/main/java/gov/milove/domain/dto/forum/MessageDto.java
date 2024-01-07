@@ -6,14 +6,16 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
 public class MessageDto {
 
     @Size(max = 3000)
-    @NotNull
     private String text;
 
     @NotNull
@@ -22,7 +24,20 @@ public class MessageDto {
     @NotNull
     private Long chatId;
 
+    private List<MessageImageDto> imagesDtoList = new ArrayList<>();
+
     public static Message toEntity(MessageDto dto) {
         return new Message(dto.getText());
+    }
+
+
+    @Override
+    public String toString() {
+        return "MessageDto{" +
+                "text='" + text + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", chatId=" + chatId +
+                ", imagesDtoList size=" + imagesDtoList.size() +
+                '}';
     }
 }

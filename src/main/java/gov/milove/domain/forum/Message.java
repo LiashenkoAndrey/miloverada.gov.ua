@@ -34,6 +34,10 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     private ForumUser sender;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "message_id")
+    private List<MessageImage> imagesList;
+
     @CreationTimestamp
     private LocalDateTime createdOn;
 

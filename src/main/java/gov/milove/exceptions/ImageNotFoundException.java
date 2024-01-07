@@ -2,15 +2,15 @@ package gov.milove.exceptions;
 
 public class ImageNotFoundException extends RuntimeException {
 
-    /**
-     * Constructs a new runtime exception with the specified detail message.
-     * The cause is not initialized, and may subsequently be initialized by a
-     * call to {@link #initCause}.
-     *
-     * @param message the detail message. The detail message is saved for
-     *                later retrieval by the {@link #getMessage()} method.
-     */
+
+    public ImageNotFoundException() {
+    }
+
     public ImageNotFoundException(String message) {
         super(message);
+    }
+
+    public ImageNotFoundException(Throwable cause) {
+        super(cause);
     }
 }
