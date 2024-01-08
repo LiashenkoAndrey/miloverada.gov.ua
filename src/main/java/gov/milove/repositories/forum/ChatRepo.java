@@ -20,4 +20,10 @@ public interface ChatRepo extends JpaRepository<Chat, Long> {
 
     @Query(value = "select u.message_id from forum.unread_messages u where u.chat_id = :chatId and u.user_id = :userId", nativeQuery = true)
     Long getLastReadMessageIdOfChat(@Param("chatId") Long chatId, @Param("userId") String userId);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from forum.unread_messages where message_id = :messageId", nativeQuery = true)
+    void deleteFromLastReadMessagesTable(@Param("messageId") Long messageId);
 }

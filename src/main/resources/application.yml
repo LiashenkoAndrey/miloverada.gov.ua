@@ -40,6 +40,6 @@ server:
     whitelabel:
       enabled: false
     include-message: always
-logging:
-  level:
-    web: debug
+#logging:
+#  level:
+#    web: debug

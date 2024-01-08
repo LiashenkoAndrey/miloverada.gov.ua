@@ -12,6 +12,7 @@ public interface MessageService {
 
     List<Message> getMessages(MessageRequestDto dto);
 
+    Long deleteById(Long id);
 
     Message saveMessage(MessageDto messageDto);
 }

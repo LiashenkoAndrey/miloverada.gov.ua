@@ -14,6 +14,13 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 
     List<Message> findAllByChat_Id(Long id, Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query("delete from MessageImage m where m.message_id = :messageId and m.imageId = :imageId")
+    void deleteMessageImage(@Param("imageId") String imageId, @Param("messageId") Long messageId);
+
+    @Query(value = "select count(id) > 1 from forum.message_image img  where image_id = :imageId", nativeQuery = true)
+    boolean messageImageIsUsedMoreThenOneTime(@Param("imageId") String imageId);
 
     @Query(value = "select * from forum.message m where m.chat_id = :chatId and m.id >= (:messageId - :range) and m.id <= (:messageId + :range) order by m.created_on;", nativeQuery = true)
     List<Message> findAllFromLastReadMessageInRange(@Param("chatId") Long chatId, @Param("messageId") Long messageId, @Param("range") Integer range, Pageable pageable);

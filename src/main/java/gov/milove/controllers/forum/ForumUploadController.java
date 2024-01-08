@@ -28,13 +28,6 @@ public class ForumUploadController {
         String base64 = image.getBase64Image();
         String type = base64.substring(5, base64.indexOf(";"));
         MediaType mediaType = MediaType.parseMediaType(type);
-        String formattedImg = base64.substring(base64.indexOf(",") + 1, base64.length()-1);
-        log.info(mediaType);
-        log.info("\n");
-        log.info(base64.substring(0, 50));
-        log.info("\n");
-        log.info(formattedImg.substring(0, 50));
-        log.info("\n");
         return ResponseEntity
                 .ok()
                 .contentType(mediaType)

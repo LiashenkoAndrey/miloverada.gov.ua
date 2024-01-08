@@ -3,17 +3,21 @@ package gov.milove.services.forum.impl;
 import gov.milove.domain.dto.forum.MessageDto;
 import gov.milove.domain.dto.forum.MessageRequestDto;
 import gov.milove.domain.forum.Message;
+import gov.milove.domain.forum.MessageImage;
 import gov.milove.repositories.forum.ChatRepo;
 import gov.milove.repositories.forum.ForumUserRepo;
 import gov.milove.repositories.forum.MessageRepo;
+import gov.milove.repositories.mongo.MessageImageRepo;
 import gov.milove.services.forum.MessageImageService;
 import gov.milove.services.forum.MessageService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +37,9 @@ public class MessageServiceImpl implements MessageService {
     private final ChatRepo chatRepo;
 
     private final MessageImageService imageService;
+
+    private final MessageImageService messageImageService;
+
 
     @Override
     public List<Message> getMessages(MessageRequestDto dto) {
@@ -57,6 +64,17 @@ public class MessageServiceImpl implements MessageService {
         List<Message> messages = messageRepo.findAllByChat_Id(dto.getChatId(), pageReq);
         Collections.reverse(messages);
         return messages;
+    }
+
+    @Override
+    @Transactional
+    public Long deleteById(Long id) {
+        Message message = messageRepo.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        messageImageService.deleteImagesIfNotUsedMoreThenOneTime(message.getImagesList());
+        chatRepo.deleteFromLastReadMessagesTable(id);
+        messageRepo.deleteById(id);
+        return id;
     }
 
 
