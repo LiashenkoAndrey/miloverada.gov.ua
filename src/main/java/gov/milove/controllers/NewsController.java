@@ -28,19 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NewsController {
 
-    private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
-
     private final NewsService newsService;
     private final NewsRepository newsRepository;
-    private final NewsTypeRepository newsTypeRepository;
-    private final DocumentGroupService documentGroupService;
-
-
-    @GetMapping("/new")
-    public String newNewsForm(Model model) {
-        model.addAttribute("allTypesList", newsTypeRepository.getAllTypes());
-        return "news/new";
-    }
 
     @GetMapping("/all")
     public List<NewsDTO> newsAll(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
@@ -83,14 +72,6 @@ public class NewsController {
         return newsRepository.getLatest(PageRequest.ofSize(pageSize)).toList();
     }
 
-    @GetMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String editNews(@RequestParam("newsId") Long newsId, Model model) {
-        News news = newsRepository.findById(newsId).orElseThrow(NewsNotFoundException::new);
-        model.addAttribute("news", news);
-        model.addAttribute("allTypesList", newsTypeRepository.getAllTypes());
-        return "news/update";
-    }
 
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('ADMIN')")
