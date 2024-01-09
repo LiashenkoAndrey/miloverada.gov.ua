@@ -1,11 +1,11 @@
 
 
 spring:
-  jpa:
-    properties:
-      hibernate:
-        format_sql=true
-    show-sql: true
+#  jpa:
+#    properties:
+#      hibernate:
+#        format_sql=true
+#    show-sql: true
 
   mvc:
 
@@ -16,7 +16,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: komunist
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
 
   web:
     resources:
@@ -34,12 +34,22 @@ okta:
     audience: https://miloverada-api
 
 server:
-  port: 6060
+  port: 8443
+
+  ssl:
+    key-store: /etc/letsencrypt/live/v2.miloverada.gov.ua/keystore.p12
+    key-store-password: komunist
+    key-store-type: PKCS12
+    key-alias: tomcat
 
   error:
     whitelabel:
       enabled: false
     include-message: always
+
+security:
+  require-ssl: true
+
 #logging:
 #  level:
 #    web: debug
