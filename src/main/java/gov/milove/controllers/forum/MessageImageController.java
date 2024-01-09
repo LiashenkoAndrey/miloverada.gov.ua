@@ -13,11 +13,6 @@ public class MessageImageController {
 
     private final MessageImageService messageImageService;
 
-    @PutMapping("/protected/forum/messageImage/{id}/update")
-    public void updateOneImage(@PathVariable Long id, @RequestParam String base64Image) {
-
-    }
-
     @DeleteMapping("/protected/forum/message/{messageId}/image/{imageId}/delete")
     public void deleteMessageImageById(@PathVariable String imageId, @PathVariable Long messageId) {
         log.info("DELETE MESSAGE IMAGE imageId={}, messageId={}", imageId, messageId);

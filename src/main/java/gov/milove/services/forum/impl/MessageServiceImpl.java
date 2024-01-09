@@ -86,7 +86,6 @@ public class MessageServiceImpl implements MessageService {
         message.setChat(chatRepo.getReferenceById(dto.getChatId()));
 
         if (!dto.getImagesDtoList().isEmpty()) {
-            log.info("image list " + dto.getImagesDtoList());
             message.setImagesList(imageService.saveImages(dto.getImagesDtoList()));
         }
         return messageRepo.save(message);
