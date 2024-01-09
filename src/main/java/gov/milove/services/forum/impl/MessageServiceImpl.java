@@ -85,6 +85,13 @@ public class MessageServiceImpl implements MessageService {
         message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
         message.setChat(chatRepo.getReferenceById(dto.getChatId()));
 
+        if (dto.getReplyToMessageId() != null) {
+            Message message1 = messageRepo.getReferenceById(dto.getReplyToMessageId());
+            log.info("is reply! {}, reply message={}", dto.getReplyToMessageId(), message1);
+
+            message.setRepliedMessage(message1);
+        }
+
         if (!dto.getImagesDtoList().isEmpty()) {
             message.setImagesList(imageService.saveImages(dto.getImagesDtoList()));
         }

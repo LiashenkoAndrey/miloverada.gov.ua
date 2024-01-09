@@ -51,7 +51,4 @@ public class Message {
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Message repliedMessage;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "repliedMessage")
-    private List<Message> messages = new ArrayList<>();
 }

@@ -26,6 +26,8 @@ public class MessageDto {
 
     private List<MessageImageDto> imagesDtoList = new ArrayList<>();
 
+    private Long replyToMessageId;
+
     public static Message toEntity(MessageDto dto) {
         return new Message(dto.getText());
     }

@@ -56,12 +56,14 @@ public class MessageController {
         return saved.getId();
     }
 
+
     @Transactional
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
         log.info("new message: " + dto);
-        log.info("IMAGES: size " + dto.getImagesDtoList().size());
+        log.info("reply msg id {}", dto.getReplyToMessageId());
         Message saved = messageService.saveMessage(dto);
+        log.info("saved ok {}",  saved);
 
         String destination = "/chat/" + dto.getChatId();
         messagingTemplate.convertAndSend(destination, saved);
