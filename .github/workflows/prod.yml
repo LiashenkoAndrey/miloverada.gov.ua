@@ -10,8 +10,6 @@ jobs:
     runs-on: [milove]
 
     steps:
-      - name: check dir
-        run: ls && pwd
 
       - name: stop runned service
         run: sudo systemctl stop milove
