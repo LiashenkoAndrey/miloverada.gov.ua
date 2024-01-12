@@ -7,7 +7,7 @@ on:
 jobs:
 
   deploy:
-    runs-on: [ec2]
+    runs-on: [milove]
 
     steps:
       - name: check dir
