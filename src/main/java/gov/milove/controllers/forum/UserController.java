@@ -50,4 +50,9 @@ public class UserController {
         log.info("User has stopped typing, " + dto);
         messagingTemplate.convertAndSend("/chat/"+ dto.getChatId() +"/userStopTyping", dto);
     }
+
+    @GetMapping("/forum/activeUsers")
+    public Integer getActiveUsersAmount() {
+        return forumUserRepo.getActiveUsersAmount();
+    }
 }

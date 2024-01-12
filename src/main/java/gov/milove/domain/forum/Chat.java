@@ -3,7 +3,10 @@ package gov.milove.domain.forum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,6 +34,9 @@ public class Chat {
     private String description;
 
     private String picture;
+
+    @CreationTimestamp
+    private LocalDateTime createdOn;
 
     @OneToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
