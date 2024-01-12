@@ -1,0 +1,29 @@
+name: Try to deploy spring app
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  deploy:
+    runs-on: [ec2]
+
+    steps:
+      - name: check dir
+        run: ls && pwd
+
+      - name: stop runned service
+        run: sudo systemctl stop milove
+
+      - name: Remove old files
+        run: sudo rm -r miloverada.gov.ua
+
+      - name: Clone repository
+        run: git clone clone --branch deploy https://github.com/LiashenkoAndrey/miloverada.gov.ua.git
+
+      - name: give permission to mvnw file
+        run: sudo chmod +x /home/admin/actions-runner/_work/miloverada.gov.ua/miloverada.gov.ua/miloverada.gov.ua/mvnw
+
+      - name: Run application
+        run: sudo systemctl start milove
