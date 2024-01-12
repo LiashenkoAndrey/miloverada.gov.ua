@@ -2,7 +2,7 @@ name: Try to deploy spring app
 
 on:
   push:
-    branches: [main]
+    branches: [deploy]
 
 jobs:
 
