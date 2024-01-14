@@ -26,4 +26,5 @@ public class NewsDTO {
     private LocalDate created;
 
     private String newsType;
+    private Long views;
 }

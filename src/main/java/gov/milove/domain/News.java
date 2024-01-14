@@ -39,6 +39,8 @@ public class News {
 
     private LocalDateTime last_updated;
 
+    private Long views;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private NewsType newsType;
 }
