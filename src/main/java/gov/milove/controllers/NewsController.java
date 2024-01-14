@@ -72,4 +72,10 @@ public class NewsController {
         newsService.update(news);
         return new ResponseEntity<>("Оновлення успішне", HttpStatus.OK);
     }
+
+    @PostMapping("/{id}/incrementViews")
+    public Long incrementViews(@PathVariable Long id) {
+        newsRepository.incrementViews(id);
+        return id;
+    }
 }
