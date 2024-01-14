@@ -35,11 +35,11 @@ okta:
 
 server:
   port: 6060
-
-  error:
-    whitelabel:
-      enabled: false
-    include-message: always
+#
+#  error:
+#    whitelabel:
+#      enabled: true
+#    include-message: always
 #logging:
 #  level:
 #    web: debug

@@ -3,23 +3,33 @@ package gov.milove.controllers;
 import gov.milove.domain.LinkBanner;
 import gov.milove.repositories.LinkBannerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
+
 import static gov.milove.util.EntityMapper.map;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
 
-@Controller
-@RequestMapping("/link-banner")
+@RestController
+@RequestMapping("/api/link-banner")
 @RequiredArgsConstructor
 public class LinkBannerController {
 
     private final LinkBannerRepository repo;
+
+    @GetMapping("/all")
+    public List<LinkBanner> getAll() {
+        return repo.findAll(Sort.by("createdOn").descending());
+    }
 
     @PostMapping("/new")
     public ResponseEntity<Long> createBanner(@RequestBody LinkBanner banner) {
