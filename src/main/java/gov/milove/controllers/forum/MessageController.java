@@ -121,4 +121,16 @@ public class MessageController {
     public List<Message> getLatestMessages() {
         return messageRepo.findAll(PageRequest.of(0, 30, Sort.by("createdOn").descending())).stream().collect(Collectors.toList());
     }
+
+    @GetMapping("/forum/chat/{chatId}/messages/previous")
+    public List<Message> getPrevious(@RequestParam Long fromMessageId, @PathVariable Long chatId) {
+        List<Message> messages = messageRepo.getPrevious(fromMessageId, chatId);
+        Collections.reverse(messages);
+        return messages;
+    }
+
+    @GetMapping("/forum/chat/{chatId}/messages/next")
+    public List<Message> getNext(@RequestParam Long fromMessageId, @PathVariable Long chatId) {
+        return messageRepo.getNext(fromMessageId, chatId);
+    }
 }
