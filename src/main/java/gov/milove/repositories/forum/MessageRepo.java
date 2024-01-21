@@ -14,6 +14,14 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 
     List<Message> findAllByChat_Id(Long id, Pageable pageable);
 
+    @Query("from Message m where m.id < :fromMessageId and m.chat.id = :chatId order by m.createdOn desc limit 20")
+    List<Message> getPrevious(@Param("fromMessageId") Long fromMessageId, @Param("chatId") Long chatId);
+
+
+
+    @Query("from Message m where m.id > :fromMessageId and m.chat.id = :chatId order by m.createdOn")
+    List<Message> getNext(@Param("fromMessageId") Long fromMessageId, @Param("chatId") Long chatId);
+
     @Modifying
     @Transactional
     @Query("delete from MessageImage m where m.message_id = :messageId and m.imageId = :imageId")
