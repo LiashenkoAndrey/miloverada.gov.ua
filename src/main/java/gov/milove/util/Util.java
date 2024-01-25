@@ -15,4 +15,9 @@ public class Util {
             throw new UtilException(e.getMessage());
         }
     }
+
+    public static String getFileFormat(String filename) {
+        if (filename == null) throw new UtilException("filename is null");
+        return filename.substring(filename.lastIndexOf(".") + 1);
+    }
 }

@@ -10,6 +10,8 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.minidev.json.JSONObject;
+import org.bson.json.JsonObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 @Log4j2
 @RestController
@@ -61,13 +65,22 @@ public class MessageController {
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
         log.info("new message: " + dto);
-        log.info("reply msg id {}", dto.getReplyToMessageId());
         Message saved = messageService.saveMessage(dto);
         log.info("saved ok {}",  saved);
+        log.info("getFileDtoList = {}", dto.getFileDtoList());
 
-        String destination = "/chat/" + dto.getChatId();
-        messagingTemplate.convertAndSend(destination, saved);
+        saved.setFileDtoList(dto.getFileDtoList());
+        messagingTemplate.convertAndSend("/chat/" + dto.getChatId(), saved);
+
+        JSONObject messageIsSavedPayload = new JSONObject();
+        messageIsSavedPayload.put("messageId", saved.getId());
+
+        messagingTemplate.convertAndSend(format("/chat/%s/messageIsSaved?senderId=%s", dto.getChatId(), dto.getSenderId()), messageIsSavedPayload.toJSONString());
     }
+
+
+
+
 
     @MessageMapping("/userMessage/wasDeleted")
     public void notifyThatMessageWasDeleted(@Payload DeleteMessageDto dto) {

@@ -1,6 +1,7 @@
 package gov.milove.domain.forum;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gov.milove.domain.dto.forum.FileDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -37,6 +38,14 @@ public class Message {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "message_id")
     private List<MessageImage> imagesList;
+
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "message_id")
+    private List<MessageFile> filesList;
+
+    @Transient
+    private List<FileDto> fileDtoList;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
