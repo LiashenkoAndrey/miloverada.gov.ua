@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface MessageFileRepo extends JpaRepository<MessageFile, Long> {
 
-    @Query(value = "select * from forum.message_file mf where mf.file_id = :messageFileId;", nativeQuery = true)
-    Boolean isFileUsedMoreThenOneTime(@Param("messageFileId") Long messageFileId);
+    @Query(value = "select count(*) from forum.message_file mf where mf.file_id = :messageFileId", nativeQuery = true)
+    Integer amountOfUsed(@Param("messageFileId") Long messageFileId);
 }

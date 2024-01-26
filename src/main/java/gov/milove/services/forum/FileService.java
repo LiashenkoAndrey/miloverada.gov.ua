@@ -7,6 +7,6 @@ public interface FileService {
 
     File save(MultipartFile file);
 
-    void deleteById(Long id);
+    void delete(File file);
 
 }

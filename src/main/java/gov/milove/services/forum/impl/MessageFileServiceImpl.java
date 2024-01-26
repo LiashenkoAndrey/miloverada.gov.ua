@@ -6,6 +6,7 @@ import gov.milove.domain.forum.MessageFile;
 import gov.milove.repositories.forum.MessageFileRepo;
 import gov.milove.services.forum.FileService;
 import gov.milove.services.forum.MessageFileService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -27,9 +28,17 @@ public class MessageFileServiceImpl implements MessageFileService {
     @Override
     public Long deleteById(Long id) {
         messageFileRepo.deleteById(id);
-        if (messageFileRepo.isFileUsedMoreThenOneTime(id)) {
+
+        Integer amountOfUsed = messageFileRepo.amountOfUsed(id);
+
+        if (amountOfUsed != 0) {
+            if (amountOfUsed > 1) {
+                MessageFile messageFile = messageFileRepo.findById(id).orElseThrow(EntityNotFoundException::new);
+                fileService.delete(messageFile.getFile());
+            }
         }
-        return null;
+
+        return id;
     }
 
     @Override

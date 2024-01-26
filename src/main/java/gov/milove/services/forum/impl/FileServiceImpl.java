@@ -11,6 +11,7 @@ import gov.milove.repositories.mongo.MongoFileRepo;
 import gov.milove.services.forum.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
@@ -41,28 +42,18 @@ public class FileServiceImpl implements FileService {
 
     private File saveLarge(MultipartFile file) {
         try {
-            String fileFormat = getFileFormat(file.getOriginalFilename());
-            String hashCode = getFileHashCode(file.getBytes());
+            byte[] bytes = file.getBytes();
 
-            DBObject metaData = new BasicDBObject();
-            metaData.put("hashCode", hashCode);
-            metaData.put("contentType", file.getContentType());
+            DBObject meta = new BasicDBObject();
+            meta.put("contentType", file.getContentType());
+            log.info("save large file, name= {}, meta = {}", file.getOriginalFilename(), meta);
 
-            log.info("save large file, name= {}, meta = {}", file.getOriginalFilename(), metaData);
+            ObjectId id = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType(), meta);
 
-            ObjectId id = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType(), metaData);
             log.info("large file save ok, id={}", id);
-
             log.info("file getOriginalFilename = {}", file.getOriginalFilename());
-            File newFile = File.builder()
-                    .name(file.getOriginalFilename())
-                    .size(file.getSize())
-                    .mongoFileId(id.toHexString())
-                    .hashCode(hashCode)
-                    .isLarge(true)
-                    .format(fileFormat)
-                    .build();
 
+            File newFile = buildFile(file, bytes, id.toHexString());
             File saved = fileRepo.save(newFile);
             log.info("message file save ok = {}", saved);
             return saved;
@@ -75,18 +66,17 @@ public class FileServiceImpl implements FileService {
     private File saveSmall(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-            MongoFile savedMongoFile = mongoFileRepo.save(new MongoFile(bytes, file.getContentType()));
-
-            log.info("file getOriginalFilename = {}", file.getOriginalFilename());
-            String fileFormat = getFileFormat(file.getOriginalFilename());
-            File newFile = File.builder()
+            MongoFile mongoFile = MongoFile.builder()
+                    .file(new Binary(bytes))
+                    .contentType(file.getContentType())
                     .name(file.getOriginalFilename())
                     .size(file.getSize())
-                    .mongoFileId(savedMongoFile.getId())
-                    .hashCode(getFileHashCode(bytes))
-                    .format(fileFormat)
-                    .isLarge(false)
                     .build();
+
+            MongoFile savedMongoFile = mongoFileRepo.save(mongoFile);
+
+            log.info("file getOriginalFilename = {}", file.getOriginalFilename());
+            File newFile = buildFile(file, bytes, savedMongoFile.getId());
 
             File saved = fileRepo.save(newFile);
             log.info("saved file = {}", saved);
@@ -97,14 +87,32 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    private File buildFile(MultipartFile file, byte[] bytes, String mongoFileId) throws NoSuchAlgorithmException {
+        String hashCode = getFileHashCode(bytes);
+        String format = getFileFormat(file.getOriginalFilename());
+        return File.builder()
+                .name(file.getOriginalFilename())
+                .size(file.getSize())
+                .mongoFileId(mongoFileId)
+                .hashCode(hashCode)
+                .format(format)
+                .isLarge(false)
+                .build();
+    }
+
     @Override
     public File save(MultipartFile file) {
         try {
             String hashCode = getFileHashCode(file.getBytes());
-            Optional<File> saved = fileRepo.findByHashCode(hashCode);
+            log.info("find file, name = {}, hash = {}", file.getOriginalFilename(), hashCode);
+            Optional<File> saved = fileRepo.findFirstByHashCode(hashCode);
+            log.info("found file = {}", saved);
             if (saved.isPresent()) {
-                return saved.get();
+                File found = saved.get();
+                found.setName(file.getOriginalFilename());
+                return found;
             } else {
+                log.info("file size = {}, max doc size = {}, fileSize > Max {}", file.getSize(), MAX_DOCUMENT_SIZE, file.getSize() >= MAX_DOCUMENT_SIZE);
                 if (file.getSize() >= MAX_DOCUMENT_SIZE) {
                     return saveLarge(file);
                 }
@@ -118,10 +126,9 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        File file = fileRepo.findById(id).orElseThrow(FileNotFoundException::new);
+    public void delete(File file) {
         mongoFileRepo.deleteById(file.getMongoFileId());
-        fileRepo.deleteById(id);
+        fileRepo.deleteById(file.getId());
     }
 
 
