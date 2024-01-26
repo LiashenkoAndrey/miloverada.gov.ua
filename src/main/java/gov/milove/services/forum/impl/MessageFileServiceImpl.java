@@ -46,7 +46,6 @@ public class MessageFileServiceImpl implements MessageFileService {
         File savedFile = fileService.save(file);
         MessageFile messageFile = new MessageFile(savedFile, messageId);
         MessageFile savedMessageFiles = messageFileRepo.save(messageFile);
-        log.info("savedMessageFiles = {}", savedMessageFiles);
         return savedMessageFiles;
     }
 
@@ -54,9 +53,8 @@ public class MessageFileServiceImpl implements MessageFileService {
     public void saveFiles(MultipartFile[] files, Long messageId, Long chatId) {
         for(MultipartFile file : files) {
             File savedFile = fileService.save(file);
-            MessageFile messageFile = messageFileRepo.save(new MessageFile(savedFile, messageId));
+            messageFileRepo.save(new MessageFile(savedFile, messageId));
 
-            log.info("MessageFile saved = " + messageFile);
 
             FileSavedDto fileSavedDto = FileSavedDto.builder()
                     .messageId(messageId)
@@ -74,8 +72,6 @@ public class MessageFileServiceImpl implements MessageFileService {
         File savedFile = fileService.save(file);
         MessageFile messageFile = messageFileRepo.save(new MessageFile(savedFile, messageId));
 
-        log.info("MessageFile saved = " + messageFile);
-
         FileSavedDto fileSavedDto = FileSavedDto.builder()
                 .messageId(messageId)
                 .isLarge(savedFile.getIsLarge())
@@ -88,9 +84,7 @@ public class MessageFileServiceImpl implements MessageFileService {
 
     private void notifyAllThatFileSaved(FileSavedDto dto, Long chatId) {
         String destin = "/chat/"+ chatId +"/messageFileSaved";
-        log.info("notify that saved, destin = {}", destin);
         messagingTemplate.convertAndSend(destin, dto);
     }
-
 
 }

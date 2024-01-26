@@ -60,14 +60,11 @@ public class MessageController {
         return saved.getId();
     }
 
-
     @Transactional
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
         log.info("new message: " + dto);
         Message saved = messageService.saveMessage(dto);
-        log.info("saved ok {}",  saved);
-        log.info("getFileDtoList = {}", dto.getFileDtoList());
 
         saved.setFileDtoList(dto.getFileDtoList());
         messagingTemplate.convertAndSend("/chat/" + dto.getChatId(), saved);
@@ -77,9 +74,6 @@ public class MessageController {
 
         messagingTemplate.convertAndSend(format("/chat/%s/messageIsSaved?senderId=%s", dto.getChatId(), dto.getSenderId()), messageIsSavedPayload.toJSONString());
     }
-
-
-
 
 
     @MessageMapping("/userMessage/wasDeleted")

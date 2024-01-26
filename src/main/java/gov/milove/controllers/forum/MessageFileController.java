@@ -41,7 +41,6 @@ public class MessageFileController {
     private final MongoFileRepo mongoFileRepo;
     private final GridFsTemplate gridFsTemplate;
     private final GridFsOperations operations;
-    private final MessageFileRepo messageFileRepo;
 
     @PostMapping("/protected/forum/chat/{chatId}/message/{messageId}/files")
     public void saveFiles(@RequestParam("files") MultipartFile[] files, @PathVariable Long messageId, @PathVariable Long chatId) {
@@ -63,7 +62,6 @@ public class MessageFileController {
     public void getLargeFile(@PathVariable String fileId, HttpServletResponse response) throws IOException {
         GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(fileId)));
         String type = file.getMetadata().getString("contentType");
-        log.info("file is present = {}, large file type = {}, length = {}", file.getFilename(), type, file.getLength());
 
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, getContentDispositionHeader(file.getFilename()));
         response.addHeader(HttpHeaders.CONTENT_TYPE, type);
@@ -73,11 +71,7 @@ public class MessageFileController {
 
     @GetMapping("/forum/upload/file/{mongoFileId}")
     public ResponseEntity<byte[]>  getFile(@PathVariable String mongoFileId) {
-
         MongoFile file = mongoFileRepo.findById(mongoFileId).orElseThrow(FileNotFoundException::new);
-
-        log.info("file contentType = {}", MediaType.valueOf(file.getContentType()));
-
         String contentDispositionHeader = getContentDispositionHeader(file.getName());
 
         return ResponseEntity.ok()
@@ -90,5 +84,4 @@ public class MessageFileController {
     private String getContentDispositionHeader(String fileName) {
         return String.format("attachment; filename=\"%s\"", fileName);
     }
-
 }

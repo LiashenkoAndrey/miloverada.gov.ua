@@ -37,25 +37,16 @@ public class FileServiceImpl implements FileService {
 
     private static final long MAX_DOCUMENT_SIZE = 16777216L;
 
-
-
-
     private File saveLarge(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-
             DBObject meta = new BasicDBObject();
             meta.put("contentType", file.getContentType());
-            log.info("save large file, name= {}, meta = {}", file.getOriginalFilename(), meta);
 
             ObjectId id = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType(), meta);
 
-            log.info("large file save ok, id={}", id);
-            log.info("file getOriginalFilename = {}", file.getOriginalFilename());
-
             File newFile = buildFile(file, bytes, id.toHexString());
             File saved = fileRepo.save(newFile);
-            log.info("message file save ok = {}", saved);
             return saved;
         } catch (IOException | NoSuchAlgorithmException e) {
             log.error(e);
@@ -75,12 +66,8 @@ public class FileServiceImpl implements FileService {
 
             MongoFile savedMongoFile = mongoFileRepo.save(mongoFile);
 
-            log.info("file getOriginalFilename = {}", file.getOriginalFilename());
             File newFile = buildFile(file, bytes, savedMongoFile.getId());
-
-            File saved = fileRepo.save(newFile);
-            log.info("saved file = {}", saved);
-            return saved;
+            return fileRepo.save(newFile);
         } catch (IOException | NoSuchAlgorithmException e) {
             log.error(e);
             throw new ServiceException("can't save file", e);
@@ -104,15 +91,12 @@ public class FileServiceImpl implements FileService {
     public File save(MultipartFile file) {
         try {
             String hashCode = getFileHashCode(file.getBytes());
-            log.info("find file, name = {}, hash = {}", file.getOriginalFilename(), hashCode);
             Optional<File> saved = fileRepo.findFirstByHashCode(hashCode);
-            log.info("found file = {}", saved);
             if (saved.isPresent()) {
                 File found = saved.get();
                 found.setName(file.getOriginalFilename());
                 return found;
             } else {
-                log.info("file size = {}, max doc size = {}, fileSize > Max {}", file.getSize(), MAX_DOCUMENT_SIZE, file.getSize() >= MAX_DOCUMENT_SIZE);
                 if (file.getSize() >= MAX_DOCUMENT_SIZE) {
                     return saveLarge(file);
                 }
@@ -142,7 +126,5 @@ public class FileServiceImpl implements FileService {
             hashStringBuilder.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
         }
         return hashStringBuilder.toString();
-
     }
-
 }
