@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,13 @@ public class ChatController {
     @GetMapping("/forum/chat/id/{chatId}")
     public Chat getChatById(@PathVariable Long chatId) {
         return chatRepo.findById(chatId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @PostMapping("/protected/forum/privateChat/create")
+    public ResponseEntity createPrivateChat(@RequestParam Long writerId,
+                                            @RequestParam Long addresseeId) {
+        return null;
+
     }
 
 

@@ -29,6 +29,8 @@ public class UserController {
         messagingTemplate.convertAndSend("/chat/"+ dto.getChatId() +"/typingUsers", dto);
     }
 
+
+
     @PostMapping("/protected/user/new")
     public String newUser(@Valid @RequestBody NewUserDto dto) {
         log.info("new user: " + dto);

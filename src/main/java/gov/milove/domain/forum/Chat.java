@@ -18,11 +18,10 @@ import java.time.LocalDateTime;
 @Table(schema = "forum")
 public class Chat {
 
-    public Chat(String name, String description, String picture, Long topicId) {
+    public Chat(String name, String description, String picture) {
         this.name = name;
         this.description = description;
         this.picture = picture;
-        this.topicId = topicId;
     }
 
     @Id
@@ -38,13 +37,8 @@ public class Chat {
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @OneToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne
     private ForumUser owner;
-
-    @JoinColumn(name = "topic_id")
-    private Long topicId;
-
 
     @Formula("(select count(*) from forum.message m where m.chat_id = id)")
     private Long totalMessagesAmount;

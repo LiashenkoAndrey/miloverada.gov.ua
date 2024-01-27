@@ -2,7 +2,9 @@ package gov.milove.domain.forum;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +30,9 @@ public class Topic {
 
     private String description;
 
-    @OneToMany(mappedBy = "topicId")
-    private List<Chat> chats;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Chat> chats = new ArrayList<>();
 }
