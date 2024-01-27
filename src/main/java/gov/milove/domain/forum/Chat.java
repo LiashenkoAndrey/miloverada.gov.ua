@@ -14,9 +14,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode
 @Table(schema = "forum")
 public class Chat {
+
+    public Chat(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
 
     public Chat(String name, String description, String picture) {
         this.name = name;
@@ -38,7 +43,10 @@ public class Chat {
     private LocalDateTime createdOn;
 
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ForumUser owner;
+
+    private Boolean isPrivate;
 
     @Formula("(select count(*) from forum.message m where m.chat_id = id)")
     private Long totalMessagesAmount;
