@@ -12,6 +12,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static gov.milove.util.Util.decodeUriComponent;
 
 @Log4j2
@@ -27,6 +29,11 @@ public class UserController {
     public void handleUserStartTyping(@Valid @Payload ForumUserDto dto) {
         log.info("user start typing, " + dto);
         messagingTemplate.convertAndSend("/chat/"+ dto.getChatId() +"/typingUsers", dto);
+    }
+
+    @GetMapping("/forum/users")
+    private List<ForumUser> getAll() {
+        return forumUserRepo.findAll();
     }
 
     @PostMapping("/protected/user/new")

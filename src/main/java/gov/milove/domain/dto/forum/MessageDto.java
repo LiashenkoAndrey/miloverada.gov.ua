@@ -28,6 +28,8 @@ public class MessageDto {
 
     private Long replyToMessageId;
 
+    List<FileDto> fileDtoList;
+
     public static Message toEntity(MessageDto dto) {
         return new Message(dto.getText());
     }

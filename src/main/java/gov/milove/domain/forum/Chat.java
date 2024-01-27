@@ -14,15 +14,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode
 @Table(schema = "forum")
 public class Chat {
 
-    public Chat(String name, String description, String picture, Long topicId) {
+    public Chat(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
+    public Chat(String name, String description, String picture) {
         this.name = name;
         this.description = description;
         this.picture = picture;
-        this.topicId = topicId;
     }
 
     @Id
@@ -38,13 +42,11 @@ public class Chat {
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @OneToOne
+    @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ForumUser owner;
 
-    @JoinColumn(name = "topic_id")
-    private Long topicId;
-
+    private Boolean isPrivate;
 
     @Formula("(select count(*) from forum.message m where m.chat_id = id)")
     private Long totalMessagesAmount;

@@ -12,14 +12,11 @@ import java.util.List;
 
 public interface ChatRepo extends JpaRepository<Chat, Long> {
 
-    List<Chat> findByTopicId(Long topicId);
+    @Query(value = "select  * from forum.chat c inner join topic_chats ct on ct.topic_id = :topicId  where ct.chats_id = c.id", nativeQuery = true)
+    List<Chat> findByTopicId(@Param("topicId") Long topicId);
 
     @Query(value = "select last_read_message_id as last_read_message_id, unread_messages_count as unread_messages_count from forum.get_chat_metadata(CAST(:chatId as integer) , CAST(:userId as text));", nativeQuery = true)
     ChatMetadataDto getChatMetadata(@Param("chatId") Long chatId, @Param("userId") String userId);
-
-
-    @Query(value = "select u.message_id from forum.unread_messages u where u.chat_id = :chatId and u.user_id = :userId", nativeQuery = true)
-    Long getLastReadMessageIdOfChat(@Param("chatId") Long chatId, @Param("userId") String userId);
 
 
     @Transactional
