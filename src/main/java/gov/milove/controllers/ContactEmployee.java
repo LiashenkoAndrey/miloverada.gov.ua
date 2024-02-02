@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
 
-@Controller
-@RequestMapping("/contacts")
+@RestController
+@RequestMapping("/api")
 public class ContactEmployee {
 
     private final ContactEmployeeService service;
@@ -22,14 +24,13 @@ public class ContactEmployee {
         this.service = service;
     }
 
-    @GetMapping
-    public String showContacts(Model model) {
-        model.addAttribute("employee", new gov.milove.domain.ContactEmployee());
-        model.addAttribute("employee_list", service.findAll());
-        return "contacts";
+    @GetMapping("/contacts")
+    public List<gov.milove.domain.ContactEmployee> getAll() {
+        return service.findAll();
     }
 
-    @PostMapping("/new")
+
+    @PostMapping("/contact/new")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> create(@ModelAttribute("employee") gov.milove.domain.ContactEmployee employee ){
 
@@ -41,7 +42,7 @@ public class ContactEmployee {
         }
     }
 
-    @PostMapping("/update")
+    @PostMapping("/contact/update")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
             @RequestParam("id") Long id,
@@ -60,7 +61,7 @@ public class ContactEmployee {
         }
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/contact/delete")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> delete(@RequestParam("id") Long employee_id) {
         try {
