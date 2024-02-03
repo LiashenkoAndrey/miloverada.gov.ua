@@ -1,22 +1,24 @@
 package gov.milove.domain;
 
 
-import gov.milove.domain.administration.AdministrationGroup;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
 @Builder
 @AllArgsConstructor
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@Table
 public class Document {
 
-    public Document(Long id, String title, String document_filename) {
+    public Document(Long id, String title, String name) {
         this.id = id;
         this.title = title;
-        this.document_filename = document_filename;
+        this.name = name;
     }
 
     @Id
@@ -25,16 +27,7 @@ public class Document {
 
     private String title;
 
-    private String document_filename;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "sub_group_id")
-    private SubGroup sub_group;
-
-    @ManyToOne
-    private AdministrationGroup administration_group;
-
-    public Document() {
-
-    }
+    private Long document_group_id;
 }

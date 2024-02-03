@@ -77,7 +77,7 @@ public class AdministrationGroupService {
     private void clearAndDelete(AdministrationGroup group) throws AdministrationGroupServiceException {
         try {
             employeeService.deleteAll(group.getEmployee_list());
-            documentService.deleteAll(group.getDocument_list());
+//            documentService.deleteAll(group.getDocument_list());
             repository.deleteById(group.getId());
         } catch (Exception ex) {
             ex.printStackTrace();

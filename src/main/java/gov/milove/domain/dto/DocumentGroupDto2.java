@@ -1,8 +1,6 @@
 package gov.milove.domain.dto;
 
-import gov.milove.controllers.institution.document.SubGroup;
 import gov.milove.domain.SubGroupDto2;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

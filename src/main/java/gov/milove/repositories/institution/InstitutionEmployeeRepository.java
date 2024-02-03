@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface InstitutionEmployeeRepository extends JpaRepository<InstitutionEmployee, Long> {
 
-    @Query("from InstitutionEmployee e where e.institution.title =?1 order by e.sub_institution")
-    List<InstitutionEmployee> findByInstitution_Title(String title);
+//    @Query("from InstitutionEmployee e where e.institution.title =?1 order by e.sub_institution")
+//    List<InstitutionEmployee> findByInstitution_Title(String title);
 }

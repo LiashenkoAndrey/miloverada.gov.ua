@@ -30,23 +30,20 @@ public class InstitutionEmployeeController {
         this.institutionEmployeeService = institutionEmployeeService;
     }
 
-    @PostMapping("/employee/new")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> newEmployee(
-            @RequestParam("institutionId") Long institution_id,
-            @ModelAttribute("employee") InstitutionEmployee employee) {
-        try {
-            Institution institution = institutionService.findInstitutionById(institution_id)
-                    .orElseThrow(EntityNotFoundException::new);
-
-            employee.setInstitution(institution);
-            institutionEmployeeService.save(employee);
-            return new ResponseEntity<>("Працівник успішно доданий", HttpStatus.OK);
-        } catch (EmployeeServiceException ex) {
-            ex.printStackTrace();
-            return error("Виникли проблеми з додаванням");
-        }
-    }
+//    @PostMapping("/employee/new")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public ResponseEntity<String> newEmployee(
+//            @RequestParam("institutionId") Long institution_id,
+//            @ModelAttribute("employee") InstitutionEmployee employee) {
+//        try {
+//            employee.setInstitution_id(institution_id);
+//            institutionEmployeeService.save(employee);
+//            return new ResponseEntity<>("Працівник успішно доданий", HttpStatus.OK);
+//        } catch (EmployeeServiceException ex) {
+//            ex.printStackTrace();
+//            return error("Виникли проблеми з додаванням");
+//        }
+//    }
 
 
     @GetMapping("/employee/delete")
@@ -62,25 +59,25 @@ public class InstitutionEmployeeController {
     }
 
 
-    @PostMapping("/employee/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> updateEmployee(
-            @RequestParam("id") Long employee_id,
-            @ModelAttribute("employee") InstitutionEmployee employee) {
-
-        try {
-            InstitutionEmployee oldEmployee = institutionEmployeeService.findById(employee_id)
-                    .orElseThrow(EntityNotFoundException::new);
-
-            Employee.updateEmployee(employee, oldEmployee);
-            oldEmployee.setSub_institution(employee.getSub_institution());
-            employee.setInstitution(oldEmployee.getInstitution());
-            employee.setId(employee_id);
-            institutionEmployeeService.save(oldEmployee);
-            return ok("Данні працівника успішно оновленні");
-        } catch (EmployeeServiceException ex) {
-            ex.printStackTrace();
-            return error("Виникли проблеми з оновленням");
-        }
-    }
+//    @PostMapping("/employee/update")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public ResponseEntity<String> updateEmployee(
+//            @RequestParam("id") Long employee_id,
+//            @ModelAttribute("employee") InstitutionEmployee employee) {
+//
+//        try {
+//            InstitutionEmployee oldEmployee = institutionEmployeeService.findById(employee_id)
+//                    .orElseThrow(EntityNotFoundException::new);
+//
+//            Employee.updateEmployee(employee, oldEmployee);
+//            oldEmployee.setSub_institution(employee.getSub_institution());
+//            employee.setInstitution(oldEmployee.getInstitution());
+//            employee.setId(employee_id);
+//            institutionEmployeeService.save(oldEmployee);
+//            return ok("Данні працівника успішно оновленні");
+//        } catch (EmployeeServiceException ex) {
+//            ex.printStackTrace();
+//            return error("Виникли проблеми з оновленням");
+//        }
+//    }
 }

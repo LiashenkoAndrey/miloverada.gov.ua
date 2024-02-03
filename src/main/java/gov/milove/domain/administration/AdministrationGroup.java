@@ -20,8 +20,8 @@ public class AdministrationGroup {
     @OneToMany(mappedBy = "administration_group")
     private List<AdministrationEmployee> employee_list;
 
-    @OneToMany(mappedBy = "administration_group")
-    private List<Document> document_list;
+//    @OneToMany(mappedBy = "administration_group")
+//    private List<Document> document_list;
 
     @ManyToOne
     private AdministrationGroup administration_group;

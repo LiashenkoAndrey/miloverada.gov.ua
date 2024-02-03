@@ -31,8 +31,8 @@ public class AdministrationDocumentService extends DocumentCrudService {
         documentRepositoryMongo.saveToMongo(file);
         Document newDocument = Document.builder()
                 .title(title)
-                .document_filename(file.getOriginalFilename())
-                .administration_group(group)
+                .name(file.getOriginalFilename())
+//                .administration_group(group)
                 .build();
 
         documentRepository.save(newDocument);

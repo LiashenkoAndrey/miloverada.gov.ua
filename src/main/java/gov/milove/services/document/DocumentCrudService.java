@@ -43,7 +43,7 @@ public abstract class DocumentCrudService implements DocumentService {
     public void deleteAll(List<Document> documents) throws DocumentCrudServiceException {
         try {
             for (Document d : documents) {
-                deleteDocumentByFilename(d.getDocument_filename());
+                deleteDocumentByFilename(d.getName());
             }
         } catch (Exception ex) {
             throw new DocumentCrudServiceException(ex.getMessage());
@@ -64,7 +64,7 @@ public abstract class DocumentCrudService implements DocumentService {
             Document document = documentRepository.findByDocument_filename(document_id).orElseThrow(EntityNotFoundException::new);
             if (file != null) {
                 documentRepositoryMongo.updateDocument(document_id, file);
-                document.setDocument_filename(file.getOriginalFilename());
+                document.setName(file.getOriginalFilename());
             }
             if (title != null) {
                 if (!title.equals("")) document.setTitle(title);

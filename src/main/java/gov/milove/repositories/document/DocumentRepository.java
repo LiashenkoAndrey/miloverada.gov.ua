@@ -12,14 +12,14 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    @Query("select new gov.milove.domain.Document(d.id, d.title, d.document_filename) from Document d where d.sub_group.id = :id")
+    @Query("select new gov.milove.domain.Document(d.id, d.title, d.name) from Document d where d.document_group_id = :id")
     List<Document> findAllBySubGroupId(@Param("id") Long id);
 
-    @Query("from Document d where d.document_filename =?1")
+    @Query("from Document d where d.name =?1")
     Optional<Document> findByDocument_filename(String filename);
 
     @Transactional
     @Modifying
-    @Query(value = "delete from document where document_filename =:doc_id", nativeQuery = true)
+    @Query(value = "delete from document where name =:doc_id", nativeQuery = true)
     void deleteByDocument_filename(@Param("doc_id") String id);
 }

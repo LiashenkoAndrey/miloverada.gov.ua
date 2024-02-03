@@ -1,36 +1,38 @@
 package gov.milove.domain;
 
-import gov.milove.domain.institution.Institution;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+import java.util.Date;
 import java.util.List;
 
-
 @Data
+@Entity
 @Builder
 @AllArgsConstructor
-@Entity
 @Table(name = "document_group")
+@NoArgsConstructor
 public class DocumentGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Size(min = 2, max = 255)
+    private String name;
 
-    @OneToOne
-    private Institution institution;
+    private Long document_group_id;
 
-    @OneToMany(mappedBy = "document_group", cascade = CascadeType.ALL)
-    private List<SubGroup> subGroups;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_group_id")
+    private List<Document> documents;
 
-    private boolean is_general;
-    public DocumentGroup() {
 
-    }
+    private Date createdOn;
+
+
 }

@@ -15,9 +15,9 @@ public class InstitutionService {
         this.institutionRepository = institutionRepository;
     }
 
-    public Optional<Institution> findInstitutionByTitle(String title) {
-        return institutionRepository.findByTitle(title);
-    }
+//    public Optional<Institution> findInstitutionByTitle(String title) {
+//        return institutionRepository.findByTitle(title);
+//    }
 
     public Optional<Institution> findInstitutionById(Long id) {
         return institutionRepository.findById(id);

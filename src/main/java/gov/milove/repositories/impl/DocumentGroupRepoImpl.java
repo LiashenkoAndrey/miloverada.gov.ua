@@ -17,7 +17,7 @@ public class DocumentGroupRepoImpl implements CustomDocumentGroupRepo {
     public List<DocumentGroupDto> findAllDto() {
         String s = "select * from sub_group where document_group_id = 3;";
 
-        List<DocumentGroupDto> res = entityManager.createNativeQuery("select dg.id, dg.title from document_group dg", DocumentGroupDto.class)
+        List<DocumentGroupDto> res = entityManager.createNativeQuery("select dg.id, dg.name from document_group dg", DocumentGroupDto.class)
                 .setMaxResults(1)
                 .getResultList();
         return res;

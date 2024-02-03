@@ -1,15 +1,11 @@
-package gov.milove.controllers.institution.document;
+package gov.milove.controllers.documents;
 
-import gov.milove.domain.Document;
-import gov.milove.repositories.document.DocumentSubGroupRepository;
-import gov.milove.services.document.DocumentSubGroupService;
+import gov.milove.repositories.document.DocumentGroupRepository;
+import gov.milove.services.document.DocumentGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static gov.milove.controllers.util.ControllerUtil.error;
 import static gov.milove.controllers.util.ControllerUtil.ok;
@@ -17,11 +13,11 @@ import static gov.milove.controllers.util.ControllerUtil.ok;
 @RestController
 @RequestMapping("/api/subGroup")
 @RequiredArgsConstructor
-public class SubGroup {
+public class DocumentGroupController {
 
-    private final DocumentSubGroupService subGroupService;
+    private final DocumentGroupService subGroupService;
 
-    private final DocumentSubGroupRepository repository;
+    private final DocumentGroupRepository repository;
 
 
     @PostMapping("/new")
@@ -43,10 +39,10 @@ public class SubGroup {
     }
 
 
-    @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> updateSubGroup (@RequestParam("subGroupId") Long id, @RequestParam("title") String title) {
-        repository.editTitle(title, id);
-        return ok("Оновлення успішне");
-    }
+//    @PostMapping("/update")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public ResponseEntity<String> updateSubGroup (@RequestParam("subGroupId") Long id, @RequestParam("title") String title) {
+//        repository.editTitle(title, id);
+//        return ok("Оновлення успішне");
+//    }
 }

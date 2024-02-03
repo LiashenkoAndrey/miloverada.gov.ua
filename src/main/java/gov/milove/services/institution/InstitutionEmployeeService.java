@@ -26,9 +26,9 @@ public class InstitutionEmployeeService {
         }
     }
 
-    public Optional<InstitutionEmployee> findById(Long id) {
-        return institutionEmployeeRepository.findById(id);
-    }
+//    public Optional<InstitutionEmployee> findById(Long id) {
+//        return institutionEmployeeRepository.findById(id);
+//    }
 
     public void deleteById(Long id) throws EmployeeServiceException {
         try {
@@ -38,7 +38,7 @@ public class InstitutionEmployeeService {
         }
     }
 
-    public List<InstitutionEmployee> findAllByInstitutionTitle(String title) {
-        return institutionEmployeeRepository.findByInstitution_Title(title);
-    }
+//    public List<InstitutionEmployee> findAllByInstitutionTitle(String title) {
+//        return institutionEmployeeRepository.findByInstitution_Title(title);
+//    }
 }

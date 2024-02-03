@@ -3,12 +3,18 @@ package gov.milove.domain.institution;
 
 import gov.milove.domain.DocumentGroup;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
 @Entity
+@ToString
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
+@Table(name = "institution")
 public class Institution {
 
     @Id
@@ -17,9 +23,12 @@ public class Institution {
 
     private String title;
 
-    @OneToOne
-    private DocumentGroup document_group;
+    private String iconUrl;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<DocumentGroup> document_group;
 
     @OneToMany
+    @JoinColumn(name = "institution_id")
     private List<InstitutionEmployee> employee_list;
 }

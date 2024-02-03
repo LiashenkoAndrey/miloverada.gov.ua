@@ -1,12 +1,6 @@
 package gov.milove.repositories.document;
 
 import gov.milove.domain.DocumentGroup;
-import gov.milove.domain.dto.DGdto;
-import gov.milove.domain.dto.DocumentGroupDto;
-import gov.milove.domain.dto.DocumentGroupDto2;
-import gov.milove.repositories.impl.CustomDocumentGroupRepo;
-import jakarta.persistence.Tuple;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,16 +11,16 @@ import java.util.List;
 
 public interface DocumentGroupRepository extends JpaRepository<DocumentGroup, Long> {
 
-    @Query("select new gov.milove.domain.dto.DocumentGroupDto(u.title, u.id) from DocumentGroup u where u.id =?1")
-    DocumentGroupDto getDtoBySubGroupId(@Param("id") Long id);
+    @Query(value = "select * from document_group where document_group.document_group_id = :id order by created_on desc", nativeQuery = true)
+    List<DocumentGroup> findAllByDocumentGroupId(@Param("id") Long id);
+
+//    @Query("select u.title from DocumentGroup u where u.id =?1")
+//    String getTitleById(@Param("id") Long sub_group_id);
 
 
-    @Transactional
-    @Modifying
-    @Query("update DocumentGroup u set u.title =?1 where u.id = ?2 ")
-    void updateTitle(@Param("title") String title, @Param("id") Long id);
 
-    @Query("select new gov.milove.domain.dto.DocumentGroupDto(g.title, g.id) from DocumentGroup g order by g.is_general desc")
-    List<DocumentGroupDto> findGeneralGroupsDto();
-
+//    @Transactional
+//    @Modifying
+//    @Query("update DocumentGroup s set s.title = :newTitle where s.id = :id")
+//    void editTitle(@Param("newTitle") String newTitle, @Param("id") Long id);
 }
