@@ -86,7 +86,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     public byte[] getImageById(String id) {
         Document document = collection.findOneAndUpdate(
                 new Document("_id", new ObjectId(id)),
-                set("last_queried", LocalDate.now())
+                set("lastQueried", LocalDate.now())
         );
 
         if (document != null) {

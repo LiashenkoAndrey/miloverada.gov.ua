@@ -1,6 +1,7 @@
 package gov.milove.repositories;
 
 import gov.milove.domain.News;
+import gov.milove.domain.dto.INewsDto;
 import gov.milove.domain.dto.NewsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,24 +11,42 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface NewsRepository extends JpaRepository<News, Long> {
 
 
+//    @Query(
+//            """
+//                    select distinct
+//                        n.id as id,
+//                        n.images as images,
+//                        n.description as description,
+//                        n.dateOfPublication as dateOfPublication,
+//                        n.views as views,
+//                        n.newsType as newsType
+//                    FROM News n order by n.dateOfPublication desc
+//                    """
+//    )
+    List<INewsDto> findDistinctBy(Pageable pageable);
 
     @Query(
-            "select new gov.milove.domain.dto.NewsDTO(n.id, n.description, n.image_id, n.created, n.newsType.title, n.views) FROM News n"
+            """
+                      select distinct 
+                            n.id as id, 
+                            n.images as images, 
+                            n.description as description,
+                            n.dateOfPublication as created, 
+                            n.views as views, 
+                            n.newsType as newsType
+                    FROM News n where n.newsType.id = :type_id and n.id != :news_id 
+                    """
     )
-    Page<NewsDTO> getPageOfDTO(Pageable pageable);
-
-    @Query(
-            "select new gov.milove.domain.dto.NewsDTO(n.id, n.description, n.image_id, n.created, n.newsType.title, n.views) " +
-                    "FROM News n where n.newsType.id = :type_id and n.id <> :news_id "
-    )
-    Page<NewsDTO> getLastNewsDTOByNewsTypeIdWithLimit(@Param("news_id") Long news_id, @Param("type_id") Long newTypeId, Pageable pageable);
+    Page<INewsDto> getLastNewsDTOByNewsTypeIdWithLimit(@Param("news_id") Long news_id, @Param("type_id") Long newTypeId, Pageable pageable);
 
 
     @Query(
-            "select new gov.milove.domain.dto.NewsDTO(n.id, n.description, n.image_id, n.created, n.newsType.title, n.views) from News n order by n.created desc"
+            "from News n order by n.dateOfPublication desc"
     )
     Page<NewsDTO> getLatest(Pageable pageable);
 

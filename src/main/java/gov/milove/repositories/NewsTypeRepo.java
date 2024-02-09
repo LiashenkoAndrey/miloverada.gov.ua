@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface NewsTypeRepository extends JpaRepository<NewsType, Long> {
+public interface NewsTypeRepo extends JpaRepository<NewsType, Long> {
 
-    @Query("from NewsType t")
-    List<NewsType> getAllTypes();
 
     @Modifying
     @Transactional
@@ -22,10 +20,10 @@ public interface NewsTypeRepository extends JpaRepository<NewsType, Long> {
     @Query(value = "SELECT currval('typeofnews_id_seq')", nativeQuery = true)
     Long getLastInsertedIdOfNewsType();
 
-    @Query("select n.id from NewsType n where n.title = :news_type_title")
-    Long getNewsTypeIdByTitle(@Param("news_type_title") String newsTypeTitle);
+        @Query("select n.id from NewsType n where n.title = :news_type_title")
+        Long getNewsTypeIdByTitle(@Param("news_type_title") String newsTypeTitle);
 
-    @Query("from NewsType t where t.id = :id ")
-    NewsType getNewsTypeById(@Param("id") Long id);
+        @Query("from NewsType t where t.id = :id ")
+        NewsType getNewsTypeById(@Param("id") Long id);
 
 }

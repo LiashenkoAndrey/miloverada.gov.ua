@@ -1,6 +1,8 @@
 
 
 spring:
+
+
   jpa:
     properties:
       hibernate:
@@ -35,6 +37,8 @@ okta:
 
 server:
   port: 6060
+  tomcat:
+    max-http-form-post-size: 50000000
 #
 #  error:
 #    whitelabel:

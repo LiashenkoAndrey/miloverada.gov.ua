@@ -30,10 +30,8 @@ public class NewsType {
     private Long id;
 
     @NotNull
-    @Size(min = 4, max = 255)
     private String title;
 
     @NotNull
-    @Size(min = 5, max = 255)
     private String titleExplanation;
 }
