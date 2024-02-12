@@ -28,7 +28,6 @@ public class News {
     @NotNull
     private String description;
 
-    @Size(max = 40000)
     @NotNull
     private String main_text;
 

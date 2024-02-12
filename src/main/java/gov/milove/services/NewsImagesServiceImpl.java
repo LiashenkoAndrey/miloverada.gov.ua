@@ -34,8 +34,9 @@ public class NewsImagesServiceImpl implements NewsImagesService {
         List<MongoNewsImage> mongoImages = saveMongoFiles(files);
         log.info("images saved to mongoDb: {}", mongoImages);
         List<NewsImage> mapped = mongoImages.stream()
-                .map((mongoNewsImage -> new NewsImage(mongoNewsImage.getId())))
+                .map((mongoNewsImage -> new NewsImage(mongoNewsImage.getFileName(), mongoNewsImage.getId())))
                 .toList();
+        log.info("images = {}", mapped);
         return newsImageRepo.saveAll(mapped);
     }
 
@@ -75,7 +76,7 @@ public class NewsImagesServiceImpl implements NewsImagesService {
             MongoNewsImage image;
             Example<MongoNewsImage> example = Example.of(new MongoNewsImage(hashCode));
             log.info("save image: contentType={}, hashCode={}", contentType, hashCode);
-
+            log.info("save file = {}", file);
             log.info("Looking for an image...");
             if (newsImagesMongoRepo.exists(example)) {
                 log.info("Image found");

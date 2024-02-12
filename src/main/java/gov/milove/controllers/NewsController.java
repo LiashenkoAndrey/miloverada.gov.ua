@@ -50,7 +50,7 @@ public class NewsController {
     }
     @PostMapping("/protected/news/new")
     public ResponseEntity<Long> newNews(@RequestParam @NotBlank @Size(max = 300) String title,
-                                          @RequestParam @NotBlank @Size(max = 10000) String text,
+                                          @RequestParam @NotBlank String text,
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfPublication,
                                           @RequestParam(required = false) @Future @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfPostponedPublication,
                                           @RequestParam @NotEmpty @Size(max = 20) MultipartFile[] images,
@@ -60,11 +60,13 @@ public class NewsController {
         log.info("title = {}, text = {}, dateOfPublication = {}, dateOfPostponedPublication = {}", title, text, dateOfPublication, dateOfPostponedPublication);
         log.info("newsType = {}", newsTypeId);
 
+
+        NewsType newsType = newsTypeId != -1 ? newsTypeRepo.getReferenceById(newsTypeId) : null;
         News newNews = News.builder()
                 .description(title)
                 .main_text(text)
                 .dateOfPublication(dateOfPublication)
-                .newsType(newsTypeRepo.getReferenceById(newsTypeId))
+                .newsType(newsType)
                 .views(0L)
                 .build();
 
@@ -99,20 +101,33 @@ public class NewsController {
         newsService.deleteNewsImageById(id);
 
         return ResponseEntity
+                .accepted()
+                .body(id);
+    }
 
+    @PutMapping("/protected/news/{id}/update")
+    public ResponseEntity<Long> updateNews(@PathVariable Long id,
+                           @RequestParam @NotBlank @Size(max = 300) String title,
+                           @RequestParam @NotBlank  String text,
+                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfPublication) {
+        log.info("title = {}, text = {}, date = {}", title, text, dateOfPublication);
+        News news = newsRepository.findById(id).orElseThrow(NewsNotFoundException::new);
+        news.setDescription(title);
+        news.setDateOfPublication(dateOfPublication);
+        news.setMain_text(text);
+        newsRepository.save(news);
+        return ResponseEntity
                 .accepted()
                 .body(id);
     }
 
     @PostMapping("/protected/news/{newsId}/image/new")
-    public List<String> saveNewNewsImage(@PathVariable Long newsId, @RequestParam("images") MultipartFile[] files) {
+    public List<NewsImage> saveNewNewsImage(@PathVariable Long newsId, @RequestParam("images") MultipartFile[] files) {
         News news = newsRepository.findById(newsId).orElseThrow(NewsNotFoundException::new);
         List<NewsImage> newsImages = newsImagesService.saveAll(List.of(files));
         news.getImages().addAll(newsImages);
         newsRepository.save(news);
-        return newsImages.stream()
-                .map((NewsImage::getMongoImageId))
-                .toList();
+        return newsImages;
     }
 
 

@@ -13,13 +13,16 @@ import lombok.*;
 @AllArgsConstructor
 public class NewsImage {
 
-    public NewsImage(String mongoImageId) {
+    public NewsImage(String fileName, String mongoImageId) {
+        this.fileName = fileName;
         this.mongoImageId = mongoImageId;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String fileName;
 
     private Long newsId;
 

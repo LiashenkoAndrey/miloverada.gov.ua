@@ -39,7 +39,6 @@ public class Upload {
 
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable String id) {
-//        byte[] image = imageService.getImageById(id);
         MongoNewsImage mongoNewsImage = newsImagesMongoRepo.findById(id).orElseThrow(ImageNotFoundException::new);
         MediaType mediaType;
         if (mongoNewsImage.getContentType() == null) {
@@ -47,7 +46,6 @@ public class Upload {
         } else  {
             mediaType = MediaType.parseMediaType(mongoNewsImage.getContentType());
         }
-        log.info("image = {} ,end media type = {}", mongoNewsImage, mediaType);
         return ResponseEntity.ok().contentType(mediaType).body(mongoNewsImage.getBinaryImage().getData());
     }
 
