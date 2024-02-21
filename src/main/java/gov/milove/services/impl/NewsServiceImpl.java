@@ -1,27 +1,21 @@
 package gov.milove.services.impl;
 
 import gov.milove.domain.News;
-import gov.milove.domain.NewsImage;
 import gov.milove.domain.NewsType;
 import gov.milove.domain.dto.NewsDtoWithImageAndType;
 import gov.milove.exceptions.NewsNotFoundException;
 import gov.milove.exceptions.NewsServiceException;
 import gov.milove.repositories.NewsImageRepo;
 import gov.milove.repositories.NewsRepository;
-
 import gov.milove.repositories.NewsTypeRepo;
-import gov.milove.repositories.mongo.NewsImagesMongoRepo;
-import gov.milove.services.ImageService;
 import gov.milove.services.NewsImagesService;
 import gov.milove.services.NewsService;
-import gov.milove.services.NewsTypeService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

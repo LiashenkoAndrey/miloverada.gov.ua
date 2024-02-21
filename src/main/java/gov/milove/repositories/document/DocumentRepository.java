@@ -1,6 +1,7 @@
 package gov.milove.repositories.document;
 
 import gov.milove.domain.Document;
+import gov.milove.domain.dto.DocumentWithGroupDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,14 +13,10 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    @Query("select new gov.milove.domain.Document(d.id, d.title, d.name) from Document d where d.document_group_id = :id")
-    List<Document> findAllBySubGroupId(@Param("id") Long id);
+    Optional<Document> findByHashCode(Integer hashCode);
 
-    @Query("from Document d where d.name =?1")
-    Optional<Document> findByDocument_filename(String filename);
+    @Query("select count(d.id) > 1 from Document d  where d.name = :name")
+    boolean documentUsedMoreThenOneTime(@Param("name") String name);
 
-    @Transactional
-    @Modifying
-    @Query(value = "delete from document where name =:doc_id", nativeQuery = true)
-    void deleteByDocument_filename(@Param("doc_id") String id);
+    List<DocumentWithGroupDto> searchDistinctByNameContainingIgnoreCaseOrTitleContainingIgnoreCase(String title, String name);
 }

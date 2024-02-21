@@ -1,31 +1,24 @@
 package gov.milove.services.administration;
 
 import gov.milove.domain.administration.AdministrationGroup;
-import gov.milove.domain.dto.AdministrationGroupDto;
 import gov.milove.exceptions.AdministrationGroupServiceException;
 import gov.milove.repositories.administration.AdministrationGroupRepository;
-import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdministrationGroupService {
 
-    public AdministrationGroupService(AdministrationGroupRepository repository, AdministrationEmployeeService employeeService, @Qualifier("administrationDocumentService") DocumentService documentService) {
-        this.repository = repository;
-        this.employeeService = employeeService;
-        this.documentService = documentService;
-    }
+
 
     private final AdministrationGroupRepository repository;
     private final AdministrationEmployeeService employeeService;
 
-    private final DocumentService documentService;
 
     public List<AdministrationGroup> findAllGroups() {
         return repository.findAllWhereGroupIdIsNull();
@@ -40,9 +33,6 @@ public class AdministrationGroupService {
         }
     }
 
-    public Optional<AdministrationGroupDto> findDtoById(Long id) {
-        return repository.findDtoById(id);
-    }
 
     public Optional<AdministrationGroup> findById(Long id) {
         return repository.findById(id);

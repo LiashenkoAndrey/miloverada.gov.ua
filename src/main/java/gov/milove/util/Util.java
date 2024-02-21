@@ -6,6 +6,9 @@ import java.net.URLDecoder;
 
 public class Util {
 
+    public static String createContentDispositionHeaderFromFileName(String fileName) {
+        return String.format("attachment; filename=\"%s\"", fileName);
+    }
 
     public static String decodeUriComponent(String encodedStr) {
         try {

@@ -1,48 +1,82 @@
 package gov.milove.controllers.documents;
 
+import gov.milove.domain.Document;
+import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.DocumentGroupWithGroupsDto;
+import gov.milove.domain.dto.DocumentGroupWithGroupsDtoAndDocumentsDto;
+import gov.milove.exceptions.DocumentGroupNotFoundException;
 import gov.milove.repositories.document.DocumentGroupRepository;
-import gov.milove.services.document.DocumentGroupService;
+import gov.milove.services.DocumentGroupService;
+import gov.milove.services.DocumentService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import static gov.milove.controllers.util.ControllerUtil.error;
-import static gov.milove.controllers.util.ControllerUtil.ok;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/subGroup")
 @RequiredArgsConstructor
+@Log4j2
+@RequestMapping("/api")
+@Validated
 public class DocumentGroupController {
 
-    private final DocumentGroupService subGroupService;
+    private final DocumentGroupRepository documentGroupRepository;
+    private final DocumentGroupService documentGroupService;
+    private final DocumentService documentService;
 
-    private final DocumentGroupRepository repository;
 
-
-    @PostMapping("/new")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> createNewSubGroup (
-            @RequestParam("groupId") Long group_id,
-            @RequestParam("subGroupTitle") String title) {
-
-        subGroupService.createSubGroup(group_id, title);
-        return ok("Створення успішне");
-    }
-
-    @GetMapping("/delete")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deleteSubGroup (@RequestParam Long id) {
-        boolean success = subGroupService.deleteSubGroup(id);
-        if (success) return ok("Видалення успішне");
-        else return error("Виникли проблеми з видаленням");
+    @GetMapping("/documentGroup/all")
+    public List<DocumentGroupWithGroupsDto> findAll() {
+        return documentGroupRepository.findDistinctByDocumentGroupIdOrderByCreatedOn(null);
     }
 
 
-//    @PostMapping("/update")
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    public ResponseEntity<String> updateSubGroup (@RequestParam("subGroupId") Long id, @RequestParam("title") String title) {
-//        repository.editTitle(title, id);
-//        return ok("Оновлення успішне");
-//    }
+    @PostMapping("/protected/documentGroup/new")
+    public DocumentGroupWithGroupsDtoAndDocumentsDto createNewSubGroup(@RequestParam(required = false) Long groupId,
+                                                                       @NotBlank @RequestParam String name) {
+
+        DocumentGroup documentGroup = DocumentGroup.builder()
+                .documentGroup(groupId == null ? null : documentGroupRepository.getReferenceById(groupId))
+                .name(name)
+                .build();
+        DocumentGroup saved = documentGroupRepository.save(documentGroup);
+        return documentGroupRepository.findDistinctById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @PutMapping("/protected/documentGroup/{id}/update")
+    public Long editSubGroup(@PathVariable Long id,
+                             @NotBlank @RequestParam String name) {
+        DocumentGroup group = documentGroupRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        group.setName(name);
+        documentGroupRepository.save(group);
+        return group.getId();
+    }
+    @DeleteMapping("/protected/documentGroup/{id}/delete")
+    public Long deleteSubGroup(@PathVariable Long id) {
+        log.info("delete = {}",id );
+        documentGroupService.deleteById(id);
+        return id;
+    }
+
+
+    @PostMapping("/protected/documentGroup/{id}/document/new")
+    public Document newDoc(@PathVariable Long id,
+                           @RequestParam MultipartFile file,
+                           @RequestParam String title) {
+        log.info("new doc = {}, size - {}, title = {}", file.getOriginalFilename(), file.getSize(), title);
+        return documentService.saveDocument(id, file, title);
+    }
+
+
+    @GetMapping("/documentGroup/id/{id}")
+    public DocumentGroupWithGroupsDtoAndDocumentsDto findById(@PathVariable Long id) {
+        return documentGroupRepository.findDistinctById(id)
+                .orElseThrow(DocumentGroupNotFoundException::new);
+    }
+
 }

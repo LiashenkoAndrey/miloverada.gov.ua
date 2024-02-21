@@ -4,7 +4,6 @@ import gov.milove.domain.Employee;
 import gov.milove.domain.administration.AdministrationEmployee;
 import gov.milove.services.administration.AdministrationEmployeeService;
 import gov.milove.services.administration.AdministrationGroupService;
-import gov.milove.services.ImageService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -29,8 +28,6 @@ public class EmployeeController {
 
     private final AdministrationGroupService administrationGroupService;
 
-    private final ImageService imageService;
-
 
     @PostMapping("/employee/new")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -41,8 +38,8 @@ public class EmployeeController {
 
         try {
             if (group_id == null) {
-                String savedImageId = imageService.saveAndReturnId(file);
-                employee.setImage_id(savedImageId);
+//                String savedImageId = imageService.saveAndReturnId(file);
+//                employee.setImage_id(savedImageId);
                 administrationEmployeeService.save(employee);
             } else {
                 employee.setAdministration_group(administrationGroupService.findById(Long.parseLong(group_id))
@@ -68,8 +65,8 @@ public class EmployeeController {
                     administrationEmployeeService.findById(id).orElseThrow(EntityNotFoundException::new);
 
             if (oldEmployee.getAdministration_group() == null && file != null) {
-                String savedImageId = imageService.saveAndReturnId(file);
-                oldEmployee.setImage_id(savedImageId);
+//                String savedImageId = imageService.saveAndReturnId(file);
+//                oldEmployee.setImage_id(savedImageId);
             }
             Employee.updateEmployee(updatedEmployee, oldEmployee);
 

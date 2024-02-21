@@ -31,6 +31,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
+import static gov.milove.util.Util.createContentDispositionHeaderFromFileName;
+
 @RestController
 @Log4j2
 @RequestMapping("/api/")
@@ -63,7 +65,7 @@ public class MessageFileController {
         GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(fileId)));
         String type = file.getMetadata().getString("contentType");
 
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, getContentDispositionHeader(file.getFilename()));
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, createContentDispositionHeaderFromFileName(file.getFilename()));
         response.addHeader(HttpHeaders.CONTENT_TYPE, type);
         response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.getLength()));
         FileCopyUtils.copy(operations.getResource(file).getInputStream(), response.getOutputStream());
@@ -72,7 +74,7 @@ public class MessageFileController {
     @GetMapping("/forum/upload/file/{mongoFileId}")
     public ResponseEntity<byte[]>  getFile(@PathVariable String mongoFileId) {
         MongoFile file = mongoFileRepo.findById(mongoFileId).orElseThrow(FileNotFoundException::new);
-        String contentDispositionHeader = getContentDispositionHeader(file.getName());
+        String contentDispositionHeader = createContentDispositionHeaderFromFileName(file.getName());
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(file.getContentType()))
@@ -81,7 +83,5 @@ public class MessageFileController {
                 .body(file.getFile().getData());
     }
 
-    private String getContentDispositionHeader(String fileName) {
-        return String.format("attachment; filename=\"%s\"", fileName);
-    }
+
 }

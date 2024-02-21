@@ -1,8 +1,14 @@
 package gov.milove.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -25,9 +31,22 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String mongoId;
+
+    @NotNull
     private String title;
 
+    @NotNull
     private String name;
 
-    private Long document_group_id;
+    @NotNull
+    private Integer hashCode;
+
+    @CreationTimestamp
+    private LocalDateTime createdOn;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @JsonIgnoreProperties("hibernateLazyInitializer")
+    private DocumentGroup documentGroup;
 }

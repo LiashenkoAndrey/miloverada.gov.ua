@@ -1,49 +1,55 @@
 package gov.milove.controllers.documents;
 
+import gov.milove.domain.Document;
+import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.DocumentGroupWithGroupsDto;
+import gov.milove.domain.dto.DocumentGroupWithGroupsDtoAndDocumentsDto;
+import gov.milove.domain.dto.DocumentWithGroupDto;
+import gov.milove.exceptions.DocumentGroupNotFoundException;
+import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.repositories.document.DocumentRepository;
-import gov.milove.services.document.DocumentService;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import gov.milove.services.DocumentGroupService;
+import gov.milove.services.DocumentService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static gov.milove.controllers.util.ControllerUtil.error;
-import static gov.milove.controllers.util.ControllerUtil.ok;
-
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
+@Log4j2
+@Validated
 public class DocumentController {
 
-    private final DocumentService documentService;
     private final DocumentRepository documentRepository;
+    private final DocumentService documentService;
 
-    public DocumentController(@Qualifier("localCommunityDocumentService") DocumentService documentService, DocumentRepository documentRepository) {
-        this.documentService = documentService;
-        this.documentRepository = documentRepository;
+
+    @PutMapping("/protected/document/{id}/update")
+    public Long updateDocumentName(@PathVariable Long id,
+                             @NotBlank @RequestParam String name) {
+        log.info("update doc = {}, name - {}", id, name);
+        Document document = documentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        document.setTitle(name);
+        documentRepository.save(document);
+        return id;
     }
 
-
-    @PostMapping("/new")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> saveDocument(@RequestParam("file") MultipartFile file,
-                               @RequestParam("title") String title,
-                               @RequestParam("subGroupId") Long subGroupId) {
-
-        try {
-            documentService.createDocument(file,title, subGroupId);
-            return ok("Документ успішно доданий");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return error("Виникли проблеми з додаванням документу");
-        }
+    @DeleteMapping("/protected/document/{id}/delete")
+    public Document deleteDocument(@PathVariable Long id) {
+        Document document = documentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        documentService.delete(document);
+        return document;
     }
 
-    @GetMapping("/documents")
-    public List<gov.milove.domain.Document> getDocumentsBySubGroupId(@RequestParam Long subGroupId) {
-        return documentRepository.findAllBySubGroupId(subGroupId);
+    @GetMapping("/documents/search")
+    public List<DocumentWithGroupDto> searchDocs(@RequestParam(name = "docName") String encodedString)  {
+        return documentRepository.searchDistinctByNameContainingIgnoreCaseOrTitleContainingIgnoreCase(encodedString, encodedString);
     }
-
 }

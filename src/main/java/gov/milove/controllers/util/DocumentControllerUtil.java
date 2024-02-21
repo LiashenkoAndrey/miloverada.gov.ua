@@ -1,8 +1,6 @@
 package gov.milove.controllers.util;
 
 import gov.milove.exceptions.DocumentCrudServiceException;
-import gov.milove.services.document.DocumentService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +13,8 @@ import static gov.milove.controllers.util.ControllerUtil.ok;
 @RequestMapping("/document")
 public class DocumentControllerUtil {
 
-    private final DocumentService documentService;
 
-    public DocumentControllerUtil(@Qualifier("administrationDocumentService") DocumentService documentService) {
-        this.documentService = documentService;
-    }
+
 
     @PostMapping("/update")
     public ResponseEntity<String> updateDocument(
@@ -28,7 +23,7 @@ public class DocumentControllerUtil {
             @RequestParam("filename") String filename) {
 
         try {
-            documentService.updateDocument(filename, file, title);
+//            documentService.updateDocument(filename, file, title);
             return ok("Оновлення успішне");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -41,7 +36,7 @@ public class DocumentControllerUtil {
     public ResponseEntity<String> deleteDocument(@RequestParam("filename") String filename) {
 
         try {
-            documentService.deleteDocumentByFilename(filename);
+//            documentService.deleteDocumentByFilename(filename);
             return ok("Файл успішно видалений");
         } catch (DocumentCrudServiceException ex) {
             ex.printStackTrace();

@@ -1,12 +1,17 @@
 package gov.milove.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,21 +23,31 @@ import java.util.List;
 @NoArgsConstructor
 public class DocumentGroup {
 
+    public DocumentGroup(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2, max = 255)
+    @Size(min = 2, max = 1000)
     private String name;
 
-    private Long document_group_id;
+    @ManyToOne
+    @JsonIgnore
+    private DocumentGroup documentGroup;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_group_id")
-    private List<Document> documents;
+    @JsonIgnore
+    private List<Document> documents = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_group_id")
+    @JsonIgnore
+    private List<DocumentGroup> groups  = new ArrayList<>();
 
+    @CreationTimestamp
     private Date createdOn;
-
-
 }
