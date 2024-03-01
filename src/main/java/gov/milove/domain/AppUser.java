@@ -1,26 +1,26 @@
-package gov.milove.domain.forum;
+package gov.milove.domain;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @ToString
 @NoArgsConstructor
+@EqualsAndHashCode
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
-@Table(name = "forum_users", schema = "forum")
-public class ForumUser {
+@Table(name = "app_users")
+public class AppUser {
 
     @Id
     private String id;
@@ -37,7 +37,10 @@ public class ForumUser {
     @Email
     private String email;
 
-    @NotBlank
-    private String avatar;
+    private String avatarContentType;
 
+    @Column(name = "avatar_base64_image")
+    private String avatarBase64Image;
+
+    private String avatarUrl;
 }

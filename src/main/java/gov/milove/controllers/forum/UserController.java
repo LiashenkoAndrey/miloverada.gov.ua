@@ -1,7 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.ForumUserDto;
-import gov.milove.domain.dto.forum.NewUserDto;
+import gov.milove.domain.dto.forum.AppUserDto;
 import gov.milove.domain.forum.ForumUser;
 import gov.milove.repositories.forum.ForumUserRepo;
 import jakarta.validation.Valid;
@@ -36,19 +36,19 @@ public class UserController {
         return forumUserRepo.findAll();
     }
 
-    @PostMapping("/protected/user/new")
-    public String newUser(@Valid @RequestBody NewUserDto dto) {
-        log.info("new user: " + dto);
-        ForumUser user = NewUserDto.toDomain(dto);
-        log.info("user: " + user);
+    @PostMapping("/protected/forum/user/new")
+    public String newForumUser(@Valid @RequestBody AppUserDto dto) {
+        log.info("new user, dto - {} ", dto);
+        ForumUser user = ForumUser.builder().build();
+        log.info("user - {}" , user);
         ForumUser saved = forumUserRepo.save(user);
         return saved.getId();
     }
 
-    @GetMapping("/protected/user/isRegistered/id/{encodedUserId}")
+    @GetMapping("/protected/forum/user/isRegistered/id/{encodedUserId}")
     private boolean isRegistered(@PathVariable String encodedUserId) {
         String decodedUserId = decodeUriComponent(encodedUserId);
-        log.info("user id: " + decodedUserId);
+        log.info("user id - {}" , decodedUserId);
         return forumUserRepo.existsById(decodedUserId);
     }
 
