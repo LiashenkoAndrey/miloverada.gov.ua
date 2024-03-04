@@ -90,10 +90,10 @@ public class NewsController {
     }
 
     @DeleteMapping("/protected/news/{id}/delete")
-    public ResponseEntity<?> deleteNewsById(@PathVariable Long id) {
+    public Long deleteNewsById(@PathVariable Long id) {
         newsService.deleteById(id);
 
-        return ResponseEntity.accepted().build();
+        return id;
     }
 
     @DeleteMapping("/protected/news/image/{id}/delete")

@@ -42,6 +42,6 @@ public class News {
 
     private Long views = 0L;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private NewsType newsType;
 }
