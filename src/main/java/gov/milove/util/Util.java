@@ -11,6 +11,7 @@ public class Util {
     }
 
     public static String decodeUriComponent(String encodedStr) {
+        if (encodedStr == null) return null;
         try {
             return URLDecoder.decode(encodedStr.replace("+", "%2B"), "UTF-8")
                     .replace("%2B", "+");

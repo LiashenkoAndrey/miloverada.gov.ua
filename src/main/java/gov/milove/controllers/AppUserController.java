@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.milove.domain.AdminMetadata;
 import gov.milove.domain.AppUser;
+import gov.milove.domain.User;
 import gov.milove.domain.dto.AdminMetadataDto;
 import gov.milove.domain.dto.UserDto;
 import gov.milove.domain.dto.forum.AppUserDto;
@@ -11,11 +12,15 @@ import gov.milove.domain.forum.ForumUser;
 import gov.milove.repositories.AppUserRepo;
 import gov.milove.repositories.mongo.AdminMetadataRepo;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static gov.milove.util.Util.decodeUriComponent;
 
@@ -27,6 +32,16 @@ public class AppUserController {
 
     private final AppUserRepo appUserRepo;
     private final AdminMetadataRepo adminMetadataRepo;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        List<User> users = em.createQuery("SELECT a FROM User a", User.class).getResultList();
+        log.info("users = {}", users);
+        return users;
+    }
 
     @PostMapping("/protected/user/new")
     public String newAppUser(@Valid @RequestBody AppUserDto dto) {
