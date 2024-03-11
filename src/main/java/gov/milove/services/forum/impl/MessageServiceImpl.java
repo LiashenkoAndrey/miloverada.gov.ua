@@ -13,15 +13,19 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.minidev.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static java.lang.String.format;
 
 
 @Service
@@ -39,8 +43,26 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageImageService messageImageService;
 
+    private final SimpMessagingTemplate messagingTemplate;
+
+
+
     @PersistenceContext
     private EntityManager em;
+
+    @Override
+    public Message saveNewMessage(MessageDto dto) {
+        log.info("new message: " + dto);
+        Message saved = saveMessage(dto);
+
+        saved.setFileDtoList(dto.getFileDtoList());
+        messagingTemplate.convertAndSend("/chat/" + dto.getChatId(), saved);
+        JSONObject messageIsSavedPayload = new JSONObject();
+        messageIsSavedPayload.put("messageId", saved.getId());
+
+        messagingTemplate.convertAndSend(format("/chat/%s/messageIsSaved?senderId=%s", dto.getChatId(), dto.getSenderId()), messageIsSavedPayload.toJSONString());
+        return saved;
+    }
 
     @Override
     @Transactional
@@ -152,6 +174,9 @@ public class MessageServiceImpl implements MessageService {
         if (!dto.getImagesDtoList().isEmpty()) {
             message.setImagesList(imageService.saveImages(dto.getImagesDtoList()));
         }
-        return messageRepo.save(message);
+        Message saved = messageRepo.save(message);
+        Message fetched = messageRepo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+        log.info("fetched = {}", fetched);
+        return fetched;
     }
 }

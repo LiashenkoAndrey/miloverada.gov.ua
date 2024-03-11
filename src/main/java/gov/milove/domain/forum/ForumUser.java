@@ -1,6 +1,7 @@
 package gov.milove.domain.forum;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,8 @@ public class ForumUser {
     private String id;
 
     @CreationTimestamp
-    private LocalDateTime registeredOn;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Date registeredOn;
 
     @NotBlank
     private String firstName;

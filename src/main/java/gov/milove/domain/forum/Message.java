@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -48,14 +49,14 @@ public class Message {
     private List<FileDto> fileDtoList;
 
     @CreationTimestamp
-    private LocalDateTime createdOn;
+    private Date createdOn;
 
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Chat chat;
 
     @UpdateTimestamp
-    private LocalDateTime editedOn;
+    private Date editedOn;
 
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

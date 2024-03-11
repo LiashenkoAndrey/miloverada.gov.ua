@@ -63,16 +63,7 @@ public class MessageController {
     @Transactional
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
-        log.info("new message: " + dto);
-        Message saved = messageService.saveMessage(dto);
-
-        saved.setFileDtoList(dto.getFileDtoList());
-        messagingTemplate.convertAndSend("/chat/" + dto.getChatId(), saved);
-
-        JSONObject messageIsSavedPayload = new JSONObject();
-        messageIsSavedPayload.put("messageId", saved.getId());
-
-        messagingTemplate.convertAndSend(format("/chat/%s/messageIsSaved?senderId=%s", dto.getChatId(), dto.getSenderId()), messageIsSavedPayload.toJSONString());
+        messageService.saveNewMessage(dto);
     }
 
 

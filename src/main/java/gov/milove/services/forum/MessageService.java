@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MessageService {
 
-
+    Message saveNewMessage(MessageDto messageDto);
 
     List<Message> getMessages(MessageRequestDto dto);
 

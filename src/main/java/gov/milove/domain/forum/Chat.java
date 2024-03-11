@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -40,7 +41,7 @@ public class Chat {
     private String picture;
 
     @CreationTimestamp
-    private LocalDateTime createdOn;
+    private Date createdOn;
 
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
