@@ -1,9 +1,11 @@
 package gov.milove.controllers;
 
+import gov.milove.domain.Image;
 import gov.milove.domain.MongoDocument;
 import gov.milove.domain.MongoNewsImage;
 import gov.milove.exceptions.FileNotFoundException;
 import gov.milove.exceptions.ImageNotFoundException;
+import gov.milove.repositories.ImageRepo;
 import gov.milove.repositories.mongo.MongoDocumentRepo;
 import gov.milove.repositories.mongo.NewsImagesMongoRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,7 +36,7 @@ public class Upload {
     private final NewsImagesMongoRepo newsImagesMongoRepo;
 
     private final MongoDocumentRepo mongoDocumentRepo;
-
+    private final ImageRepo imageRepo;
 
     @GetMapping("/download/image/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable String id) {
@@ -46,6 +48,18 @@ public class Upload {
             mediaType = MediaType.parseMediaType(mongoNewsImage.getContentType());
         }
         return ResponseEntity.ok().contentType(mediaType).body(mongoNewsImage.getBinaryImage().getData());
+    }
+
+    @GetMapping("/download/v2/image/{id}")
+    public ResponseEntity<byte[]> getImageV2(@PathVariable String id, HttpServletResponse response) {
+        Image image = imageRepo.findById(id).orElseThrow(ImageNotFoundException::new);
+        MediaType mediaType = MediaType.parseMediaType(image.getContentType());
+        String contentDisposition = "attachment; filename=\"" + image.getFilename() + "\"";
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .contentLength(image.getBinaryImage().length())
+                .body(image.getBinaryImage().getData());
     }
 
 

@@ -27,7 +27,6 @@ public class ForumUser {
     private String id;
 
     @CreationTimestamp
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Date registeredOn;
 
     @NotBlank
