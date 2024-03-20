@@ -43,7 +43,7 @@ public class MessageController {
     public Message newMessage(@Valid @RequestBody MessageDto dto) {
         Message message = MessageDto.toEntity(dto);
         message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
-        message.setChat(chatRepo.getReferenceById(dto.getChatId()));
+        message.setChatId(dto.getChatId());
 
         Message saved = messageRepo.save(message);
         log.info(saved);
@@ -110,7 +110,7 @@ public class MessageController {
 
     @GetMapping("/forum/chat/{chatId}/message/latest")
     public List<Message> getLatestOfChat(@PathVariable Long chatId) {
-        List<Message> messages =  messageRepo.findByChat_Id(chatId, PageRequest.of(0, 30, Sort.by("createdOn").descending()));
+        List<Message> messages =  messageRepo.findAllByChatId(chatId, PageRequest.of(0, 30, Sort.by("createdOn").descending()));
         Collections.reverse(messages);
         return messages;
     }

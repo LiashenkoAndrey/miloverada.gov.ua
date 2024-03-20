@@ -1,23 +1,25 @@
 package gov.milove.controllers.forum;
 
+import gov.milove.domain.dto.forum.ChatDto;
+import gov.milove.domain.dto.forum.ChatDtoWithMetadata;
 import gov.milove.domain.dto.forum.ChatMetadataDto;
 import gov.milove.domain.dto.forum.NewChatDto;
 import gov.milove.domain.forum.Chat;
-import gov.milove.domain.forum.Message;
+import gov.milove.domain.forum.UserChat;
 import gov.milove.domain.forum.PrivateChat;
 import gov.milove.repositories.forum.ChatRepo;
+import gov.milove.repositories.forum.UserChatRepo;
 import gov.milove.repositories.forum.ForumUserRepo;
 import gov.milove.repositories.forum.PrivateChatRepo;
-import jakarta.persistence.EntityNotFoundException;
+import gov.milove.services.forum.ChatService;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +34,39 @@ public class ChatController {
     private final ChatRepo chatRepo;
     private final ForumUserRepo forumUserRepo;
     private final PrivateChatRepo privateChatRepo;
+    private final UserChatRepo userChatRepo;
+    private final ChatService chatService;
 
     @GetMapping("/forum/chat/all")
-    public List<Chat> getAllByTopicId(@RequestParam(required = false) Long topicId) {
+    public List<ChatDto> getAllByTopicId(@RequestParam(required = false) Long topicId) {
         return chatRepo.findByTopicId(topicId);
+    }
+
+    @GetMapping("/protected/forum/user/{encodedUserId}/chats")
+    public List<ChatDtoWithMetadata> getUserVisitedChats(@PathVariable String encodedUserId) {
+        return chatService.getUserChatsWithMetaById(decodeUriComponent(encodedUserId));
     }
 
 
     @GetMapping("/forum/chat/id/{chatId}")
-    public Chat getChatById(@PathVariable Long chatId) {
-        return chatRepo.findById(chatId).orElseThrow(EntityNotFoundException::new);
+    public ChatDto getChatById(@PathVariable Long chatId, @RequestParam(required = false) String encodedUserId) {
+        log.info(encodedUserId);
+        if (encodedUserId != null) {
+            String decodedUserId = decodeUriComponent(encodedUserId);
+            UserChat newRecord = new UserChat(decodedUserId, chatRepo.getReferenceById(chatId));
+            Optional<UserChat> chatVisitOpt = userChatRepo.findOne(Example.of(newRecord));
+            if (chatVisitOpt.isEmpty()) {
+                log.info("create...");
+
+                userChatRepo.save(newRecord);
+            } else {
+                log.info("update...");
+                UserChat userChat = chatVisitOpt.get();
+                userChat.setLastVisitedOn(new Date());
+                userChatRepo.save(userChat);
+            }
+        }
+        return chatRepo.findChatById(chatId);
     }
 
     @PostMapping("/protected/forum/user/{user1_id}/chat")
@@ -70,19 +95,22 @@ public class ChatController {
         }
     }
 
+    @PersistenceContext
+    private EntityManager em;
 
     @GetMapping("/forum/chat/id/{chatId}/metadata")
     private ChatMetadataDto getChatMetadata(@PathVariable Long chatId, @RequestParam String userId) {
         return chatRepo.getChatMetadata(chatId, decodeUriComponent(userId));
     }
 
+//    @GetMapping("/forum/chat/idV2/{chatId}/metadata")
+//    private ChatDtoWithMetadata getChatMetadataV2(@PathVariable Long chatId, @RequestParam String userId) {
+//        return chatService.getUserChatsWithMetaById(chatId, userId);
+//    }
+
     @PostMapping("/protected/forum/chat/new")
-    public Long newChat(@Valid @RequestBody NewChatDto dto) {
-        Chat chat = NewChatDto.toDomain(dto);
-        chat.setOwner(forumUserRepo.getReferenceById(dto.getOwnerId()));
-        log.info("new chat: " + chat);
-        Chat saved = chatRepo.save(chat);
-        return saved.getId();
+    public ChatDto newChat(@Valid @RequestBody NewChatDto dto) {
+        return chatService.newTopicChat(dto);
     }
 
 

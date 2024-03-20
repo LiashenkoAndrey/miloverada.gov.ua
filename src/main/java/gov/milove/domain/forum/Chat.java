@@ -3,8 +3,10 @@ package gov.milove.domain.forum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -20,6 +22,7 @@ import java.util.Date;
 @Table(schema = "forum")
 public class Chat {
 
+
     public Chat(Boolean isPrivate) {
         this.isPrivate = isPrivate;
     }
@@ -34,6 +37,8 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String idAlias;
+
     private String name;
 
     private String description;
@@ -43,12 +48,17 @@ public class Chat {
     @CreationTimestamp
     private Date createdOn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ForumUser owner;
 
     private Boolean isPrivate;
 
     @Formula("(select count(*) from forum.message m where m.chat_id = id)")
-    private Long totalMessagesAmount;
+    private Long totalMessagesAmount = 0L;
+
+    @PrePersist
+    private void pre() {
+        this.idAlias = RandomStringUtils.randomAlphanumeric(8);
+    }
 }

@@ -1,11 +1,13 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.NewTopicDto;
+import gov.milove.domain.dto.forum.TopicDto;
 import gov.milove.domain.forum.Topic;
 import gov.milove.repositories.TopicRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class TopicController {
     private final TopicRepo topicRepo;
 
     @GetMapping("/forum/topic/all")
-    public List<Topic> getAll() {
-        return topicRepo.findAll();
+    public List<TopicDto> getAll() {
+        return topicRepo.getList();
     }
 
     @PostMapping("/protected/forum/topic/new")

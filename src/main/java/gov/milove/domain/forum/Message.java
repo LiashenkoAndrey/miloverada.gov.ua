@@ -51,9 +51,7 @@ public class Message {
     @CreationTimestamp
     private Date createdOn;
 
-    @ManyToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Chat chat;
+    private Long chatId;
 
     @UpdateTimestamp
     private Date editedOn;

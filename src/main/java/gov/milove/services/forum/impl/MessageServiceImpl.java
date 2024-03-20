@@ -117,7 +117,7 @@ public class MessageServiceImpl implements MessageService {
                         .descending()
         );
 
-        List<Message> messages = messageRepo.findAllByChat_Id(dto.getChatId(), pageReq);
+        List<Message> messages = messageRepo.findAllByChatId(dto.getChatId(), pageReq);
         Collections.reverse(messages);
         return messages;
     }
@@ -126,7 +126,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private List<Message> getBefore(MessageRequestDto dto, int listSize) {
-        List<Message> messages = em.createQuery("from Message m where m.id < :id and m.chat.id = :chatId order by m.createdOn desc", Message.class)
+        List<Message> messages = em.createQuery("from Message m where m.id < :id and m.chatId = :chatId order by m.createdOn desc", Message.class)
                 .setParameter("chatId", dto.getChatId())
                 .setParameter("id", dto.getLastReadMessageId())
                 .setMaxResults(listSize)
@@ -137,7 +137,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     private List<Message> getAfter(MessageRequestDto dto, int listSize) {
-        return em.createQuery("from Message m where m.id >= :id and m.chat.id = :chatId order by m.createdOn", Message.class)
+        return em.createQuery("from Message m where m.id >= :id and m.chatId = :chatId order by m.createdOn", Message.class)
                 .setParameter("chatId", dto.getChatId())
                 .setParameter("id", dto.getLastReadMessageId())
                 .setMaxResults(listSize)
@@ -162,7 +162,7 @@ public class MessageServiceImpl implements MessageService {
     public Message saveMessage(MessageDto dto) {
         Message message = MessageDto.toEntity(dto);
         message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
-        message.setChat(chatRepo.getReferenceById(dto.getChatId()));
+        message.setChatId(dto.getChatId());
 
         if (dto.getReplyToMessageId() != null) {
             Message message1 = messageRepo.getReferenceById(dto.getReplyToMessageId());

@@ -12,14 +12,13 @@ import java.util.List;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
 
-    List<Message> findAllByChat_Id(Long id, Pageable pageable);
+    List<Message> findAllByChatId(Long id, Pageable pageable);
 
-    @Query("from Message m where m.id < :fromMessageId and m.chat.id = :chatId order by m.createdOn desc limit 20")
+    @Query("from Message m where m.id < :fromMessageId and m.chatId = :chatId order by m.createdOn desc limit 20")
     List<Message> getPrevious(@Param("fromMessageId") Long fromMessageId, @Param("chatId") Long chatId);
 
 
-
-    @Query("from Message m where m.id > :fromMessageId and m.chat.id = :chatId order by m.createdOn")
+    @Query("from Message m where m.id > :fromMessageId and m.chatId = :chatId order by m.createdOn")
     List<Message> getNext(@Param("fromMessageId") Long fromMessageId, @Param("chatId") Long chatId);
 
     @Modifying
@@ -30,14 +29,10 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
     @Query(value = "select count(id) > 1 from forum.message_image img  where image_id = :imageId", nativeQuery = true)
     boolean messageImageIsUsedMoreThenOneTime(@Param("imageId") String imageId);
 
-    @Query(value = "select * from forum.message m where m.chat_id = :chatId and m.id >= (:messageId - :range) and m.id <= (:messageId + :range) order by m.created_on;", nativeQuery = true)
-    List<Message> findAllFromLastReadMessageInRange(@Param("chatId") Long chatId, @Param("messageId") Long messageId, @Param("range") Integer range, Pageable pageable);
-
 
     @Query(value = "select * from forum.message m where m.chat_id = :chatId and m.id >= :messageId order by m.created_on;", nativeQuery = true)
     List<Message> getNewPageOfMessages(@Param("chatId") Long chatId, @Param("messageId") Long messageId, Pageable pageable);
 
-    List<Message> findByChat_Id(Long chat_id, Pageable pageable);
 
 
     @Transactional

@@ -1,11 +1,11 @@
 package gov.milove.controllers.forum;
 
+
 import gov.milove.domain.Image;
-import gov.milove.domain.forum.Story;
+import gov.milove.domain.forum.Post;
 import gov.milove.repositories.ImageRepo;
 import gov.milove.repositories.forum.ForumUserRepo;
-import gov.milove.repositories.forum.StoryRepo;
-import jakarta.persistence.EntityExistsException;
+import gov.milove.repositories.forum.PostRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,28 +19,28 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class StoryController {
+public class PostController {
 
-    private final StoryRepo storyRepo;
+    private final PostRepo postRepo;
     private final ForumUserRepo forumUserRepo;
     private final ImageRepo imageRepo;
 
-    @GetMapping("/forum/stories/latest")
-    public List<Story> latest() {
-        return storyRepo.findAll(Sort.by("createdOn").descending());
+    @GetMapping("/forum/posts/latest")
+    public List<Post> latest() {
+        return postRepo.findAll(Sort.by("createdOn").descending());
     }
 
-    @PostMapping("/protected/forum/user/{userId}/story/new")
-    private Story newUserStory(@PathVariable String userId,
+    @PostMapping("/protected/forum/user/{userId}/post/new")
+    private Post newUserPost(@PathVariable String userId,
                                @RequestParam MultipartFile image,
                                @RequestParam String text) {
 
         Image savedImage = imageRepo.save(new Image(image));
-        Story saved = storyRepo.save(Story.builder()
-                        .author(forumUserRepo.getReferenceById(userId))
-                        .text(text)
-                        .imageId(savedImage.getId())
+        Post saved = postRepo.save(Post.builder()
+                .author(forumUserRepo.getReferenceById(userId))
+                .text(text)
+                .imageId(savedImage.getId())
                 .build());
-        return storyRepo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+        return postRepo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
 }
