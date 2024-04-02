@@ -35,7 +35,6 @@ public class DocumentGroupController {
         return documentGroupRepository.findDistinctByDocumentGroupIdOrderByCreatedOn(null);
     }
 
-
     @PostMapping("/protected/documentGroup/new")
     public DocumentGroupWithGroupsDtoAndDocumentsDto createNewSubGroup(@RequestParam(required = false) Long groupId,
                                                                        @NotBlank @RequestParam String name) {
@@ -56,13 +55,13 @@ public class DocumentGroupController {
         documentGroupRepository.save(group);
         return group.getId();
     }
+
     @DeleteMapping("/protected/documentGroup/{id}/delete")
     public Long deleteSubGroup(@PathVariable Long id) {
         log.info("delete = {}",id );
         documentGroupService.deleteById(id);
         return id;
     }
-
 
     @PostMapping("/protected/documentGroup/{id}/document/new")
     public Document newDoc(@PathVariable Long id,
@@ -72,11 +71,9 @@ public class DocumentGroupController {
         return documentService.saveDocument(id, file, title);
     }
 
-
     @GetMapping("/documentGroup/id/{id}")
     public DocumentGroupWithGroupsDtoAndDocumentsDto findById(@PathVariable Long id) {
         return documentGroupRepository.findDistinctById(id)
                 .orElseThrow(DocumentGroupNotFoundException::new);
     }
-
 }

@@ -4,12 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Immutable;
 
 @Getter
@@ -17,6 +15,7 @@ import org.hibernate.annotations.Immutable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Entity
 public class NewsType {
 
@@ -30,8 +29,8 @@ public class NewsType {
     private Long id;
 
     @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
     private String titleExplanation;
 }
