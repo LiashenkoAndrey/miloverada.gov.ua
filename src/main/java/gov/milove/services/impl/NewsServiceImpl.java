@@ -39,12 +39,14 @@ public class NewsServiceImpl implements NewsService {
         return saved;
     }
 
+    @Override
     public void deleteById(Long id) {
         News news = newsRepository.findById(id).orElseThrow(NewsNotFoundException::new);
         imageService.deleteAllIfNotUsed(news.getImages());
         newsRepository.delete(news);
     }
 
+    @Override
     public void update(NewsDtoWithImageAndType news) {
         News saved = newsRepository.findById(news.getId()).orElseThrow(NewsServiceException::new);
 //        imageService.updateImageIfPresent(news.getImage(), saved.getImage_id());
