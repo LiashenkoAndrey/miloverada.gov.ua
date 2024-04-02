@@ -20,6 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 public class News {
 
+    public News(NewsType newsType) {
+        this.newsType = newsType;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

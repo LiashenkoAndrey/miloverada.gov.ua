@@ -5,6 +5,7 @@ import gov.milove.domain.NewsImage;
 import gov.milove.domain.NewsType;
 import gov.milove.domain.dto.INewsDto;
 import gov.milove.domain.dto.NewsDtoWithImageAndType;
+import gov.milove.exceptions.IllegalParameterException;
 import gov.milove.exceptions.NewsNotFoundException;
 import gov.milove.repositories.NewsRepository;
 import gov.milove.repositories.NewsTypeRepo;
@@ -13,6 +14,7 @@ import gov.milove.services.NewsService;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,15 +41,16 @@ public class NewsController {
     private final NewsImagesService newsImagesService;
 
     @GetMapping("/news/all")
-    public List<INewsDto> newsAll(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
+    public List<INewsDto> newsAll(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                  @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
         return newsRepository.findDistinctBy(PageRequest.of(page, size).withSort(Sort.Direction.DESC, "dateOfPublication" ));
-
     }
 
     @PostMapping("/protected/newsType/new")
     public NewsType saveNewsType(@Validated @RequestBody NewsType newsType) {
         return newsTypeRepo.save(newsType);
     }
+
     @PostMapping("/protected/news/new")
     public ResponseEntity<Long> newNews(@RequestParam @NotBlank @Size(max = 300) String title,
                                           @RequestParam @NotBlank String text,
@@ -60,8 +63,8 @@ public class NewsController {
         log.info("title = {}, text = {}, dateOfPublication = {}, dateOfPostponedPublication = {}", title, text, dateOfPublication, dateOfPostponedPublication);
         log.info("newsType = {}", newsTypeId);
 
-
-        NewsType newsType = newsTypeId != -1 ? newsTypeRepo.getReferenceById(newsTypeId) : null;
+        NewsType newsType = newsTypeId > 0 ? newsTypeRepo.getReferenceById(newsTypeId) : null;
+        log.info("NEWS TYPE {}", newsType);
         News newNews = News.builder()
                 .description(title)
                 .main_text(text)
@@ -71,7 +74,6 @@ public class NewsController {
                 .build();
 
         News news = newsService.save(newNews, images, dateOfPostponedPublication);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(news.getId());
@@ -79,10 +81,9 @@ public class NewsController {
 
     @DeleteMapping("/protected/newsType/{id}/delete")
     public void deleteNewsTypeById(@PathVariable Long id) {
+        if (id <= 0) throw new IllegalParameterException("Id must be higher than zero");
         newsTypeRepo.deleteById(id);
     }
-
-
 
     @GetMapping("/protected/news-types")
     public List<NewsType> getNewsTypes() {
@@ -91,18 +92,16 @@ public class NewsController {
 
     @DeleteMapping("/protected/news/{id}/delete")
     public ResponseEntity<?> deleteNewsById(@PathVariable Long id) {
+        if (id <= 0) throw new IllegalParameterException("Id must be higher than zero");
         newsService.deleteById(id);
-
         return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/protected/news/image/{id}/delete")
     public ResponseEntity<String> deleteNewsImageById(@PathVariable String id) {
+        if (!ObjectId.isValid(id)) throw new IllegalParameterException("Image id hex string is not valid");
         newsService.deleteNewsImageById(id);
-
-        return ResponseEntity
-                .accepted()
-                .body(id);
+        return ResponseEntity.accepted().body(id);
     }
 
     @PutMapping("/protected/news/{id}/update")
@@ -122,7 +121,8 @@ public class NewsController {
     }
 
     @PostMapping("/protected/news/{newsId}/image/new")
-    public List<NewsImage> saveNewNewsImage(@PathVariable Long newsId, @RequestParam("images") MultipartFile[] files) {
+    public List<NewsImage> saveNewNewsImage(@PathVariable Long newsId,
+                                            @RequestParam("images") MultipartFile[] files) {
         News news = newsRepository.findById(newsId).orElseThrow(NewsNotFoundException::new);
         List<NewsImage> newsImages = newsImagesService.saveAll(List.of(files));
         news.getImages().addAll(newsImages);
@@ -130,9 +130,8 @@ public class NewsController {
         return newsImages;
     }
 
-
     @GetMapping("/news/{newsId}")
-    public News getFullNewsPage(@PathVariable("newsId") Long news_id) {
+    public News getNewsById(@PathVariable("newsId") Long news_id) {
         return newsRepository.findById(news_id).orElseThrow(NewsNotFoundException::new);
     }
 
@@ -149,10 +148,9 @@ public class NewsController {
     }
 
     @GetMapping("/news/latest")
-    public List<INewsDto> getLatest(@RequestParam(defaultValue = "6", required = false) Integer pageSize) {
+    public List<INewsDto> getLatest(@RequestParam(defaultValue = "6", required = false) @Min(1) Integer pageSize) {
         return newsRepository.findDistinctBy(PageRequest.ofSize(pageSize).withSort(Sort.Direction.DESC, "dateOfPublication" ));
     }
-
 
     @PostMapping("/news/update")
     @PreAuthorize("hasAuthority('ADMIN')")

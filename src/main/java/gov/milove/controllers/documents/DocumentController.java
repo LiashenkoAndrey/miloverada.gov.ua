@@ -1,14 +1,8 @@
 package gov.milove.controllers.documents;
 
 import gov.milove.domain.Document;
-import gov.milove.domain.DocumentGroup;
-import gov.milove.domain.dto.DocumentGroupWithGroupsDto;
-import gov.milove.domain.dto.DocumentGroupWithGroupsDtoAndDocumentsDto;
 import gov.milove.domain.dto.DocumentWithGroupDto;
-import gov.milove.exceptions.DocumentGroupNotFoundException;
-import gov.milove.repositories.document.DocumentGroupRepository;
 import gov.milove.repositories.document.DocumentRepository;
-import gov.milove.services.DocumentGroupService;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,7 +22,6 @@ public class DocumentController {
 
     private final DocumentRepository documentRepository;
     private final DocumentService documentService;
-
 
     @PutMapping("/protected/document/{id}/update")
     public Long updateDocumentName(@PathVariable Long id,
@@ -52,4 +44,5 @@ public class DocumentController {
     public List<DocumentWithGroupDto> searchDocs(@RequestParam(name = "docName") String encodedString)  {
         return documentRepository.searchDistinctByNameContainingIgnoreCaseOrTitleContainingIgnoreCase(encodedString, encodedString);
     }
+
 }
