@@ -3,13 +3,10 @@ package gov.milove.domain.forum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gov.milove.domain.dto.forum.FileDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Table(schema = "forum")
 public class Message {
     public Message(String text) {
         this.text = text;
+    }
+
+
+    public Message(Long chatId, ForumUser sender) {
+        this.chatId = chatId;
+        this.sender = sender;
     }
 
     @Id
@@ -56,7 +60,15 @@ public class Message {
     @UpdateTimestamp
     private Date editedOn;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "replied_message", schema = "forum")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Message repliedMessage;
+
+
+    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST, mappedBy = "forwardedMessage")
+//    @JoinTable(name = "forwarded_message", schema = "forum")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private ForwardedMessage forwardedMessage;
+
 }

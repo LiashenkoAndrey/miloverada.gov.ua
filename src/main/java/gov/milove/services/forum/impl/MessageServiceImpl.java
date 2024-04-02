@@ -1,8 +1,11 @@
 package gov.milove.services.forum.impl;
 
+import gov.milove.domain.dto.forum.ForwardMessagesDto;
 import gov.milove.domain.dto.forum.MessageDto;
 import gov.milove.domain.dto.forum.MessageRequestDto;
+import gov.milove.domain.forum.ForwardedMessage;
 import gov.milove.domain.forum.Message;
+import gov.milove.repositories.ForwardedMessageRepo;
 import gov.milove.repositories.forum.ChatRepo;
 import gov.milove.repositories.forum.ForumUserRepo;
 import gov.milove.repositories.forum.MessageRepo;
@@ -25,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static gov.milove.util.Util.decodeUriComponent;
 import static java.lang.String.format;
 
 
@@ -44,7 +48,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageImageService messageImageService;
 
     private final SimpMessagingTemplate messagingTemplate;
-
+    private final ForwardedMessageRepo forwardedMessageRepo;
 
 
     @PersistenceContext
@@ -62,6 +66,35 @@ public class MessageServiceImpl implements MessageService {
 
         messagingTemplate.convertAndSend(format("/chat/%s/messageIsSaved?senderId=%s", dto.getChatId(), dto.getSenderId()), messageIsSavedPayload.toJSONString());
         return saved;
+    }
+
+    @Override
+    public void forwardMessages(ForwardMessagesDto dto) {
+        List<Long> messagesIdList = dto.getMessagesIdList();
+
+        for (Long chatId : dto.getToChatsIdList()) {
+            // map id list to new Message entity with appropriated chat id and forward message
+            List<Message> messages = messagesIdList.stream()
+                    .map((messageId) -> {
+                        Message message = new Message(chatId, forumUserRepo.getReferenceById(decodeUriComponent(dto.getEncodedSenderId())));
+                        log.info("save message");
+                        Message saved = messageRepo.save(message);
+                        log.info("save forwardedMessage");
+                        ForwardedMessage forwardedMessageSaved = forwardedMessageRepo.save( new ForwardedMessage(saved.getId(), messageRepo.getReferenceById(messageId)));
+
+                        saved.setForwardedMessage(forwardedMessageSaved);
+                        Message res = messageRepo.save(saved);
+                        log.info("save ok {}, {}", res.getId(), res.getForwardedMessage());
+                        return res;
+//                        message.setForwardedMessage(forwardedMessage);
+//                        forwardedMessage.setMessageId(message.getId());
+                    })
+                    .toList();
+            log.info("save messaged for chat {}, list: {}", chatId, messages);
+            List<Message> savedMessages = messageRepo.saveAll(messages);
+            log.info("messages saved, notify all");
+            messagingTemplate.convertAndSend("/chat/" + chatId + "/newForwardedMessagesEvent" , savedMessages);
+        }
     }
 
     @Override

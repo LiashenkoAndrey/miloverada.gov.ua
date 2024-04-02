@@ -35,7 +35,6 @@ public class MessageController {
 
     private final MessageRepo messageRepo;
     private final ForumUserRepo forumUserRepo;
-    private final ChatRepo chatRepo;
     private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
 
@@ -64,6 +63,14 @@ public class MessageController {
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
         messageService.saveNewMessage(dto);
+    }
+
+
+    @Transactional
+    @MessageMapping("/messages/forward")
+    public void forwardMessages(@Valid @Payload ForwardMessagesDto dto) {
+        log.info("forward messages: {}" ,dto);
+        messageService.forwardMessages(dto);
     }
 
 

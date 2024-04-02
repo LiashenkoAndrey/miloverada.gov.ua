@@ -27,6 +27,7 @@ public class MessageDto {
     private List<MessageImageDto> imagesDtoList = new ArrayList<>();
 
     private Long replyToMessageId;
+    private Long forwardMessageId;
 
     List<FileDto> fileDtoList;
 
