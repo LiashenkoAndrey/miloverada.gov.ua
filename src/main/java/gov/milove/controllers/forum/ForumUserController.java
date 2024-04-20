@@ -1,12 +1,15 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.ForumUserDto;
-import gov.milove.domain.dto.forum.AppUserDto;
+import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
+import gov.milove.exceptions.forum.ForumUserNotFoundException;
 import gov.milove.repositories.forum.ForumUserRepo;
+import gov.milove.services.forum.ForumUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import net.minidev.json.JSONObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,10 +23,11 @@ import static gov.milove.util.Util.decodeUriComponent;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class UserController {
+public class ForumUserController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ForumUserRepo forumUserRepo;
+    private final ForumUserService forumUserService;
 
     @MessageMapping("/user/startTyping")
     public void handleUserStartTyping(@Valid @Payload ForumUserDto dto) {
@@ -31,18 +35,39 @@ public class UserController {
         messagingTemplate.convertAndSend("/chat/"+ dto.getChatId() +"/typingUsers", dto);
     }
 
+//    @GetMapping("/forum/user/{id}/isRegisteredOnForum")
+//    public Boolean isRegisteredInForum(@RequestParam String endcodedUserId) {
+//        String decodedUserId = decodeUriComponent(endcodedUserId);
+//        forumUserRepo.existsById(decodedUserId);
+//
+//    }
+
     @GetMapping("/forum/users")
     private List<ForumUser> getAll() {
         return forumUserRepo.findAll();
     }
 
     @PostMapping("/protected/forum/user/new")
-    public String newForumUser(@Valid @RequestBody AppUserDto dto) {
+    public ForumUser newForumUser(@Valid @ModelAttribute NewForumUserDto dto, @RequestParam String encodedAppUserId) {
         log.info("new user, dto - {} ", dto);
-        ForumUser user = ForumUser.builder().build();
+        String decodedAppUserId = decodeUriComponent(encodedAppUserId);
+        ForumUser user = forumUserService.saveNewUser(dto, decodedAppUserId);
         log.info("user - {}" , user);
-        ForumUser saved = forumUserRepo.save(user);
-        return saved.getId();
+        return user;
+    }
+
+    @GetMapping("/protected/forum/user/{encodedId}")
+    public JSONObject getForumUserById(@PathVariable String encodedId) {
+        String decodedId = decodeUriComponent(encodedId);
+        JSONObject jsonObject = new JSONObject();
+        if (forumUserRepo.existsById(decodedId)) {
+            ForumUser user = forumUserRepo.findById(decodedId).orElseThrow(ForumUserNotFoundException::new);
+            jsonObject.put("forumUser", user);
+            jsonObject.put("isRegistered", true);
+        } else {
+            jsonObject.put("isRegistered", false);
+        }
+        return jsonObject;
     }
 
     @GetMapping("/protected/forum/user/isRegistered/id/{encodedUserId}")

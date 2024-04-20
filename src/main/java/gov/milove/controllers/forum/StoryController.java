@@ -1,6 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.Image;
+import gov.milove.domain.dto.forum.UserStoryDto;
 import gov.milove.domain.forum.Story;
 import gov.milove.repositories.ImageRepo;
 import gov.milove.repositories.forum.ForumUserRepo;
@@ -31,9 +32,9 @@ public class StoryController {
     }
 
     @PostMapping("/protected/forum/user/{userId}/story/new")
-    private Story newUserStory(@PathVariable String userId,
-                               @RequestParam MultipartFile image,
-                               @RequestParam String text) {
+    private UserStoryDto newUserStory(@PathVariable String userId,
+                                      @RequestParam MultipartFile image,
+                                      @RequestParam String text) {
 
         Image savedImage = imageRepo.save(new Image(image));
         Story saved = storyRepo.save(Story.builder()
@@ -41,6 +42,6 @@ public class StoryController {
                         .text(text)
                         .imageId(savedImage.getId())
                 .build());
-        return storyRepo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+        return storyRepo.findUserStoryById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
 }

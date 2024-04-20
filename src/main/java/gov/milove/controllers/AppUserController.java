@@ -1,14 +1,11 @@
 package gov.milove.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.milove.domain.AdminMetadata;
 import gov.milove.domain.AppUser;
 import gov.milove.domain.User;
 import gov.milove.domain.dto.AdminMetadataDto;
 import gov.milove.domain.dto.UserDto;
 import gov.milove.domain.dto.forum.AppUserDto;
-import gov.milove.domain.forum.ForumUser;
 import gov.milove.repositories.AppUserRepo;
 import gov.milove.repositories.mongo.AdminMetadataRepo;
 import jakarta.persistence.EntityExistsException;
@@ -21,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static gov.milove.util.Util.decodeUriComponent;
 
@@ -82,7 +80,7 @@ public class AppUserController {
         log.info("admin meta = {}", adminMetadata);
         Boolean isExist = appUserRepo.existsById(userId);
         log.info("user id - {}, isExist - {}", userId, isExist);
-        AppUser appUser =  appUserRepo.findById(encodedUserId).get();
+        AppUser appUser =  appUserRepo.findById(encodedUserId).orElse(null);
         log.info(appUser);
         return new UserDto(appUser != null ,adminMetadata, appUser);
     }
@@ -94,10 +92,11 @@ public class AppUserController {
 
     @GetMapping("/protected/appUser/{id}")
     public UserDto getUserMetaById(@PathVariable String id) {
-        AdminMetadata adminMetadata = adminMetadataRepo.findById(id).get();
+        AdminMetadata adminMetadata = adminMetadataRepo.findById(id).orElse(null);
         AppUser appUser = appUserRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         return new UserDto(adminMetadata, appUser);
     }
+
 
     @PutMapping("/protected/user/adminMeta/update")
     public AdminMetadata updateAdminMeta(@RequestBody AdminMetadata adminMetadata) {

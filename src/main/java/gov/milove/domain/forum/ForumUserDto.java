@@ -8,12 +8,9 @@ public interface ForumUserDto {
 
     Date getRegisteredOn();
 
-    String getFirstName();
+    String getNickname();
 
-    String getLastName();
-
-    String getEmail();
+    String getAboutMe();
 
     String getAvatar();
-
 }

@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 @Table(name = "app_users")
 public class AppUser extends User {
 
+    public AppUser(String id) {
+        super(id);
+    }
+
     @Builder
     public AppUser(String id, @NotBlank String firstName, @Email String email, String lastName, String avatarUrl, LocalDateTime registeredOn, String avatarContentType, String avatarBase64Image) {
         super(id, firstName, email);

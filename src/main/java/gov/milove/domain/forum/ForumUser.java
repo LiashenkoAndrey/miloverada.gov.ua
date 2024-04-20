@@ -2,14 +2,11 @@ package gov.milove.domain.forum;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gov.milove.domain.AppUser;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -29,16 +26,14 @@ public class ForumUser {
     @CreationTimestamp
     private Date registeredOn;
 
-    @NotBlank
-    private String firstName;
+    private String nickname;
 
-    @NotBlank
-    private String lastName;
-
-    @Email
-    private String email;
-
-    @NotBlank
     private String avatar;
 
+    private String aboutMe;
+
+    @OneToOne
+    @JoinColumn(name = "app_user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private AppUser appUser;
 }

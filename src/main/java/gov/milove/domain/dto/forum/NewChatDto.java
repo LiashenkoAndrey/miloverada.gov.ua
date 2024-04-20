@@ -15,7 +15,6 @@ public class NewChatDto {
     @NotNull
     private String description;
 
-    @NotNull
     private String picture;
 
     @NotNull

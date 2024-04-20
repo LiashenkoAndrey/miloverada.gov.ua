@@ -26,10 +26,10 @@ public class TopicController {
     }
 
     @PostMapping("/protected/forum/topic/new")
-    private Long newTopic(@RequestBody NewTopicDto dto) {
+    private Topic newTopic(@RequestBody NewTopicDto dto) {
         log.info("new topic: " + dto);
         Topic saved = topicRepo.save(NewTopicDto.toDomain(dto));
-        return saved.getId();
+        return saved;
     }
 
     @GetMapping("/forum/topic/id/{topicId}")

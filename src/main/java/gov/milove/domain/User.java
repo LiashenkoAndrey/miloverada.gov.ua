@@ -17,6 +17,9 @@ import lombok.*;
 @NoArgsConstructor
 public abstract class User {
 
+    public User(String id) {
+        this.id = id;
+    }
 
     @Id
     private String id;
