@@ -13,10 +13,11 @@ create table forum_users
     id            text      not null
         primary key,
     avatar        text,
-    first_name    text      not null,
-    last_name     text      not null,
-    email         text      not null,
-    registered_on timestamp not null
+    registered_on timestamp not null,
+    nickname      text,
+    app_user_id   text
+        references public.app_users,
+    about_me      text
 );
 
 alter table forum_users
@@ -229,6 +230,34 @@ create table replied_message
 );
 
 alter table replied_message
+    owner to postgres;
+
+create table post_likes
+(
+    id      serial
+        primary key,
+    post_id integer
+        references post,
+    user_id text
+        references forum_users
+);
+
+alter table post_likes
+    owner to postgres;
+
+create table post_comments
+(
+    id         serial
+        primary key,
+    text       text,
+    author_id  text
+        references forum_users,
+    created_on timestamp,
+    post_id    integer
+        references post_comments
+);
+
+alter table post_comments
     owner to postgres;
 
 create function get_chat_metadata(chat_id_arg integer, user_id_arg text)
