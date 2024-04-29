@@ -3,6 +3,7 @@ package gov.milove.domain.dto.forum;
 import gov.milove.domain.forum.ForumUserDto;
 
 import java.util.Date;
+import java.util.List;
 
 public interface PostDto {
 
@@ -19,4 +20,8 @@ public interface PostDto {
     Long getLikesAmount();
 
     Boolean getIsUserLikedPost();
+
+    List<PostCommentDto> getComments();
+
+    Long getCommentsTotalAmount();
 }

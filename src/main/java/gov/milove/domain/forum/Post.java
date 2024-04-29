@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,6 +33,10 @@ public class Post {
     private String text;
 
     private String imageId;
+
+    @OneToMany
+    @JoinColumn(name = "post_id")
+    private List<PostComment> comments;
 
     @CreationTimestamp
     private Date createdOn;

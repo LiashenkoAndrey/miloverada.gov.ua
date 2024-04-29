@@ -12,8 +12,18 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 
     @Query("select p.id as id, p.text as text, p.imageId as imageId, p.createdOn as createdOn, p.author as author, (select count(*) from PostLike pl where pl.post.id = p.id) as likesAmount from Post p order by p.createdOn desc ")
     List<PostDto> findPostWithLikesInfo();
+//    c.id as id, c.createdOn as createdOn, c.author as author, c.text as text
 
-
-    @Query("select p.id as id, p.text as text, p.imageId as imageId, p.createdOn as createdOn, p.author as author, (select count(*) from PostLike pl where pl.post.id = p.id) as likesAmount, (select count(*) > 0 from PostLike pl where pl.user.id = :forumUserId and pl.post.id = p.id) as isUserLikedPost from Post p order by p.createdOn desc ")
+    @Query(""" 
+            select p.id as id, 
+                p.text as text, 
+                p.imageId as imageId, 
+                p.createdOn as createdOn, 
+                p.author as author, 
+                (select count(*) from PostLike pl where pl.post.id = p.id) as likesAmount, 
+                (select count(*) > 0 from PostLike pl where pl.user.id = :forumUserId and pl.post.id = p.id) as isUserLikedPost,
+                (select count(*) from PostComment c1 where c1.id = p.id) as commentsTotalAmount
+             from Post p inner join p.comments order by p.createdOn desc 
+            """)
     List<PostDto> findPostWithLikesAndUserLikeInfo(@Param("forumUserId") String forumUserId);
 }
