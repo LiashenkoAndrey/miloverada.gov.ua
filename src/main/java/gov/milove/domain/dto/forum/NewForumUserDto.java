@@ -15,6 +15,12 @@ public class NewForumUserDto {
       this.nickname = nickname;
    }
 
+   public NewForumUserDto(MultipartFile avatarImageFile, String aboutMe, String nickname) {
+      this.avatarImageFile = avatarImageFile;
+      this.aboutMe = aboutMe;
+      this.nickname = nickname;
+   }
+
    MultipartFile avatarImageFile;
 
    String googleAvatar;
@@ -22,4 +28,6 @@ public class NewForumUserDto {
    String aboutMe;
 
    String nickname;
+
+
 }

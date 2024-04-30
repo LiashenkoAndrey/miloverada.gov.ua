@@ -1,3 +1,6 @@
+create schema forum;
+
+
 create sequence message_images_id_seq
     as integer;
 
@@ -188,7 +191,7 @@ alter table post
 
 create table user_chat
 (
-    id              integer default nextval('forum.chat_visit_id_seq'::regclass) not null
+    id              serial not null
         constraint chat_visit_pkey
             primary key,
     chat_id         integer

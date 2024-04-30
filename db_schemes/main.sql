@@ -1,6 +1,6 @@
 create table public.document_group
 (
-    id                integer default nextval('sub_group_id_seq'::regclass) not null
+    id                serial not null
         constraint sub_group_pkey
             primary key,
     name              text                                                  not null,
@@ -88,7 +88,7 @@ alter table public.administration_employee
 
 create table public.contact_employee
 (
-    id           integer default nextval('contact_employee_id_seq'::regclass) not null
+    id           serial not null
         primary key,
     position     text                                                         not null,
     first_name   text                                                         not null,
@@ -113,7 +113,7 @@ alter table public.about
 
 create table public.news_type
 (
-    id                integer default nextval('typeofnews_id_seq'::regclass) not null
+    id                serial not null
         constraint typeofnews_pkey
             primary key,
     title             text                                                   not null,
@@ -179,18 +179,8 @@ create table public.text_banner
 alter table public.text_banner
     owner to postgres;
 
-create table public.topic_chats
-(
-    id       serial
-        primary key,
-    topic_id integer
-        references forum.topic,
-    chats_id integer
-        references forum.chat
-);
 
-alter table public.topic_chats
-    owner to postgres;
+
 
 create table public.institution_document_group
 (
@@ -261,4 +251,17 @@ create table public.news_commenter
 
 alter table public.news_commenter
     owner to postgres;
+
+
+create table public.topic_chats
+(
+    topic_id bigint not null,
+    chats_id bigint not null
+        constraint uk_nppkpksm2wjf19hv9fdi07y6
+            unique
+);
+
+alter table public.topic_chats
+    owner to postgres;
+
 
