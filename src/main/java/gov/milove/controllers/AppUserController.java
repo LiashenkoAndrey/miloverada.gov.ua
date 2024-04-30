@@ -92,6 +92,7 @@ public class AppUserController {
 
     @GetMapping("/protected/appUser/{id}")
     public UserDto getUserMetaById(@PathVariable String id) {
+        log.info("user id {}", id);
         AdminMetadata adminMetadata = adminMetadataRepo.findById(id).orElse(null);
         AppUser appUser = appUserRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         return new UserDto(adminMetadata, appUser);

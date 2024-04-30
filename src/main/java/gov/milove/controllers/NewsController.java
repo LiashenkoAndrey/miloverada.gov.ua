@@ -98,7 +98,7 @@ public class NewsController {
     public ResponseEntity<?> deleteNewsById(@PathVariable Long id) {
         if (id <= 0) throw new IllegalParameterException("Id must be higher than zero");
         newsService.deleteById(id);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(id);
     }
 
     @DeleteMapping("/protected/news/image/{id}/delete")
