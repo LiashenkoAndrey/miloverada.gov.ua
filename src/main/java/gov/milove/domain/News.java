@@ -38,6 +38,8 @@ public class News {
     @NotNull
     private LocalDateTime dateOfPublication;
 
+    private String image_id;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "newsId")
     private List<NewsImage> images = new ArrayList<>();
