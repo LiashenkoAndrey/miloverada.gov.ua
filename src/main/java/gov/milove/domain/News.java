@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,6 +48,9 @@ public class News {
     private LocalDateTime last_updated;
 
     private Long views = 0L;
+
+    @Formula("(select count(*) from news_comment c where c.news_id = id)")
+    private Long commentsAmount;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private NewsType newsType;

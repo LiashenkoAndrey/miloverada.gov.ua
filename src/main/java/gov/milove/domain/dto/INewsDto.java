@@ -19,6 +19,8 @@ public interface INewsDto {
 
     String getImage_id();
 
+    Long getCommentsAmount();
+
     List<NewsImage> getImages();
 
     Long getId();

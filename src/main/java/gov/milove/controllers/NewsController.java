@@ -43,7 +43,9 @@ public class NewsController {
     @GetMapping("/news/all")
     public List<INewsDto> newsAll(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                   @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
-        return newsRepository.findDistinctBy(PageRequest.of(page, size).withSort(Sort.Direction.DESC, "dateOfPublication" ));
+
+        return newsRepository.findDistinctBy(PageRequest.of(page, size)
+                .withSort(Sort.Direction.DESC, "dateOfPublication" ));
 
     }
 
