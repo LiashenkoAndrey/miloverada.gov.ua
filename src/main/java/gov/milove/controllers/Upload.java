@@ -40,6 +40,7 @@ public class Upload {
 
     @GetMapping("/download/image/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable String id) {
+        log.info("image id {}", id);
         MongoNewsImage mongoNewsImage = newsImagesMongoRepo.findById(id).orElseThrow(ImageNotFoundException::new);
         MediaType mediaType;
         if (mongoNewsImage.getContentType() == null) {
