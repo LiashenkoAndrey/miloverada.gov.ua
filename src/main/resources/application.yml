@@ -1,5 +1,4 @@
 
-
 spring:
   data:
     mongodb:
@@ -19,8 +18,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: komunist
-    url: jdbc:postgresql://localhost:5432/postgres
+    password: admin
+    url: jdbc:postgresql://16.171.12.186:5432/milove
 
   web:
     resources:
@@ -30,7 +29,11 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
-
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: false
 
 okta:
   oauth2:

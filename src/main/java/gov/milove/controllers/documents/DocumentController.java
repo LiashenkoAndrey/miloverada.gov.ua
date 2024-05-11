@@ -1,8 +1,10 @@
 package gov.milove.controllers.documents;
 
 import gov.milove.domain.Document;
+import gov.milove.domain.MongoDocument;
 import gov.milove.domain.dto.DocumentWithGroupDto;
 import gov.milove.repositories.document.DocumentRepository;
+import gov.milove.repositories.mongo.MongoDocumentRepo;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class DocumentController {
 
     private final DocumentRepository documentRepository;
     private final DocumentService documentService;
+    private final MongoDocumentRepo mongoDocumentRepo;
 
     @PutMapping("/protected/document/{id}/update")
     public Long updateDocumentName(@PathVariable Long id,
@@ -31,6 +34,17 @@ public class DocumentController {
         document.setTitle(name);
         documentRepository.save(document);
         return id;
+    }
+
+    @GetMapping("/deleteUnused")
+    public void delete() {
+        log.info("Start search");
+        List<String> documents = documentRepository.findAll().stream().map(Document::getMongoId).toList();
+        log.info("50%");
+        List<MongoDocument> mongoDocuments = mongoDocumentRepo.findAll().stream()
+                .filter(mongoDocument -> !documents.contains(mongoDocument.getId())).toList();
+        log.info("Not used docs! {}", mongoDocuments);
+
     }
 
     @DeleteMapping("/protected/document/{id}/delete")
