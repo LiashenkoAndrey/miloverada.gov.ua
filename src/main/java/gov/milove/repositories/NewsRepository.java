@@ -28,7 +28,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 //                    FROM News n order by n.dateOfPublication desc
 //                    """
 //    )
-    List<INewsDto> findDistinctBy(Pageable pageable);
+    Page<INewsDto> findDistinctBy(Pageable pageable);
 
     @Query(
             """

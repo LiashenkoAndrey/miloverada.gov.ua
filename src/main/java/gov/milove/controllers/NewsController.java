@@ -2,6 +2,7 @@ package gov.milove.controllers;
 
 import gov.milove.domain.News;
 import gov.milove.domain.NewsImage;
+import gov.milove.domain.NewsPageDto;
 import gov.milove.domain.NewsType;
 import gov.milove.domain.dto.INewsDto;
 import gov.milove.domain.dto.NewsDtoWithImageAndType;
@@ -15,6 +16,7 @@ import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,7 +47,7 @@ public class NewsController {
                                   @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer size) {
 
         return newsRepository.findDistinctBy(PageRequest.of(page, size)
-                .withSort(Sort.Direction.DESC, "dateOfPublication" ));
+                .withSort(Sort.Direction.DESC, "dateOfPublication" )).toList();
 
     }
 
@@ -168,8 +170,12 @@ public class NewsController {
     }
 
     @GetMapping("/news/latest")
-    public List<INewsDto> getLatest(@RequestParam(defaultValue = "6", required = false) @Min(1) Integer pageSize) {
-        return newsRepository.findDistinctBy(PageRequest.ofSize(pageSize).withSort(Sort.Direction.DESC, "dateOfPublication" ));
+    public NewsPageDto getLatest(@RequestParam(defaultValue = "6", required = false) @Min(1) Integer pageSize,
+                                 @RequestParam(defaultValue = "0", required = false) Integer pageNumber) {
+        Page<INewsDto> newsDtos = newsRepository.findDistinctBy(PageRequest.ofSize(pageSize).withPage(pageNumber).withSort(Sort.Direction.DESC, "dateOfPublication" ));
+        log.info(newsDtos);
+        log.info(newsDtos.getTotalElements());
+        return new NewsPageDto(newsDtos);
     }
 
     @PostMapping("/news/update")

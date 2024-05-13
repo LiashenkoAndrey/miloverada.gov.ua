@@ -140,19 +140,6 @@ create table public.news
 alter table public.news
     owner to postgres;
 
-create table public.banner
-(
-    id           serial
-        primary key,
-    main_text    text not null,
-    description  text not null,
-    created_on   text,
-    last_updated text
-);
-
-alter table public.banner
-    owner to postgres;
-
 create table public.link_banner
 (
     id           serial
