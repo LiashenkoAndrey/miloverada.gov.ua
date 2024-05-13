@@ -1,8 +1,10 @@
 package gov.milove.controllers;
 
 import gov.milove.exceptions.ContactEmployeeException;
+import gov.milove.repositories.ContactEmployeeRepository;
 import gov.milove.services.ContactEmployeeService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,13 +18,12 @@ import static gov.milove.controllers.util.ControllerUtil.ok;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ContactEmployee {
 
     private final ContactEmployeeService service;
+    private final ContactEmployeeRepository repository;
 
-    public ContactEmployee(ContactEmployeeService service) {
-        this.service = service;
-    }
 
     @GetMapping("/contacts")
     public List<gov.milove.domain.ContactEmployee> getAll() {
@@ -30,20 +31,14 @@ public class ContactEmployee {
     }
 
 
-    @PostMapping("/contact/new")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> create(@ModelAttribute("employee") gov.milove.domain.ContactEmployee employee ){
-
-        try {
-            service.save(employee);
-            return ok("Працівник успішно доданий");
-        } catch (Exception ex) {
-            return error("Виникли проблеми з додаванням");
-        }
+    @PostMapping("/protected/contact/new")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public gov.milove.domain.ContactEmployee create(@RequestBody gov.milove.domain.ContactEmployee employee ){
+        repository.save(employee);
+        return employee;
     }
 
     @PostMapping("/contact/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> update (
             @RequestParam("id") Long id,
             @ModelAttribute("employee") gov.milove.domain.ContactEmployee updatedEmployee){
@@ -61,14 +56,9 @@ public class ContactEmployee {
         }
     }
 
-    @GetMapping("/contact/delete")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> delete(@RequestParam("id") Long employee_id) {
-        try {
-            service.deleteById(employee_id);
-            return ok("Працівник успішно видалений");
-        } catch (ContactEmployeeException ex) {
-            return error("Виникли проблеми з видаленням");
-        }
+    @DeleteMapping("/protected/contact/{id}/delete")
+    public Long delete(@PathVariable Long id) {
+        repository.deleteById(id);
+        return id;
     }
 }

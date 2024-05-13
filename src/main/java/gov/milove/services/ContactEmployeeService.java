@@ -27,14 +27,6 @@ public class ContactEmployeeService {
     }
 
 
-    public void deleteById(Long employee_id) throws ContactEmployeeException {
-        try {
-            repository.deleteById(employee_id);
-        } catch (Exception ex) {
-            throw new ContactEmployeeException(ex.getMessage());
-        }
-    }
-
     public Optional<ContactEmployee> findById(Long id) throws ContactEmployeeException {
         try {
             return repository.findById(id);
