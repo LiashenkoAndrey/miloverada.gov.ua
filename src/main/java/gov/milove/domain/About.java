@@ -1,23 +1,23 @@
 package gov.milove.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity
+@Document(collection = "about")
 public class About {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    private String main_text;
+    @NotNull
+    private String mainText;
 
-    private LocalDateTime last_updated;
-
+    @LastModifiedBy
+    private LocalDateTime lastUpdated;
 }
