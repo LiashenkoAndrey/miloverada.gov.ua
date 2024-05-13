@@ -6,4 +6,6 @@ public interface DocumentDto {
     String getTitle();
 
     String getName();
+
+    DocGroupWithOnlyId getDocumentGroup();
 }

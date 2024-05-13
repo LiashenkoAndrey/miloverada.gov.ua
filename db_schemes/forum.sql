@@ -19,7 +19,7 @@ create table forum_users
     registered_on timestamp not null,
     nickname      text,
     app_user_id   text
-        references public.app_users,
+        references public_old.app_users,
     about_me      text
 );
 
