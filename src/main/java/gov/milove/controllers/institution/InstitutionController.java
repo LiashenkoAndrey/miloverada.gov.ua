@@ -35,17 +35,4 @@ public class InstitutionController {
     }
 
 
-//    @PostMapping("/update")
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    public ResponseEntity<String> update(@PathVariable("title") Long id, @RequestParam("title") String new_title) {
-//        try {
-//            Institution institution = inst_repo.findById(id)
-//                    .orElseThrow(EntityNotFoundException::new);
-//            inst_repo.updateTitleById(new_title, institution.getId());
-//            return new ResponseEntity<>("Оновлення успішне", HttpStatus.OK);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return new ResponseEntity<>("Виникли проблеми з оновленням", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 }

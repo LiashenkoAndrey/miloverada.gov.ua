@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-endpoint")
-                .setAllowedOrigins("http://localhost:3000").withSockJS();
+                .setAllowedOrigins("http://localhost:3000", "https://miloverada.gov.ua").withSockJS();
     }
 
     @Bean

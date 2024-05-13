@@ -54,6 +54,20 @@ public class NewsController {
         return newsTypeRepo.save(newsType);
     }
 
+
+
+//    @GetMapping("/documents/deleteUnused")
+//    public void delete() {
+//        log.info("Start search");
+//        List<String> documents = newsRepository.findAll().stream().map(News::getImage_id).toList();
+//        log.info("50%");
+//        List<MongoDocument> mongoDocuments = mongoDocumentRepo.findAll().stream()
+//                .filter(mongoDocument -> !documents.contains(mongoDocument.getId())).toList();
+//        log.info("Not used docs! size = {} {}", mongoDocuments.size(), mongoDocuments);
+//        mongoDocumentRepo.deleteAll(mongoDocuments);
+//        log.info("End search");
+//    }
+
     @PostMapping("/protected/news/new")
     public ResponseEntity<Long> newNews(@RequestParam @NotBlank @Size(max = 300) String title,
                                           @RequestParam @NotBlank String text,
