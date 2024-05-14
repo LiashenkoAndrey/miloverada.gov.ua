@@ -19,19 +19,6 @@ public class ControllerUtil {
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public static List<List<News>> packageNews(Page<News> pages, int amountOfNews) {
-        List<List<News>> dividedPages = new ArrayList<>();
-        Iterator<News> iterator = pages.iterator();
-        for (int i = 0; i < amountOfNews/3; i++) {
-            List<News> newsList = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                if (iterator.hasNext()) {
-                    newsList.add(iterator.next());
-                }
-            }
-            dividedPages.add(newsList);
-        }
-        return dividedPages;
-    }
+
 
 }
