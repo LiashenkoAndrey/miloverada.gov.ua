@@ -1,7 +1,7 @@
 package gov.milove.services.impl;
 
 import gov.milove.domain.DocumentGroup;
-import gov.milove.repositories.document.DocumentGroupRepository;
+import gov.milove.repositories.jpa.document.DocumentGroupRepo;
 import gov.milove.services.DocumentGroupService;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @Log4j2
 public class DocumentGroupServiceImpl implements DocumentGroupService {
 
-    private final DocumentGroupRepository documentGroupRepository;
+    private final DocumentGroupRepo documentGroupRepo;
     private final DocumentService documentService;
 
     @Override
     public void deleteById(Long id) {
        log.info("DELETE DOCUMENT GROUP - {}", id);
 
-        DocumentGroup documentGroup = documentGroupRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DocumentGroup documentGroup = documentGroupRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         deleteGroup(documentGroup);
     }
 
@@ -35,6 +35,6 @@ public class DocumentGroupServiceImpl implements DocumentGroupService {
             }
         }
 
-        documentGroupRepository.delete(documentGroup);
+        documentGroupRepo.delete(documentGroup);
     }
 }

@@ -1,7 +1,7 @@
 package gov.milove.controllers.documents;
 
 import gov.milove.domain.Document;
-import gov.milove.repositories.document.DocumentRepository;
+import gov.milove.repositories.jpa.document.DocumentRepo;
 import gov.milove.services.DocumentService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class DocumentControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private DocumentRepository documentRepository;
+    private DocumentRepo documentRepo;
 
     @MockBean
     private DocumentService documentService;
@@ -37,17 +37,17 @@ class DocumentControllerTest {
     @Test
     void updateDocumentName() throws Exception {
         Document document = new Document(5L, "title", "name");
-        when(documentRepository.findById(5L)).thenReturn(Optional.of(document));
+        when(documentRepo.findById(5L)).thenReturn(Optional.of(document));
         mockMvc.perform(put("/api/protected/document/5/update")
                         .param("name", "newName"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("5"));
-        verify(documentRepository, times(1)).save(any(Document.class));
+        verify(documentRepo, times(1)).save(any(Document.class));
     }
 
     @Test
     void deleteDocument() throws Exception {
-        when(documentRepository.findById(anyLong())).thenReturn(Optional.of(new Document(5L , "d", "dd")));
+        when(documentRepo.findById(anyLong())).thenReturn(Optional.of(new Document(5L , "d", "dd")));
         mockMvc.perform(delete("/api/protected/document/5/delete"))
                 .andExpect(status().isOk());
         verify(documentService, times(1)).delete(any(Document.class));

@@ -3,7 +3,7 @@ package gov.milove.services;
 
 import gov.milove.domain.Deputy;
 import gov.milove.exceptions.DeputyServiceException;
-import gov.milove.repositories.DeputyRepository;
+import gov.milove.repositories.jpa.DeputyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

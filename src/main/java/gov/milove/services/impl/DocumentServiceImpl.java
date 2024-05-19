@@ -4,8 +4,8 @@ import gov.milove.domain.Document;
 import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.MongoDocument;
 import gov.milove.exceptions.ServiceException;
-import gov.milove.repositories.document.DocumentGroupRepository;
-import gov.milove.repositories.document.DocumentRepository;
+import gov.milove.repositories.jpa.document.DocumentGroupRepo;
+import gov.milove.repositories.jpa.document.DocumentRepo;
 import gov.milove.repositories.mongo.MongoDocumentRepo;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,13 +26,13 @@ import java.util.Optional;
 public class DocumentServiceImpl implements DocumentService {
 
 
-    private final DocumentRepository documentRepository;
+    private final DocumentRepo documentRepo;
     private final MongoDocumentRepo mongoDocumentRepo;
-    private final DocumentGroupRepository groupRepository;
+    private final DocumentGroupRepo groupRepository;
 
     @Override
     public Document saveDocument(Long groupId, MultipartFile file, String title) {
-        Optional<Document> documentOpt = documentRepository.findByHashCode(file.hashCode());
+        Optional<Document> documentOpt = documentRepo.findByHashCode(file.hashCode());
         log.info("save or get document with filename - {}", file.getOriginalFilename());
         if (documentOpt.isPresent()) {
             log.info("document already exists");
@@ -54,11 +54,11 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void delete(Document document) {
-        if (!documentRepository.documentUsedMoreThenOneTime(document.getName())) {
+        if (!documentRepo.documentUsedMoreThenOneTime(document.getName())) {
             log.info("delete document = {}", document);
             if (document.getMongoId() != null) {
                 log.info("mongo id not null - {}", document.getMongoId());
-                documentRepository.delete(document);
+                documentRepo.delete(document);
                 mongoDocumentRepo.deleteById(document.getMongoId());
                 return;
             }
@@ -92,7 +92,7 @@ public class DocumentServiceImpl implements DocumentService {
                     .title(title)
                     .hashCode(Arrays.hashCode(bytes))
                     .build();
-            Document savedDoc = documentRepository.save(document);
+            Document savedDoc = documentRepo.save(document);
             log.info("a document is saved - {}", document);
             return savedDoc;
         } catch (IOException e) {

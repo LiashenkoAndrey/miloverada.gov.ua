@@ -1,19 +1,23 @@
-
 spring:
   data:
     mongodb:
       database: test
       uri: mongodb://eu-life-rootinfo:uSVtE7VF7VGbQv5@ac-u9efhpg-shard-00-00.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-01.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-02.jhfxdna.mongodb.net:27017/?ssl=true&replicaSet=atlas-14ato7-shard-0&authSource=admin&retryWrites=true&w=majority
+      repositories:
+        type: auto
+    jpa:
+
+      repositories:
+        enabled: true
   jpa:
     properties:
       hibernate:
 
     show-sql: true
+    open-in-view: false
 
   mvc:
-
     throw-exception-if-no-handler-found: true
-
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -44,14 +48,6 @@ server:
   port: 6060
   tomcat:
     max-http-form-post-size: 50000000
-#
-#  error:
-#    whitelabel:
-#      enabled: true
-#    include-message: always
 logging:
-  level:
-    org:
-      hibernate:
-        sql : info
-    web: info
+  file:
+    path: logs

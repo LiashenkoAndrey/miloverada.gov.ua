@@ -3,12 +3,11 @@ package gov.milove.controllers.adminNotification;
 import gov.milove.domain.adminNotification.Notification;
 import gov.milove.domain.adminNotification.NotificationDtoWithViews;
 import gov.milove.domain.adminNotification.NotificationView;
-import gov.milove.repositories.admin.NotificationRepo;
-import gov.milove.repositories.admin.NotificationViewRepo;
+import gov.milove.repositories.jpa.admin.NotificationRepo;
+import gov.milove.repositories.jpa.admin.NotificationViewRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

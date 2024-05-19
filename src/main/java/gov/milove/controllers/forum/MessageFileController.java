@@ -1,35 +1,25 @@
 package gov.milove.controllers.forum;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
-import gov.milove.domain.forum.File;
-import gov.milove.domain.forum.MessageFile;
 import gov.milove.domain.forum.MongoFile;
 import gov.milove.exceptions.FileNotFoundException;
-import gov.milove.repositories.forum.MessageFileRepo;
 import gov.milove.repositories.mongo.MongoFileRepo;
 import gov.milove.services.forum.MessageFileService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.minidev.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 
 import static gov.milove.util.Util.createContentDispositionHeaderFromFileName;
 

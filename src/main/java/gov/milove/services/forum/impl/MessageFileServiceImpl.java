@@ -3,7 +3,7 @@ package gov.milove.services.forum.impl;
 import gov.milove.domain.dto.forum.FileSavedDto;
 import gov.milove.domain.forum.File;
 import gov.milove.domain.forum.MessageFile;
-import gov.milove.repositories.forum.MessageFileRepo;
+import gov.milove.repositories.jpa.forum.MessageFileRepo;
 import gov.milove.services.forum.FileService;
 import gov.milove.services.forum.MessageFileService;
 import jakarta.persistence.EntityNotFoundException;

@@ -5,7 +5,7 @@ import gov.milove.domain.DocumentGroup;
 import gov.milove.domain.dto.DocumentGroupWithGroupsDto;
 import gov.milove.domain.dto.DocumentGroupWithGroupsDtoAndDocumentsDto;
 import gov.milove.exceptions.DocumentGroupNotFoundException;
-import gov.milove.repositories.document.DocumentGroupRepository;
+import gov.milove.repositories.jpa.document.DocumentGroupRepo;
 import gov.milove.services.DocumentGroupService;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,14 +25,14 @@ import java.util.List;
 @Validated
 public class DocumentGroupController {
 
-    private final DocumentGroupRepository documentGroupRepository;
+    private final DocumentGroupRepo documentGroupRepo;
     private final DocumentGroupService documentGroupService;
     private final DocumentService documentService;
 
 
     @GetMapping("/documentGroup/all")
     public List<DocumentGroupWithGroupsDto> findAll() {
-        return documentGroupRepository.findDistinctByDocumentGroupIdOrderByCreatedOn(null);
+        return documentGroupRepo.findDistinctByDocumentGroupIdOrderByCreatedOn(null);
     }
 
     @PostMapping("/protected/documentGroup/new")
@@ -40,19 +40,19 @@ public class DocumentGroupController {
                                                                        @NotBlank @RequestParam String name) {
 
         DocumentGroup documentGroup = DocumentGroup.builder()
-                .documentGroup(groupId == null ? null : documentGroupRepository.getReferenceById(groupId))
+                .documentGroup(groupId == null ? null : documentGroupRepo.getReferenceById(groupId))
                 .name(name)
                 .build();
-        DocumentGroup saved = documentGroupRepository.save(documentGroup);
-        return documentGroupRepository.findDistinctById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+        DocumentGroup saved = documentGroupRepo.save(documentGroup);
+        return documentGroupRepo.findDistinctById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
     @PutMapping("/protected/documentGroup/{id}/update")
     public Long editSubGroup(@PathVariable Long id,
                              @NotBlank @RequestParam String name) {
-        DocumentGroup group = documentGroupRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DocumentGroup group = documentGroupRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         group.setName(name);
-        documentGroupRepository.save(group);
+        documentGroupRepo.save(group);
         return group.getId();
     }
 
@@ -73,7 +73,7 @@ public class DocumentGroupController {
 
     @GetMapping("/documentGroup/id/{id}")
     public DocumentGroupWithGroupsDtoAndDocumentsDto findById(@PathVariable Long id) {
-        return documentGroupRepository.findDistinctById(id)
+        return documentGroupRepo.findDistinctById(id)
                 .orElseThrow(DocumentGroupNotFoundException::new);
     }
 }

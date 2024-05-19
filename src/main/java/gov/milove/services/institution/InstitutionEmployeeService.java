@@ -2,11 +2,8 @@ package gov.milove.services.institution;
 
 import gov.milove.domain.institution.InstitutionEmployee;
 import gov.milove.exceptions.EmployeeServiceException;
-import gov.milove.repositories.institution.InstitutionEmployeeRepository;
+import gov.milove.repositories.jpa.InstitutionEmployeeRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InstitutionEmployeeService {

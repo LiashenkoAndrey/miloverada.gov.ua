@@ -2,19 +2,14 @@ package gov.milove.services.impl;
 
 import gov.milove.domain.News;
 import gov.milove.domain.NewsImage;
-import gov.milove.repositories.NewsImageRepo;
-import gov.milove.repositories.NewsRepository;
-import gov.milove.services.NewsImagesService;
-import gov.milove.services.NewsImagesServiceImpl;
-import gov.milove.services.NewsService;
+import gov.milove.repositories.jpa.NewsImageRepo;
+import gov.milove.repositories.jpa.NewsRepository;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -58,5 +53,5 @@ class NewsServiceImplTest {
         verify(newsImagesService).deleteFromMongoIfNotUsed(id);
         verify(newsImageRepo).deleteByMongoImageId(id);
     }
-  
+
 }

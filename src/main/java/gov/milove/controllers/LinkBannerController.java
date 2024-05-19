@@ -1,15 +1,12 @@
 package gov.milove.controllers;
 
 import gov.milove.domain.LinkBanner;
-import gov.milove.repositories.LinkBannerRepository;
+import gov.milove.repositories.jpa.LinkBannerRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
