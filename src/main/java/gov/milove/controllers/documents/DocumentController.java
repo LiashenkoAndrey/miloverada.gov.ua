@@ -1,9 +1,8 @@
 package gov.milove.controllers.documents;
 
 import gov.milove.domain.Document;
-import gov.milove.domain.MongoDocument;
 import gov.milove.domain.dto.DocumentWithGroupDto;
-import gov.milove.repositories.document.DocumentRepository;
+import gov.milove.repositories.jpa.document.DocumentRepo;
 import gov.milove.repositories.mongo.MongoDocumentRepo;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +21,7 @@ import java.util.List;
 @Validated
 public class DocumentController {
 
-    private final DocumentRepository documentRepository;
+    private final DocumentRepo documentRepo;
     private final DocumentService documentService;
     private final MongoDocumentRepo mongoDocumentRepo;
 
@@ -30,9 +29,9 @@ public class DocumentController {
     public Long updateDocumentName(@PathVariable Long id,
                              @NotBlank @RequestParam String name) {
         log.info("update doc = {}, name - {}", id, name);
-        Document document = documentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Document document = documentRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         document.setTitle(name);
-        documentRepository.save(document);
+        documentRepo.save(document);
         return id;
     }
 //
@@ -50,14 +49,14 @@ public class DocumentController {
 
     @DeleteMapping("/protected/document/{id}/delete")
     public Document deleteDocument(@PathVariable Long id) {
-        Document document = documentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Document document = documentRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         documentService.delete(document);
         return document;
     }
 
     @GetMapping("/documents/search")
     public List<DocumentWithGroupDto> searchDocs(@RequestParam(name = "docName") String encodedString)  {
-        return documentRepository.searchDistinctByNameContainingIgnoreCaseOrTitleContainingIgnoreCase(encodedString, encodedString);
+        return documentRepo.searchDistinctByNameContainingIgnoreCaseOrTitleContainingIgnoreCase(encodedString, encodedString);
     }
 
 }

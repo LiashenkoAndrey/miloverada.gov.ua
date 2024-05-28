@@ -3,13 +3,12 @@ package gov.milove.controllers.forum;
 
 import gov.milove.domain.Image;
 import gov.milove.domain.dto.forum.PostDto;
-import gov.milove.domain.forum.ForumUser;
 import gov.milove.domain.forum.Post;
 import gov.milove.domain.forum.PostLike;
-import gov.milove.repositories.ImageRepo;
-import gov.milove.repositories.forum.ForumUserRepo;
-import gov.milove.repositories.forum.PostLikeRepo;
-import gov.milove.repositories.forum.PostRepo;
+import gov.milove.repositories.mongo.ImageRepo;
+import gov.milove.repositories.jpa.forum.ForumUserRepo;
+import gov.milove.repositories.jpa.forum.PostLikeRepo;
+import gov.milove.repositories.jpa.forum.PostRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

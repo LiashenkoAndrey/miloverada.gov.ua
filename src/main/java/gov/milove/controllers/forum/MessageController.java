@@ -2,16 +2,13 @@ package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.*;
 import gov.milove.domain.forum.Message;
-import gov.milove.repositories.forum.ChatRepo;
-import gov.milove.repositories.forum.ForumUserRepo;
-import gov.milove.repositories.forum.MessageRepo;
+import gov.milove.repositories.jpa.forum.ForumUserRepo;
+import gov.milove.repositories.jpa.forum.MessageRepo;
 import gov.milove.services.forum.MessageService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.minidev.json.JSONObject;
-import org.bson.json.JsonObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.messaging.handler.annotation.MessageMapping;

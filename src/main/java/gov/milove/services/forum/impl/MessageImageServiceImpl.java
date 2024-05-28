@@ -4,7 +4,7 @@ import gov.milove.domain.dto.forum.MessageImageDto;
 import gov.milove.domain.forum.MessageImage;
 import gov.milove.domain.forum.MongoMessageImage;
 import gov.milove.exceptions.ImageNotFoundException;
-import gov.milove.repositories.forum.MessageRepo;
+import gov.milove.repositories.jpa.forum.MessageRepo;
 import gov.milove.repositories.mongo.MessageImageRepo;
 import gov.milove.services.forum.MessageImageService;
 import lombok.RequiredArgsConstructor;

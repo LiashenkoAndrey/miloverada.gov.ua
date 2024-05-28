@@ -4,14 +4,12 @@ import gov.milove.domain.AppUser;
 import gov.milove.domain.Image;
 import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
-import gov.milove.repositories.ImageRepo;
-import gov.milove.services.forum.ForumUserService;
+import gov.milove.repositories.mongo.ImageRepo;
 import gov.milove.services.forum.impl.ForumUserServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,8 +27,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @WebAppConfiguration

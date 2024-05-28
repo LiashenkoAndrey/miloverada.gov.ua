@@ -29,17 +29,4 @@ public class BannerDto {
     @NotNull
     private String mainText;
 
-    public void mapToEntity(Banner banner) {
-        Mapper mapper = DozerBeanMapperBuilder.create()
-                .withMappingBuilder( new BeanMappingBuilder() {
-                    protected void configure() {
-                        mapping(
-                                BannerDto.class,
-                                Banner.class,
-                                TypeMappingOptions.mapNull(false)
-                        );
-                    }
-                }).build();
-        mapper.map(this, banner);
-    }
 }

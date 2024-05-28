@@ -2,8 +2,8 @@ package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.PostCommentDto;
 import gov.milove.domain.forum.PostComment;
-import gov.milove.repositories.forum.ForumUserRepo;
-import gov.milove.repositories.forum.PostCommentRepo;
+import gov.milove.repositories.jpa.forum.ForumUserRepo;
+import gov.milove.repositories.jpa.forum.PostCommentRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;

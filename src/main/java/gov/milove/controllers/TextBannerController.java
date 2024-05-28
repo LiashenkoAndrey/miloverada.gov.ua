@@ -1,7 +1,7 @@
 package gov.milove.controllers;
 
 import gov.milove.domain.TextBanner;
-import gov.milove.repositories.TextBannerRepository;
+import gov.milove.repositories.jpa.TextBannerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;

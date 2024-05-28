@@ -3,11 +3,10 @@ package gov.milove.controllers.forum;
 import gov.milove.domain.dto.forum.NewTopicDto;
 import gov.milove.domain.dto.forum.TopicDto;
 import gov.milove.domain.forum.Topic;
-import gov.milove.repositories.TopicRepo;
+import gov.milove.repositories.jpa.TopicRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

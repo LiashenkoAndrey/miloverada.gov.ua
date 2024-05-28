@@ -1,7 +1,7 @@
 package gov.milove.controllers;
 
 import gov.milove.domain.About;
-import gov.milove.repositories.AboutRepo;
+import gov.milove.repositories.mongo.AboutRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

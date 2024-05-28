@@ -2,14 +2,14 @@ package gov.milove.controllers;
 
 import gov.milove.domain.News;
 import gov.milove.domain.NewsImage;
-import gov.milove.domain.NewsPageDto;
+import gov.milove.domain.dto.NewsPageDto;
 import gov.milove.domain.NewsType;
 import gov.milove.domain.dto.INewsDto;
 import gov.milove.domain.dto.NewsDtoWithImageAndType;
 import gov.milove.exceptions.IllegalParameterException;
 import gov.milove.exceptions.NewsNotFoundException;
-import gov.milove.repositories.NewsRepository;
-import gov.milove.repositories.NewsTypeRepo;
+import gov.milove.repositories.jpa.NewsRepository;
+import gov.milove.repositories.jpa.NewsTypeRepo;
 import gov.milove.services.NewsImagesService;
 import gov.milove.services.NewsService;
 import jakarta.validation.constraints.*;

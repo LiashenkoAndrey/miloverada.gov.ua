@@ -4,7 +4,7 @@ import gov.milove.domain.dto.forum.ForumUserDto;
 import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
 import gov.milove.exceptions.forum.ForumUserNotFoundException;
-import gov.milove.repositories.forum.ForumUserRepo;
+import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.services.forum.ForumUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

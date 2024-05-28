@@ -6,7 +6,7 @@ import gov.milove.domain.User;
 import gov.milove.domain.dto.AdminMetadataDto;
 import gov.milove.domain.dto.UserDto;
 import gov.milove.domain.dto.forum.AppUserDto;
-import gov.milove.repositories.AppUserRepo;
+import gov.milove.repositories.jpa.AppUserRepo;
 import gov.milove.repositories.mongo.AdminMetadataRepo;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
@@ -18,7 +18,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static gov.milove.util.Util.decodeUriComponent;
 
