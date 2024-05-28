@@ -24,6 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,6 +73,7 @@ public class NewsController {
 //    }
 
     @PostMapping("/protected/news/new")
+    @Transactional
     public ResponseEntity<Long> newNews(@RequestParam @NotBlank @Size(max = 300) String title,
                                           @RequestParam @NotBlank String text,
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfPublication,
