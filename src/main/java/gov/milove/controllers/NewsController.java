@@ -12,6 +12,7 @@ import gov.milove.repositories.jpa.NewsRepository;
 import gov.milove.repositories.jpa.NewsTypeRepo;
 import gov.milove.services.NewsImagesService;
 import gov.milove.services.NewsService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,6 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,6 +73,7 @@ public class NewsController {
 //    }
 
     @PostMapping("/protected/news/new")
+    @Transactional
     public ResponseEntity<Long> newNews(@RequestParam @NotBlank @Size(max = 300) String title,
                                           @RequestParam @NotBlank String text,
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfPublication,
@@ -78,12 +81,13 @@ public class NewsController {
                                           @RequestParam @NotEmpty @Size(max = 20) MultipartFile[] images,
                                           @RequestParam Long newsTypeId
     ){
+        log.info("CREATE NEWS");
         log.info("images length = = {}", images.length);
-        log.info("title = {}, text = {}, dateOfPublication = {}, dateOfPostponedPublication = {}", title, text, dateOfPublication, dateOfPostponedPublication);
+        log.info("title = {}, dateOfPublication = {}, dateOfPostponedPublication = {}", title, dateOfPublication, dateOfPostponedPublication);
         log.info("newsType = {}", newsTypeId);
 
-        NewsType newsType = newsTypeId > 0 ? newsTypeRepo.getReferenceById(newsTypeId) : null;
-        log.info("NEWS TYPE {}", newsType);
+        NewsType newsType = newsTypeId > 0 ? newsTypeRepo.findById(newsTypeId).orElseThrow(EntityNotFoundException::new) : null;
+
         News newNews = News.builder()
                 .description(title)
                 .main_text(text)
@@ -173,8 +177,6 @@ public class NewsController {
     public NewsPageDto getLatest(@RequestParam(defaultValue = "6", required = false) @Min(1) Integer pageSize,
                                  @RequestParam(defaultValue = "0", required = false) Integer pageNumber) {
         Page<INewsDto> newsDtos = newsRepository.findDistinctBy(PageRequest.ofSize(pageSize).withPage(pageNumber).withSort(Sort.Direction.DESC, "dateOfPublication" ));
-        log.info(newsDtos);
-        log.info(newsDtos.getTotalElements());
         return new NewsPageDto(newsDtos);
     }
 
