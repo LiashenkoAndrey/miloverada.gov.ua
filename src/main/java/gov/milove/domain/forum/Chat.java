@@ -57,6 +57,9 @@ public class Chat {
     @Formula("(select count(*) from forum.message m where m.chat_id = id)")
     private Long totalMessagesAmount = 0L;
 
+    @Formula("(select count(distinct m.sender_id) from forum.message m  where m.chat_id = id)")
+    private Long totalMembersAmount = 0L;
+
     @PrePersist
     private void pre() {
         this.idAlias = RandomStringUtils.randomAlphanumeric(8);

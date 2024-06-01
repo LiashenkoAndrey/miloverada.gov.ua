@@ -19,7 +19,7 @@ create table forum_users
     registered_on timestamp not null,
     nickname      text,
     app_user_id   text
-        references public_old.app_users,
+        references public.app_users,
     about_me      text
 );
 
@@ -87,8 +87,7 @@ alter table unread_messages
 
 create table message_image
 (
-    id          integer default nextval('forum.message_images_id_seq'::regclass) not null
-        constraint message_images_pkey
+    id     serial not null
             primary key,
     image_id    text                                                             not null,
     message_id  integer

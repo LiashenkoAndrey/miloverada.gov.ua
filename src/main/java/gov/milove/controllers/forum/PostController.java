@@ -5,14 +5,14 @@ import gov.milove.domain.Image;
 import gov.milove.domain.dto.forum.PostDto;
 import gov.milove.domain.forum.Post;
 import gov.milove.domain.forum.PostLike;
-import gov.milove.repositories.mongo.ImageRepo;
+import gov.milove.domain.forum.PostLikeDto;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.PostLikeRepo;
 import gov.milove.repositories.jpa.forum.PostRepo;
+import gov.milove.repositories.mongo.ImageRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,26 +44,29 @@ public class PostController {
 
 
     @PutMapping("/protected/forum/post/{postId}/likeOrDislike")
-    private Long newUserPost(@RequestParam String encodedForumUserId,
+    private Long likeOrDislikePost(@RequestParam String encodedForumUserId,
                              @PathVariable Long postId) {
         String decodedForumUserId = decodeUriComponent(encodedForumUserId);
-        PostLike postLike = new PostLike(forumUserRepo.getReferenceById(decodedForumUserId), postRepo.getReferenceById(postId));
-        Example<PostLike> postLikeExample = Example.of(postLike);
-        Optional<PostLike> postLikeOptional = postLikeRepo.findOne(postLikeExample);
+        Optional<PostLikeDto> postLikeOptional = postLikeRepo.findDtoByUserAndPost(decodedForumUserId, postId);
 
         // if user liked the post - remove record,
         if (postLikeOptional.isPresent()) {
-            postLikeRepo.delete(postLikeOptional.get());
+            postLikeRepo.deleteById(postLikeOptional.get().getId());
         } else {
-            postLikeRepo.save(postLike);
-            // else create new one
+            postLikeRepo.save(
+                    new PostLike(
+                            forumUserRepo.getReferenceById(decodedForumUserId),
+                            postRepo.getReferenceById(postId)
+                    )
+            );
+            // else create a new one
         }
         return postId;
     }
 
 
     @PostMapping("/protected/forum/user/{userId}/post/new")
-    private Post newUserPost(@PathVariable String userId,
+    private PostDto newUserPost(@PathVariable String userId,
                                @RequestParam MultipartFile image,
                                @RequestParam String text) {
 
@@ -73,6 +76,6 @@ public class PostController {
                 .text(text)
                 .imageId(savedImage.getId())
                 .build());
-        return postRepo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
+        return postRepo.findDtoById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
 }

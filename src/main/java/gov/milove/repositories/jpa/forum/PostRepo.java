@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
 
@@ -25,4 +26,9 @@ public interface PostRepo extends JpaRepository<Post, Long> {
              from Post p inner join p.comments order by p.createdOn desc 
             """)
     List<PostDto> findPostWithLikesAndUserLikeInfo(@Param("forumUserId") String forumUserId);
+
+    @Query("select p.id as id, p.text as text, p.imageId as imageId, p.createdOn as createdOn, p.author as author, (select count(*) from PostLike pl where pl.post.id = p.id) as likesAmount from Post p where p.id = :id")
+    Optional<PostDto> findDtoById(@Param("id") Long id);
 }
+
+

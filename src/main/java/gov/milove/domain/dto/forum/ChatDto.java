@@ -20,4 +20,6 @@ public interface ChatDto {
     ForumUserDto getOwner();
 
     Long getTotalMessagesAmount();
+
+    Long getTotalMembersAmount();
 }

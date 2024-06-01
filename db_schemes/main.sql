@@ -123,6 +123,7 @@ create table public.news_type
 alter table public.news_type
     owner to postgres;
 
+
 create table public.news
 (
     id                  serial
@@ -133,8 +134,9 @@ create table public.news
     last_updated        text,
     is_banner           boolean,
     news_type_id        integer
-        references public.news_type,
-    views               integer default 1
+        references news_type,
+    views               integer default 1,
+    image_id            text
 );
 
 alter table public.news
