@@ -78,4 +78,22 @@ public class PostController {
                 .build());
         return postRepo.findDtoById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
+
+    @DeleteMapping("/protected/forum/post/{id}/delete")
+    public Long deletePostById(@PathVariable Long id) {
+        log.info("DELETE POST");
+
+        PostDto postDto = postRepo.findDtoById(id).orElseThrow(EntityNotFoundException::new);
+        log.info("Delete image...");
+        imageRepo.deleteById(postDto.getImageId());
+
+        log.info("Delete likes...");
+        postLikeRepo.deleteAllByPostId(id);
+
+        log.info("Delete post...");
+        postRepo.deleteById(id);
+
+        return id;
+    }
+
 }
