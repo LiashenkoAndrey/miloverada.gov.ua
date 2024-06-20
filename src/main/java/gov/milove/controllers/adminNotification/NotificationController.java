@@ -3,6 +3,8 @@ package gov.milove.controllers.adminNotification;
 import gov.milove.domain.adminNotification.Notification;
 import gov.milove.domain.adminNotification.NotificationDtoWithViews;
 import gov.milove.domain.adminNotification.NotificationView;
+import gov.milove.domain.dto.NewNotificationDto;
+import gov.milove.repositories.jpa.AppUserRepo;
 import gov.milove.repositories.jpa.admin.NotificationRepo;
 import gov.milove.repositories.jpa.admin.NotificationViewRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,7 @@ import static gov.milove.util.Util.decodeUriComponent;
 public class NotificationController {
 
     private final NotificationRepo repo;
+    private final AppUserRepo appUserRepo;
     private final NotificationViewRepo viewRepo;
 
     @GetMapping("/protected/admin/notification/totalNumber")
@@ -51,10 +54,18 @@ public class NotificationController {
     }
 
     @PostMapping("/protected/admin/notification/new")
-    public Notification createNew(@RequestBody Notification n) {
-        Notification saved = repo.save(n);
+    public Notification createNew(@RequestBody NewNotificationDto n) {
+        log.info("new notification - {}", n);
+        Notification saved = repo.save(
+                new Notification(
+                        n.getMessage(),
+                        n.getText(),
+                        appUserRepo.getReferenceById(n.getAuthorId())
+                )
+        );
+
         log.info("saved a new notification! {}", saved);
-        return saved;
+        return repo.findById(saved.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
     @DeleteMapping("/protected/admin/notification/{id}/delete")

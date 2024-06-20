@@ -13,6 +13,6 @@ public interface NotificationRepo extends JpaRepository<Notification, Long> {
     @Query(value = "select (select count(*) from admin_notification) - ( select count(*)  from notification_view where user_id = :userId)", nativeQuery = true)
     Long getTotalNumberOfActualNotifications(@Param("userId") String userId);
 
-    @Query("select n.message as message, n.id as id, (select count(*) > 0 from NotificationView v where v.userId = :userId and v.notification_id = n.id) as isViewed from Notification n order by n.createdOn desc ")
+    @Query("select n.message as message, n.id as id, (select count(*) > 0 from NotificationView v where v.userId = :userId and v.notification_id = n.id) as isViewed, n.createdOn as createdOn, n.author as author, n.updatedOn as updatedOn from Notification n order by n.createdOn desc ")
     List<NotificationDtoWithViews> getWithViews(@Param("userId") String userId);
 }
