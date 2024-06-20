@@ -1,25 +1,22 @@
 package gov.milove.domain.forum;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(schema = "forum")
-public class VoteResponse {
+public class PageVote {
+
+    public PageVote(Long voteId) {
+        this.voteId = voteId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String forumUserId;
-
-    @NotNull
     private Long voteId;
-
-    private Date respondedOn;
 }
