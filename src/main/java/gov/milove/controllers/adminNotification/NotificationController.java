@@ -48,9 +48,7 @@ public class NotificationController {
             String userId = decodeUriComponent(encodedUserId);
             log.info("notif not viewed! user = {} save view... ", userId);
             viewRepo.save(new NotificationView(id, userId));
-        } else {
-            log.info("is already viewed!");
-        }
+        } 
         return repo.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
