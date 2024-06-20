@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class NotificationView {
     public NotificationView(Long notification_id, String userId) {
-        this.notification_id = notification_id;
+        this.notificationId = notification_id;
         this.userId = userId;
     }
 
@@ -25,7 +25,7 @@ public class NotificationView {
     private Long id;
 
     @NotNull
-    private Long notification_id;
+    private Long notificationId;
 
     @NotNull
     private String userId;
