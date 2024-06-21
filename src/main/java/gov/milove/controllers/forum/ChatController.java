@@ -1,9 +1,6 @@
 package gov.milove.controllers.forum;
 
-import gov.milove.domain.dto.forum.ChatDto;
-import gov.milove.domain.dto.forum.ChatDtoWithMetadata;
-import gov.milove.domain.dto.forum.ChatMetadataDto;
-import gov.milove.domain.dto.forum.NewChatDto;
+import gov.milove.domain.dto.forum.*;
 import gov.milove.domain.forum.Chat;
 import gov.milove.domain.forum.UserChat;
 import gov.milove.domain.forum.PrivateChat;
@@ -69,30 +66,68 @@ public class ChatController {
         return chatRepo.findChatById(chatId);
     }
 
-    @PostMapping("/protected/forum/user/{user1_id}/chat")
-    public PrivateChat createPrivateChat(@PathVariable String user1_id,
-                                            @RequestParam String user2_id) {
-        String user1_id_decoded = decodeUriComponent(user1_id);
-        String user2_id_decoded = decodeUriComponent(user2_id);
+    /**
+     * Frontend calls this endpoint when user opens a private chat with other forum user
+     * If chat doesn't exist it will be created
+     *
+     * @param receiverId the user with whom the chat was opened
+     * @param senderId   user witch sends messages
+     * @return PrivateChatDto
+     */
+    @PostMapping("/protected/forum/user/{receiverId}/chat")
+    public PrivateChatDto createPrivateChat(@PathVariable String receiverId,
+                                            @RequestParam String senderId) {
+        String receiverIdDecoded = decodeUriComponent(receiverId);
+        String senderIdDecoded = decodeUriComponent(senderId);
 
-        Optional<PrivateChat> privateChatOptional = privateChatRepo.findByUser1AndUser2(user1_id_decoded, user2_id_decoded);
-        log.info("get or save chat, user1 = {}, user2 = {}", user1_id_decoded, user2_id_decoded);
+        Optional<PrivateChat> privateChatOptional = privateChatRepo.findPrivateChatBetweenToUsers(receiverIdDecoded, senderIdDecoded);
+        log.info("get or save chat, receiver = {}, senderId = {}", receiverIdDecoded, senderIdDecoded);
 
         if (privateChatOptional.isPresent()) {
             log.info("private chat already exists");
-            return privateChatOptional.get();
+            return privateChatToDto(privateChatOptional.get(), receiverIdDecoded);
         } else {
 
             log.info("private chat not exist, create new...");
             Chat newChat = chatRepo.save(new Chat(true));
             PrivateChat newPrivateChat = privateChatRepo.save(new PrivateChat(
-                    forumUserRepo.getReferenceById(user1_id_decoded),
-                    forumUserRepo.getReferenceById(user2_id_decoded),
+                    forumUserRepo.getReferenceById(receiverIdDecoded),
+                    forumUserRepo.getReferenceById(senderIdDecoded),
                     newChat.getId()
             ));
             log.info("new private chat id = {}, PrivateChat id = {} ", newChat.getId(), newPrivateChat.getId());
-            return newPrivateChat;
+
+            return new PrivateChatDto(
+                    newPrivateChat.getId(),
+                    newPrivateChat.getChat_id(),
+                    newPrivateChat.getUser1(),
+                    newPrivateChat.getUser2()
+            );
         }
+    }
+
+    /**
+     * Converts PrivateChat entity to dto depending on requested forum user
+     * PrivateChat table saved info about two user with columns user1 and user2
+     * This method defines which column is receiver user and created an object PrivateChatDto depending on it
+     *
+     * @param privateChat private chat entity
+     * @param receiverIdDecoded receiver forum user id
+     * @return PrivateChatDto
+     */
+    private static PrivateChatDto privateChatToDto(PrivateChat privateChat, String receiverIdDecoded) {
+
+        PrivateChatDto privateChatDto = new PrivateChatDto(privateChat.getId(), privateChat.getChat_id());
+
+        // if receiver is user1 in privateChat
+        if (privateChat.getUser1().getId().equals(receiverIdDecoded)) {
+            privateChatDto.setReceiver(privateChat.getUser1());
+            privateChatDto.setSender(privateChat.getUser2());
+        } else {
+            privateChatDto.setReceiver(privateChat.getUser2());
+            privateChatDto.setSender(privateChat.getUser1());
+        }
+        return privateChatDto;
     }
 
     @PersistenceContext
