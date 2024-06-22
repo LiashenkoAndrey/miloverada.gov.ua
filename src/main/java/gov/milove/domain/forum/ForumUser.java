@@ -32,6 +32,10 @@ public class ForumUser {
 
     private String aboutMe;
 
+    private Boolean isOnline;
+
+    private Date lastWasOnline;
+
     @OneToOne
     @JoinColumn(name = "app_user_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

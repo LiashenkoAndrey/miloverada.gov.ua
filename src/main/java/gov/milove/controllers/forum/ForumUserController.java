@@ -1,6 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.ForumUserDto;
+import gov.milove.domain.dto.forum.ForumUserOnlineInfoDto;
 import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
 import gov.milove.exceptions.forum.ForumUserNotFoundException;
@@ -13,8 +14,10 @@ import net.minidev.json.JSONObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static gov.milove.util.Util.decodeUriComponent;
@@ -29,18 +32,12 @@ public class ForumUserController {
     private final ForumUserRepo forumUserRepo;
     private final ForumUserService forumUserService;
 
+
     @MessageMapping("/user/startTyping")
     public void handleUserStartTyping(@Valid @Payload ForumUserDto dto) {
         log.info("user start typing, " + dto);
         messagingTemplate.convertAndSend("/chat/"+ dto.getChatId() +"/typingUsers", dto);
     }
-
-//    @GetMapping("/forum/user/{id}/isRegisteredOnForum")
-//    public Boolean isRegisteredInForum(@RequestParam String endcodedUserId) {
-//        String decodedUserId = decodeUriComponent(endcodedUserId);
-//        forumUserRepo.existsById(decodedUserId);
-//
-//    }
 
     @GetMapping("/forum/users")
     private List<ForumUser> getAll() {
@@ -62,13 +59,25 @@ public class ForumUserController {
         JSONObject jsonObject = new JSONObject();
         if (forumUserRepo.existsById(decodedId)) {
             ForumUser user = forumUserRepo.findById(decodedId).orElseThrow(ForumUserNotFoundException::new);
+            user.setLastWasOnline(new Date()); // update user online info
+
             jsonObject.put("forumUser", user);
             jsonObject.put("isRegistered", true);
+
+            forumUserRepo.save(user);
         } else {
             jsonObject.put("isRegistered", false);
         }
         return jsonObject;
     }
+
+    @Transactional
+    @MessageMapping("/forumUser/isOnline")
+    public void notifyThatUserIsOnline(@Valid @Payload ForumUserOnlineInfoDto dto) {
+        forumUserRepo.updateUserOnlineStatusById(dto.getUserId(), dto.getIsOnline());
+        messagingTemplate.convertAndSend("/forumUser/" + dto.getUserId() + "/onlineStatus", dto);
+    }
+
 
     @GetMapping("/protected/forum/user/isRegistered/id/{encodedUserId}")
     private boolean isRegistered(@PathVariable String encodedUserId) {

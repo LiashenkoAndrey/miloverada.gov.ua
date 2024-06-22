@@ -108,8 +108,8 @@ public class ChatController {
 
     /**
      * Converts PrivateChat entity to dto depending on requested forum user
-     * PrivateChat table saved info about two user with columns user1 and user2
-     * This method defines which column is receiver user and created an object PrivateChatDto depending on it
+     * PrivateChat table saves info about two users with columns: user1, user2
+     * This method defines which column is a receiver user and creates an object PrivateChatDto depending on it
      *
      * @param privateChat private chat entity
      * @param receiverIdDecoded receiver forum user id
