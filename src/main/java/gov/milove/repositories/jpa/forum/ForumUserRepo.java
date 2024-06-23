@@ -13,8 +13,8 @@ public interface ForumUserRepo extends JpaRepository<ForumUser, String> {
     @Query("select count(*) from ForumUser")
     Integer getActiveUsersAmount();
 
-    @Modifying
     @Transactional
+    @Modifying
     @Query("update ForumUser u set u.isOnline = :isOnline where u.id = :userId")
-    void updateUserOnlineStatusById(@Param("") String userId, @Param("isOnline") Boolean isOnline);
+    int updateUserOnlineStatusById(@Param("userId") String userId, @Param("isOnline") Boolean isOnline);
 }

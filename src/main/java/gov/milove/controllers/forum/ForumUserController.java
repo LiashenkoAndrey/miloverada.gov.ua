@@ -1,7 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.ForumUserDto;
-import gov.milove.domain.dto.forum.ForumUserOnlineInfoDto;
+import gov.milove.domain.dto.forum.UpdateUserOnlineStatusDto;
 import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
 import gov.milove.exceptions.forum.ForumUserNotFoundException;
@@ -14,7 +14,6 @@ import net.minidev.json.JSONObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -59,23 +58,22 @@ public class ForumUserController {
         JSONObject jsonObject = new JSONObject();
         if (forumUserRepo.existsById(decodedId)) {
             ForumUser user = forumUserRepo.findById(decodedId).orElseThrow(ForumUserNotFoundException::new);
-            user.setLastWasOnline(new Date()); // update user online info
 
             jsonObject.put("forumUser", user);
             jsonObject.put("isRegistered", true);
 
-            forumUserRepo.save(user);
         } else {
             jsonObject.put("isRegistered", false);
         }
         return jsonObject;
     }
 
-    @Transactional
-    @MessageMapping("/forumUser/isOnline")
-    public void notifyThatUserIsOnline(@Valid @Payload ForumUserOnlineInfoDto dto) {
-        forumUserRepo.updateUserOnlineStatusById(dto.getUserId(), dto.getIsOnline());
-        messagingTemplate.convertAndSend("/forumUser/" + dto.getUserId() + "/onlineStatus", dto);
+    @MessageMapping("/forumUser/isOnlineStatus")
+    public void notifyThatUserIsOnline(@Valid @Payload UpdateUserOnlineStatusDto dto) {
+        log.info("notify that user is online, " + dto);
+        dto.setDate(new Date());
+        messagingTemplate.convertAndSend("/chat/user/"  + dto.getUserIdThatNeedsNotification() +"/onlineStatus", dto);
+        forumUserRepo.updateUserOnlineStatusById(dto.getUserIdThatOnlineStatusNeedsToBeUpdated(), dto.getIsOnline());
     }
 
 

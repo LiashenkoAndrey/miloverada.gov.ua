@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -29,6 +31,7 @@ public class ForumUserServiceImpl implements ForumUserService {
                 .appUser(appUserRepo.getReferenceById(appUserId))
                 .nickname(dto.getNickname())
                 .aboutMe(dto.getAboutMe())
+                .lastWasOnline(new Date())
                 .build();
 
         if (dto.getAvatarImageFile() != null) {

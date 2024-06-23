@@ -20,7 +20,9 @@ create table forum_users
     nickname      text,
     app_user_id   text
         references public.app_users,
-    about_me      text
+    about_me      text,
+    last_was_online timestamp,
+    is_online boolean default false
 );
 
 alter table forum_users
