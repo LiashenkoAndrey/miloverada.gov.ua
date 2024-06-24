@@ -1,5 +1,5 @@
 create schema forum;
-
+set SCHEMA 'forum';
 
 create sequence message_images_id_seq
     as integer;
