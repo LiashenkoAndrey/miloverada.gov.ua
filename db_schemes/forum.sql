@@ -264,6 +264,35 @@ create table post_comments
 alter table post_comments
     owner to postgres;
 
+
+create table forum.vote (
+                            id serial primary key not null,
+                            text text,
+                            createdOn timestamp,
+                            author_forum_user_id text references forum.forum_users
+);
+
+create table forum.vote_options (
+                                    vote_id int not null ,
+                                    option text not null
+);
+
+create table forum.vote_response (
+                                     id serial primary key not null,
+                                     vote_id int not null references forum.vote,
+                                     forum_user_id text not null references forum.forum_users,
+                                     responded_on timestamp
+);
+
+create table forum.vote_custom_response (
+                                            id serial primary key not null,
+                                            vote_id int not null references forum.vote,
+                                            forum_user_id text not null references forum.forum_users,
+                                            option text not null,
+                                            responded_on timestamp
+);
+
+
 create function get_chat_metadata(chat_id_arg integer, user_id_arg text)
     returns TABLE(last_read_message_id integer, unread_messages_count integer, is_member boolean)
     language plpgsql

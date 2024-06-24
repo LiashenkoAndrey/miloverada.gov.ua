@@ -13,4 +13,6 @@ public interface ForumUserDto {
     String getAboutMe();
 
     String getAvatar();
+
+    Boolean getIsVerified();
 }

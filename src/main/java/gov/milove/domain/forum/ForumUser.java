@@ -40,4 +40,6 @@ public class ForumUser {
     @JoinColumn(name = "app_user_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUser appUser;
+
+    private Boolean isVerified;
 }
