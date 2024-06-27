@@ -1,24 +1,14 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.*;
-import gov.milove.domain.forum.Chat;
-import gov.milove.domain.forum.UserChat;
-import gov.milove.domain.forum.PrivateChat;
 import gov.milove.repositories.jpa.forum.ChatRepo;
-import gov.milove.repositories.jpa.forum.UserChatRepo;
-import gov.milove.repositories.jpa.forum.ForumUserRepo;
-import gov.milove.repositories.jpa.forum.PrivateChatRepo;
 import gov.milove.services.forum.ChatService;
-import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static gov.milove.util.Util.decodeUriComponent;
 
@@ -29,9 +19,6 @@ import static gov.milove.util.Util.decodeUriComponent;
 public class ChatController {
 
     private final ChatRepo chatRepo;
-    private final ForumUserRepo forumUserRepo;
-    private final PrivateChatRepo privateChatRepo;
-    private final UserChatRepo userChatRepo;
     private final ChatService chatService;
 
     @GetMapping("/forum/chat/all")
@@ -44,27 +31,20 @@ public class ChatController {
         return chatService.getUserChatsWithMetaById(decodeUriComponent(encodedUserId));
     }
 
-
+    /**
+     * Gets chat by id
+     * @param chatId chat id
+     * @param encodedUserId encoded forum user id
+     * @return {@link gov.milove.domain.dto.forum.ChatDto} DTO of chat entity
+     */
     @GetMapping("/forum/chat/id/{chatId}")
-    public ChatDto getChatById(@PathVariable Long chatId, @RequestParam(required = false) String encodedUserId) {
-        log.info(encodedUserId);
-        if (encodedUserId != null) {
-            String decodedUserId = decodeUriComponent(encodedUserId);
-            UserChat newRecord = new UserChat(decodedUserId, chatRepo.getReferenceById(chatId));
-            Optional<UserChat> chatVisitOpt = userChatRepo.findOne(Example.of(newRecord));
-            if (chatVisitOpt.isEmpty()) {
-                log.info("create...");
-
-                userChatRepo.save(newRecord);
-            } else {
-                log.info("update...");
-                UserChat userChat = chatVisitOpt.get();
-                userChat.setLastVisitedOn(new Date());
-                userChatRepo.save(userChat);
-            }
-        }
+    public ChatDto getChatById(@PathVariable Long chatId,
+                               @RequestParam(required = false) String encodedUserId) {
+        log.info("getChatById userId = {}", encodedUserId);
+        chatService.addChatToVisitedUsersChatsOrUpdateIfExists(decodeUriComponent(encodedUserId), chatId);
         return chatRepo.findChatById(chatId);
     }
+
 
     /**
      * Frontend calls this endpoint when user opens a private chat with other forum user
@@ -75,73 +55,26 @@ public class ChatController {
      * @return PrivateChatDto
      */
     @PostMapping("/protected/forum/user/{receiverId}/chat")
-    public PrivateChatDto createPrivateChat(@PathVariable String receiverId,
-                                            @RequestParam String senderId) {
+    public PrivateChatDto findOrCreatePrivateBetweenTwoForumUser(@PathVariable String receiverId,
+                                                                 @RequestParam String senderId) {
+
         String receiverIdDecoded = decodeUriComponent(receiverId);
         String senderIdDecoded = decodeUriComponent(senderId);
+        log.info("findOrCreatePrivateBetweenTwoForumUser senderId = {}, receiverId= {}", senderIdDecoded, receiverIdDecoded);
 
-        Optional<PrivateChat> privateChatOptional = privateChatRepo.findPrivateChatBetweenToUsers(receiverIdDecoded, senderIdDecoded);
-        log.info("get or save chat, receiver = {}, senderId = {}", receiverIdDecoded, senderIdDecoded);
+        PrivateChatDto privateChatDto = chatService.findPrivateChatBetweenToUsers(receiverIdDecoded, senderIdDecoded);
 
-        if (privateChatOptional.isPresent()) {
-            log.info("private chat already exists");
-            return privateChatToDto(privateChatOptional.get(), receiverIdDecoded);
-        } else {
+        // add a new private chat to user visited chat list or update last visited time by user
+        chatService.addChatToVisitedUsersChatsOrUpdateIfExists(senderIdDecoded, privateChatDto.getId());
 
-            log.info("private chat not exist, create new...");
-            Chat newChat = chatRepo.save(new Chat(true));
-            PrivateChat newPrivateChat = privateChatRepo.save(new PrivateChat(
-                    forumUserRepo.getReferenceById(receiverIdDecoded),
-                    forumUserRepo.getReferenceById(senderIdDecoded),
-                    newChat.getId()
-            ));
-            log.info("new private chat id = {}, PrivateChat id = {} ", newChat.getId(), newPrivateChat.getId());
-
-            return new PrivateChatDto(
-                    newPrivateChat.getId(),
-                    newPrivateChat.getChat_id(),
-                    newPrivateChat.getUser1(),
-                    newPrivateChat.getUser2()
-            );
-        }
-    }
-
-    /**
-     * Converts PrivateChat entity to dto depending on requested forum user
-     * PrivateChat table saves info about two users with columns: user1, user2
-     * This method defines which column is a receiver user and creates an object PrivateChatDto depending on it
-     *
-     * @param privateChat private chat entity
-     * @param receiverIdDecoded receiver forum user id
-     * @return PrivateChatDto
-     */
-    private static PrivateChatDto privateChatToDto(PrivateChat privateChat, String receiverIdDecoded) {
-
-        PrivateChatDto privateChatDto = new PrivateChatDto(privateChat.getId(), privateChat.getChat_id());
-
-        // if receiver is user1 in privateChat
-        if (privateChat.getUser1().getId().equals(receiverIdDecoded)) {
-            privateChatDto.setReceiver(privateChat.getUser1());
-            privateChatDto.setSender(privateChat.getUser2());
-        } else {
-            privateChatDto.setReceiver(privateChat.getUser2());
-            privateChatDto.setSender(privateChat.getUser1());
-        }
         return privateChatDto;
     }
-
-    @PersistenceContext
-    private EntityManager em;
 
     @GetMapping("/forum/chat/id/{chatId}/metadata")
     private ChatMetadataDto getChatMetadata(@PathVariable Long chatId, @RequestParam String userId) {
         return chatRepo.getChatMetadata(chatId, decodeUriComponent(userId));
     }
 
-//    @GetMapping("/forum/chat/idV2/{chatId}/metadata")
-//    private ChatDtoWithMetadata getChatMetadataV2(@PathVariable Long chatId, @RequestParam String userId) {
-//        return chatService.getUserChatsWithMetaById(chatId, userId);
-//    }
 
     @PostMapping("/protected/forum/chat/new")
     public ChatDto newChat(@Valid @RequestBody NewChatDto dto) {

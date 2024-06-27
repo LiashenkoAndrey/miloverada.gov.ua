@@ -7,6 +7,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class ChatMetadata {
 
     private Long last_read_message_id;
