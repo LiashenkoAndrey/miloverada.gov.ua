@@ -34,7 +34,6 @@ public class PostController {
 
     @GetMapping("/forum/posts/latest")
     public List<PostDto> latest(@RequestParam(required = false) String encodedForumUserId) {
-        log.info("user id {}", encodedForumUserId );
         if (encodedForumUserId != null) {
             String forumUserId = decodeUriComponent(encodedForumUserId);
             return postRepo.findPostWithLikesAndUserLikeInfo(forumUserId);

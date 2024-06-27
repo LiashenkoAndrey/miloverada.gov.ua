@@ -268,8 +268,13 @@ alter table post_comments
 create table forum.vote (
                             id serial primary key not null,
                             text text,
-                            createdOn timestamp,
-                            author_forum_user_id text references forum.forum_users
+                            created_on timestamp,
+                            author_id text references forum.forum_users
+);
+
+create table page_vote(
+                          id serial primary key,
+                          vote_id int references forum.vote
 );
 
 create table forum.vote_options (
