@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Define the service file path
-SERVICE_FILE="/etc/systemd/system/miloverada.service"
-
-# Create the service file with the specified content
-cat <<EOL > $SERVICE_FILE
+createService() {
+  # Define the service file path
+  SERVICE_FILE="/etc/systemd/system/miloverada.service"
+  # Create the service file with the specified content
+  cat <<EOL > $SERVICE_FILE
 [Unit]
 Description=miloverada.gov.ua backend server
 After=network.target
@@ -20,8 +20,11 @@ ExecStart=sudo /root/miloverada.gov.ua/mvnw org.springframework.boot:spring-boot
 WantedBy=multi-user.target
 EOL
 
-# Optionally, enable and start the service
-systemctl enable miloverada.service
-systemctl start miloverada.service
+  # Optionally, enable and start the service
+  systemctl enable miloverada.service
+  systemctl start miloverada.service
 
-echo "Service file created at $SERVICE_FILE"
+  echo "Service file created at $SERVICE_FILE, execute 'sudo systemctl status miloverada' to see service status"
+
+}
+
