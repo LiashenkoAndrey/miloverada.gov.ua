@@ -39,7 +39,7 @@ create table topic
 alter table topic
     owner to postgres;
 
-create table chat
+create table topicChat
 (
     id          serial
         primary key,
@@ -53,7 +53,7 @@ create table chat
     id_alias    text
 );
 
-alter table chat
+alter table topicChat
     owner to postgres;
 
 create table message
@@ -66,7 +66,7 @@ create table message
     created_on timestamp not null,
     edited_on  timestamp,
     chat_id    integer   not null
-        references chat
+        references topicChat
 );
 
 alter table message
@@ -77,7 +77,7 @@ create table unread_messages
     id         serial
         primary key,
     chat_id    integer not null
-        references chat,
+        references topicChat,
     user_id    text    not null
         references forum_users,
     message_id integer
@@ -139,7 +139,7 @@ create table chat_members
     member_id text
         references forum_users,
     chat_id   integer
-        references chat
+        references topicChat
 );
 
 alter table chat_members
@@ -150,7 +150,7 @@ create table private_chat
     id       serial
         primary key,
     chat_id  integer
-        references chat,
+        references topicChat,
     user1_id text
         constraint private_chat_user_1_fkey
             references forum_users,
@@ -197,7 +197,7 @@ create table user_chat
             primary key,
     chat_id         integer
         constraint chat_visit_chat_id_fkey
-            references chat,
+            references topicChat,
     user_id         text
         constraint chat_visit_user_id_fkey
             references forum_users,
@@ -218,7 +218,7 @@ create table forwarded_message
     forwarded_message_id integer not null
         references message,
     from_chat_id         integer
-        references chat
+        references topicChat
 );
 
 alter table forwarded_message

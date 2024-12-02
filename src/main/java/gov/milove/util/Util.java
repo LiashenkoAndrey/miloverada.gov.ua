@@ -1,7 +1,6 @@
 package gov.milove.util;
 
 import gov.milove.exceptions.UtilException;
-
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
@@ -20,7 +19,6 @@ public class Util {
             throw new UtilException(e.getMessage());
         }
     }
-
 
     public static String encodeUriComponent(String encodedStr) {
         if (encodedStr == null) return null;

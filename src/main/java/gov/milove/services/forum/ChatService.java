@@ -1,11 +1,8 @@
 package gov.milove.services.forum;
 
-import gov.milove.domain.dto.forum.ChatDto;
-import gov.milove.domain.dto.forum.ChatDtoWithMetadata;
-import gov.milove.domain.dto.forum.NewChatDto;
+import gov.milove.domain.dto.forum.NewTopicChatDto;
 import gov.milove.domain.dto.forum.PrivateChatDto;
-
-import java.util.List;
+import gov.milove.domain.dto.forum.TopicChatDto;
 
 public interface ChatService {
 
@@ -15,6 +12,7 @@ public interface ChatService {
      *
      * @param forumUserId id of forum user
      * @param chatId chat id
+     * @since 2.0
      */
     void addChatToVisitedUsersChatsOrUpdateIfExists(String forumUserId, Long chatId);
 
@@ -24,10 +22,9 @@ public interface ChatService {
      * @param receiverId user which started chat
      * @param senderId user that wants start chat
      * @return {@link PrivateChatDto}
+     * @since 2.0
      */
     PrivateChatDto findPrivateChatBetweenToUsers(String receiverId, String senderId);
 
-    ChatDto newTopicChat(NewChatDto dto);
-
-    List<ChatDtoWithMetadata> getUserChatsWithMetaById(String userId);
+    TopicChatDto newTopicChat(NewTopicChatDto dto);
 }

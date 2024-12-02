@@ -31,7 +31,7 @@ public class UserChat {
     private String userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "chatId")
+    @JoinColumn(name = "chat_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Chat chat;
 

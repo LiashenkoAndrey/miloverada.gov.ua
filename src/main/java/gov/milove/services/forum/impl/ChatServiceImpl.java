@@ -1,8 +1,8 @@
 package gov.milove.services.forum.impl;
 
 import gov.milove.domain.dto.forum.*;
-import gov.milove.domain.forum.Chat;
 import gov.milove.domain.forum.PrivateChat;
+import gov.milove.domain.forum.TopicChat;
 import gov.milove.domain.forum.UserChat;
 import gov.milove.repositories.jpa.forum.ChatRepo;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
@@ -13,14 +13,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.postgresql.util.PGobject;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-
-import static gov.milove.util.Util.decodeUriComponent;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +34,11 @@ public class ChatServiceImpl implements ChatService {
 
 
     /**
-     * Adds new chat to visited users chats list
-     * or updates last visited time of existing chat by user
+     * Adds new topicChat to visited users chats list
+     * or updates last visited time of existing topicChat by user
      *
      * @param forumUserId id of forum user
-     * @param chatId      chat id
+     * @param chatId      topicChat id
      */
     @Override
     public void addChatToVisitedUsersChatsOrUpdateIfExists(String forumUserId, Long chatId) {
@@ -51,12 +48,12 @@ public class ChatServiceImpl implements ChatService {
         };
 
         UserChat newRecord = new UserChat(forumUserId, chatRepo.getReferenceById(chatId));
-        Optional<UserChat> chatVisitOpt = userChatRepo.findOne(Example.of(newRecord));
+        Optional<UserChat> chatVisitOpt = userChatRepo.findByUserIdAndChatId(forumUserId, chatId);
         if (chatVisitOpt.isEmpty()) {
-            log.info("create new chat record...");
+            log.info("create new topicChat record...");
             userChatRepo.save(newRecord);
         } else {
-            log.info("update user chat record...");
+            log.info("update user topicChat record...");
             UserChat userChat = chatVisitOpt.get();
             userChat.setLastVisitedOn(new Date());
             userChatRepo.save(userChat);
@@ -64,33 +61,30 @@ public class ChatServiceImpl implements ChatService {
     }
 
     /**
-     * Calls when user want open or start a private chat with other user
+     * Calls when user want open or start a private topicChat with other user
      *
-     * @param receiverId user which started chat
-     * @param senderId   user that wants start chat
+     * @param receiverId user which started topicChat
+     * @param senderId   user that wants start topicChat
      * @return {@link PrivateChatDto}
      */
     @Override
     public PrivateChatDto findPrivateChatBetweenToUsers(String receiverId, String senderId) {
         Optional<PrivateChat> privateChatOptional = privateChatRepo.findPrivateChatBetweenToUsers(receiverId, senderId);
-        log.info("get or create private chat, receiver = {}, senderId = {}", receiverId, senderId);
+        log.info("get or create private topicChat, receiver = {}, senderId = {}", receiverId, senderId);
 
         if (privateChatOptional.isPresent()) {
             log.info("private chat already exists");
             return privateChatToDto(privateChatOptional.get(), receiverId);
         } else {
             log.info("private chat not exist, create new...");
-            Chat newChat = chatRepo.save(new Chat(true));
             PrivateChat newPrivateChat = privateChatRepo.save(new PrivateChat(
                     forumUserRepo.getReferenceById(receiverId),
-                    forumUserRepo.getReferenceById(senderId),
-                    newChat.getId()
+                    forumUserRepo.getReferenceById(senderId)
             ));
-            log.info("new private chat id = {}, PrivateChat id = {} ", newChat.getId(), newPrivateChat.getId());
+            log.info("new private PrivateChat id = {} ", newPrivateChat.getId());
 
             return new PrivateChatDto(
                     newPrivateChat.getId(),
-                    newPrivateChat.getChat_id(),
                     newPrivateChat.getUser1(),
                     newPrivateChat.getUser2()
             );
@@ -102,13 +96,13 @@ public class ChatServiceImpl implements ChatService {
      * PrivateChat table saves info about two users with columns: user1, user2
      * This method defines which column is a receiver user and creates an object PrivateChatDto depending on it
      *
-     * @param privateChat private chat entity
+     * @param privateChat private topicChat entity
      * @param receiverIdDecoded receiver forum user id
      * @return PrivateChatDto
      */
     private static PrivateChatDto privateChatToDto(PrivateChat privateChat, String receiverIdDecoded) {
 
-        PrivateChatDto privateChatDto = new PrivateChatDto(privateChat.getId(), privateChat.getChat_id());
+        PrivateChatDto privateChatDto = new PrivateChatDto(privateChat.getId());
 
         // if receiver is user1 in privateChat
         if (privateChat.getUser1().getId().equals(receiverIdDecoded)) {
@@ -124,11 +118,11 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public ChatDto newTopicChat(NewChatDto dto) {
-        Chat chat = NewChatDto.toDomain(dto);
-        chat.setOwner(forumUserRepo.getReferenceById(dto.getOwnerId()));
-        log.info("new chat: " + chat);
-        Chat saved = chatRepo.save(chat);
+    public TopicChatDto newTopicChat(NewTopicChatDto dto) {
+        TopicChat topicChat = NewTopicChatDto.toDomain(dto);
+        topicChat.setCreator(forumUserRepo.getReferenceById(dto.getOwnerId()));
+        log.info("new topicChat: " + topicChat);
+        TopicChat saved = chatRepo.save(topicChat);
         em.createNativeQuery("insert into topic_chats(topic_id, chats_id) VALUES (:topicId, :chatId)")
                 .setParameter("topicId", dto.getTopicId())
                 .setParameter("chatId", saved.getId())
@@ -136,87 +130,4 @@ public class ChatServiceImpl implements ChatService {
         return chatRepo.findChatById(saved.getId());
     }
 
-
-
-    @Override
-    public List<ChatDtoWithMetadata> getUserChatsWithMetaById(String userId) {
-//        List<Object[]> tuples = em.createQuery("""
-//                     select distinct c, function('forum.get_chat_metadata', CAST(c.id as integer) , str(:userId) ) from Chat c
-//                            join UserChat uc on c.id = uc.chat.id
-//                            join PrivateChat pc on c.id = pc.chat_id
-//                    where uc.userId = :userId
-//
-//                """, Object[].class)
-//                .setParameter("userId", userId)
-//                .getResultList();
-
-
-        List<Object[]> tuples = em.createQuery("""
-                        select c, function('forum.get_chat_metadata', CAST(c.id as integer) , str(:userId) ),
-                          case
-                              when c.isPrivate then (select concat(fu.nickname, '~', fu.id)
-                                                      from ForumUser fu
-                                                      where id = CASE
-                                                                     WHEN pc.user1.id = :userId THEN pc.user2.id
-                                                                     else pc.user1.id
-                                                          END)
-                          end
-          from Chat c
-                   join UserChat uc on c.id = uc.chat.id
-                   join PrivateChat pc on (pc.user2.id = :userId or
-                                                  pc.user1.id = :userId)
-          
-          where uc.userId = :userId order by uc.lastVisitedOn desc
-                """, Object[].class)
-                .setParameter("userId", userId)
-                .getResultList();
-
-        Map<String, ChatDtoWithMetadata> hashMap = new HashMap<>();
-
-
-        tuples.stream()
-                .map((tuple) -> {
-                    log.info("get user chat metadata, userId = {}, tuple = {}", userId, tuple);
-                    assert tuple[0] instanceof Chat;
-                    Chat chat = (Chat) tuple[0];
-                    ChatMetadata chatMetadata = parseMeta(tuple[1].toString());
-                    String privateChatName = tuple[2] == null ? null : tuple[2].toString();
-                    return new ChatDtoWithMetadata(chat, chatMetadata, parsePrivateChatMeta(privateChatName));
-                })
-                .forEach(((chatDtoWithMetadata) -> {
-                    if (chatDtoWithMetadata.getPrivateChatMetadata() != null) {
-                        if (!chatDtoWithMetadata.getPrivateChatMetadata().getUserId().equals(userId)) {
-                            hashMap.put(chatDtoWithMetadata.getChat().getIdAlias(), chatDtoWithMetadata);
-                            log.info("ok -" + chatDtoWithMetadata);
-                        } else {
-                            log.info("Found useless private chat= {}", chatDtoWithMetadata);
-                        }
-                    } else  {
-                        log.info("No private chat found {}", chatDtoWithMetadata);
-                        hashMap.put(chatDtoWithMetadata.getChat().getIdAlias(), chatDtoWithMetadata);
-
-                    }
-                }));
-
-        log.info(hashMap.keySet());
-
-            log.info(hashMap.values().stream().toList());
-        return  hashMap.values().stream().toList();
-    }
-
-    private PrivateChatMetadata parsePrivateChatMeta(String s) {
-        if (s == null) return null;
-        String[] arr = s.split("~");
-        String nickname = arr[0];
-        String userId = arr[1];
-        return new PrivateChatMetadata(nickname, userId);
-    }
-
-    private ChatMetadata parseMeta(String metaStr) {
-        String[] arr = metaStr.replaceAll("\\(|\\)", "").split(",");
-        Long last_read_message_id = arr[0].isEmpty() ? null : Long.parseLong(arr[0]);
-        Long unread_messages_count = Long.parseLong(arr[1]);
-        Boolean is_member = arr[2].equals("t");
-        return new ChatMetadata(last_read_message_id, unread_messages_count, is_member);
-    }
 }

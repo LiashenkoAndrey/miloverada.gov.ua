@@ -9,12 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class ChatDtoWithMetadata  {
+public class ChatWithMetadata {
 
     private Chat chat;
 
     private ChatMetadata chatMetadata;
-
-    private PrivateChatMetadata privateChatMetadata;
-
 }

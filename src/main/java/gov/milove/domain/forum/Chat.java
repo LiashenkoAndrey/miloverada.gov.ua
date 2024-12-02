@@ -1,67 +1,36 @@
 package gov.milove.domain.forum;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import lombok.*;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
+@ToString
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Builder
-@EqualsAndHashCode
 @Table(schema = "forum")
-public class Chat {
-
-
-    public Chat(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
-
-    public Chat(String name, String description, String picture) {
-        this.name = name;
-        this.description = description;
-        this.picture = picture;
-    }
+public abstract class Chat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_id_generator")
+    @SequenceGenerator(name = "chat_id_generator", sequenceName = "chat_sequence", allocationSize = 1)
     private Long id;
-
-    private String idAlias;
-
-    private String name;
-
-    private String description;
-
-    private String picture;
 
     @CreationTimestamp
     private Date createdOn;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private ForumUser owner;
-
-    private Boolean isPrivate;
-
-    @Formula("(select count(*) from forum.message m where m.chat_id = id)")
-    private Long totalMessagesAmount = 0L;
-
-    @Formula("(select count(distinct m.sender_id) from forum.message m  where m.chat_id = id)")
-    private Long totalMembersAmount = 0L;
-
-    @PrePersist
-    private void pre() {
-        this.idAlias = RandomStringUtils.randomAlphanumeric(8);
-    }
 }

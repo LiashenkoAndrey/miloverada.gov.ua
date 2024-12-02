@@ -10,5 +10,5 @@ public interface TopicDto {
 
     String getDescription();
 
-    List<ChatDto> getChats();
+    List<TopicChatDto> getChats();
 }

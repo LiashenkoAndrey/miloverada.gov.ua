@@ -11,16 +11,14 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PrivateChatDto {
 
-    public PrivateChatDto(Long id, Long chat_id) {
+    public PrivateChatDto(Long id) {
         this.id = id;
-        this.chat_id = chat_id;
     }
 
-    public PrivateChatDto(Long id, Long chat_id, ForumUser sender, ForumUser receiver) {
+    public PrivateChatDto(Long id, ForumUser sender, ForumUser receiver) {
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
-        this.chat_id = chat_id;
     }
 
     private Long id;
@@ -30,6 +28,4 @@ public class PrivateChatDto {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ForumUser receiver;
-
-    private Long chat_id;
 }

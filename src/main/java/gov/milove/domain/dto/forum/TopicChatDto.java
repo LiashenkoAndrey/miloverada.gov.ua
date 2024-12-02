@@ -1,11 +1,12 @@
 package gov.milove.domain.dto.forum;
 
-import gov.milove.domain.forum.ForumUser;
 import gov.milove.domain.forum.ForumUserDto;
 
-public interface ChatDto {
+public interface TopicChatDto {
 
     Long getId();
+
+    Long getTopicId();
 
     String getName();
 
@@ -15,9 +16,7 @@ public interface ChatDto {
 
     String getCreatedOn();
 
-    String getIsPrivate();
-
-    ForumUserDto getOwner();
+    ForumUserDto getCreator();
 
     Long getTotalMessagesAmount();
 
