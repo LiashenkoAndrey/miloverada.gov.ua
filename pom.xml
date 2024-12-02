@@ -134,8 +134,6 @@
             <version>2.9.8</version>
         </dependency>
 
-
-        <!--mapper-->
         <dependency>
             <groupId>com.github.dozermapper</groupId>
             <artifactId>dozer-core</artifactId>
@@ -146,6 +144,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>3.1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.8.3</version> <!-- Adjust to the compatible version -->
         </dependency>
 
     </dependencies>
@@ -164,10 +168,23 @@
         </pluginManagement>
 
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-wrapper-plugin</artifactId>
             </plugin>
+
+
+<!--            <plugin>-->
+<!--                <groupId>org.flywaydb</groupId>-->
+<!--                <artifactId>flyway-maven-plugin</artifactId>-->
+<!--                <version>9.8.3</version>-->
+<!--                <configuration>-->
+<!--                    <url>jdbc:postgresql://localhost:5432/milove</url> &lt;!&ndash; Replace with your database URL &ndash;&gt;-->
+<!--                    <user>postgres</user> &lt;!&ndash; Replace with your database username &ndash;&gt;-->
+<!--                    <password>komunist</password> &lt;!&ndash; Replace with your database password &ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
