@@ -1,8 +1,10 @@
 spring:
+  config:
+    import: "optional:application-environment.properties"
   data:
     mongodb:
       database: test
-      uri: mongodb://localhost:27017
+      uri: ${mongo_url}
       repositories:
         type: auto
     jpa:
@@ -21,9 +23,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: admin
-    url: jdbc:postgresql://localhost:5432/milove
+    username: ${postgres_username}
+    password: ${postgres_password}
+    url: ${postgres_url}
 
   web:
     resources:

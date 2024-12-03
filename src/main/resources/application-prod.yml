@@ -24,7 +24,7 @@ spring:
     username: postgres
     password: admin
     url: jdbc:postgresql://127.0.0.1:5432/milove
-
+  5Uq9:£iTx6Fd postgres
   web:
     resources:
       add-mappings: false
