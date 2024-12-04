@@ -1,9 +1,16 @@
 spring:
   config:
-    import: "optional:application-environment.properties"
+    import: "optional:application-dev-environment.properties"
+
+  flyway:
+    user: ${postgres_username}
+    password: ${postgres_password}
+    schemas: public
+    url: ${postgres_url}
+
   data:
     mongodb:
-      database: test
+      database: ${mongo.database}
       uri: ${mongo_url}
       repositories:
         type: auto

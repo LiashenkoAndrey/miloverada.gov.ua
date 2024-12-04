@@ -276,22 +276,3 @@ end;
 $$;
 
 alter function get_chat_metadata(integer, text) owner to postgres;
-
-create function public.get_chat_metadata(chat_id_arg integer, user_id_arg text)
-    returns TABLE(last_read_message_id integer, unread_messages_count integer, is_member boolean)
-    language plpgsql
-as
-$$
-declare
-    last_read_message_id integer;
-    unread_messages_count integer;
-    is_member boolean;
-begin
-    select u.message_id into last_read_message_id from forum.unread_messages u where u.chat_id = chat_id_arg and u.user_id = user_id_arg;
-    select count(*) into unread_messages_count from forum.message m where chat_id = chat_id_arg and m.id > last_read_message_id;
-    select count(*) != 0 into is_member from forum.user_chat where user_id = user_id_arg;
-    return query select last_read_message_id, unread_messages_count, is_member;
-end;
-$$;
-
-alter function public.get_chat_metadata(integer, text) owner to postgres;

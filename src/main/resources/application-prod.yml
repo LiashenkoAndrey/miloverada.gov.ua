@@ -1,8 +1,19 @@
 spring:
+  config:
+    import: "optional:application-prod-environment.properties"
+
+  flyway:
+    user: ${postgres_username}
+    password: ${postgres_password}
+    schemas: public
+    url: ${postgres_url}
+    baseline-on-migrate: true
+    baseline-version: 3
+
   data:
     mongodb:
-      database: test
-      uri: mongodb://eu-life-rootinfo:uSVtE7VF7VGbQv5@ac-u9efhpg-shard-00-00.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-01.jhfxdna.mongodb.net:27017,ac-u9efhpg-shard-00-02.jhfxdna.mongodb.net:27017/?ssl=true&replicaSet=atlas-14ato7-shard-0&authSource=admin&retryWrites=true&w=majority
+      database: ${mongo.database}
+      uri: ${mongo_url}
       repositories:
         type: auto
     jpa:
@@ -14,17 +25,17 @@ spring:
       hibernate:
 
     show-sql: true
-#    open-in-view: false
+  #    open-in-view: false
 
   mvc:
     throw-exception-if-no-handler-found: true
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: admin
-    url: jdbc:postgresql://127.0.0.1:5432/milove
-  5Uq9:£iTx6Fd postgres
+    username: ${postgres_username}
+    password: ${postgres_password}
+    url: ${postgres_url}
+
   web:
     resources:
       add-mappings: false
@@ -45,17 +56,18 @@ okta:
     audience: https://miloverada-api
 
 server:
-  port: 8443
+  port: ${port}
 
   tomcat:
     max-http-form-post-size: 50000000
   ssl:
-    enabled: true
-    key-store: /etc/letsencrypt/live/api.miloverada.gov.ua/keystore.p12
-    key-store-password: komunist
+    enabled: ${ssl.enabled}
+    key-store: ${ssl.key.storage_path}
+    key-store-password: ${ssl.key.password}
     key-store-type: PKCS12
     key-alias: tomcat
 
 logging:
   file:
     path: logs
+    
