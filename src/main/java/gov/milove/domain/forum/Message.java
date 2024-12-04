@@ -1,14 +1,13 @@
 package gov.milove.domain.forum;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gov.milove.domain.dto.forum.FileDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -18,10 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Table(schema = "forum")
 public class Message {
     public Message(String text) {
         this.text = text;
+    }
+
+
+    public Message(Long chatId, ForumUser sender) {
+        this.chatId = chatId;
+        this.sender = sender;
     }
 
     @Id
@@ -38,17 +44,31 @@ public class Message {
     @JoinColumn(name = "message_id")
     private List<MessageImage> imagesList;
 
-    @CreationTimestamp
-    private LocalDateTime createdOn;
 
-    @ManyToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Chat chat;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "message_id")
+    private List<MessageFile> filesList;
+
+    @Transient
+    private List<FileDto> fileDtoList;
+
+    @CreationTimestamp
+    private Date createdOn;
+
+    private Long chatId;
 
     @UpdateTimestamp
-    private LocalDateTime editedOn;
+    private Date editedOn;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "replied_message", schema = "forum")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Message repliedMessage;
+
+
+    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST, mappedBy = "forwardedMessage")
+//    @JoinTable(name = "forwarded_message", schema = "forum")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private ForwardedMessage forwardedMessage;
+
 }

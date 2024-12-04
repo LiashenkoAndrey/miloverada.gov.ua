@@ -1,36 +1,53 @@
 package gov.milove.domain;
 
-import gov.milove.domain.institution.Institution;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-
 @Data
+@Entity
 @Builder
 @AllArgsConstructor
-@Entity
 @Table(name = "document_group")
+@NoArgsConstructor
 public class DocumentGroup {
+
+    public DocumentGroup(Long id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Size(min = 2, max = 1000)
+    private String name;
 
-    @OneToOne
-    private Institution institution;
+    @ManyToOne
+    @JsonIgnore
+    private DocumentGroup documentGroup;
 
-    @OneToMany(mappedBy = "document_group", cascade = CascadeType.ALL)
-    private List<SubGroup> subGroups;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_group_id")
+    @JsonIgnore
+    private List<Document> documents = new ArrayList<>();
 
-    private boolean is_general;
-    public DocumentGroup() {
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_group_id")
+    @JsonIgnore
+    private List<DocumentGroup> groups  = new ArrayList<>();
 
-    }
+    @CreationTimestamp
+    private Date createdOn;
 }

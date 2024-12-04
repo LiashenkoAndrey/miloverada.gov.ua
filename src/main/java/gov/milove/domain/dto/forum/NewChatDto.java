@@ -15,7 +15,6 @@ public class NewChatDto {
     @NotNull
     private String description;
 
-    @NotNull
     private String picture;
 
     @NotNull
@@ -25,6 +24,6 @@ public class NewChatDto {
     private Long topicId;
 
     public static Chat toDomain(NewChatDto dto) {
-        return new Chat(dto.getName(), dto.getDescription(), dto.getPicture(), dto.getTopicId());
+        return new Chat(dto.getName(), dto.getDescription(), dto.getPicture());
     }
 }

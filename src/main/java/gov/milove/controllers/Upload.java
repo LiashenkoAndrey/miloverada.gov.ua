@@ -1,56 +1,90 @@
 package gov.milove.controllers;
 
-import gov.milove.services.document.DocumentService;
-import gov.milove.services.ImageService;
-
-import org.springframework.beans.factory.annotation.Qualifier;
+import gov.milove.domain.Image;
+import gov.milove.domain.MongoDocument;
+import gov.milove.domain.MongoNewsImage;
+import gov.milove.exceptions.ImageNotFoundException;
+import gov.milove.repositories.mongo.ImageRepo;
+import gov.milove.repositories.mongo.MongoDocumentRepo;
+import gov.milove.repositories.mongo.NewsImagesMongoRepo;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.bson.types.Binary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/upload")
+@RequestMapping("/api")
+@Log4j2
+@RequiredArgsConstructor
 public class Upload {
-    private final ImageService imageService;
 
+    private final NewsImagesMongoRepo newsImagesMongoRepo;
 
-    private final DocumentService documentService;
+    private final MongoDocumentRepo mongoDocumentRepo;
+    private final ImageRepo imageRepo;
 
-    public Upload(ImageService imageService, @Qualifier("administrationDocumentService") DocumentService documentService) {
-        this.imageService = imageService;
-        this.documentService = documentService;
+    @GetMapping("/download/image/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String id) {
+        MongoNewsImage mongoNewsImage = newsImagesMongoRepo.findById(id).orElseThrow(ImageNotFoundException::new);
+        MediaType mediaType;
+        if (mongoNewsImage.getContentType() == null) {
+            mediaType = MediaType.IMAGE_PNG;
+        } else  {
+            mediaType = MediaType.parseMediaType(mongoNewsImage.getContentType());
+        }
+        return ResponseEntity.ok().contentType(mediaType).body(mongoNewsImage.getBinaryImage().getData());
     }
 
-    @PostMapping("/image")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
-        String savedImageId = imageService.saveAndReturnId(file);
-        if (savedImageId.equals("error")) return ResponseEntity.internalServerError().body("error");
-        else return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(savedImageId);
-    }
-
-    @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
-        byte[] image = imageService.getImageById(id);
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
-    }
-
-
-    @GetMapping("/document/{id}")
-    public ResponseEntity<byte[]> getDocument(@PathVariable("id") String id) {
-        byte[] file = documentService.getDocumentBinaryById(id);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "*");
-        headers.set("content-disposition", "inline");
-        headers.set("content-length", String.valueOf(file.length));
+    @GetMapping("/download/v2/image/{id}")
+    public ResponseEntity<byte[]> getImageV2(@PathVariable String id, HttpServletResponse response) {
+        Image image = imageRepo.findById(id).orElseThrow(ImageNotFoundException::new);
+        MediaType mediaType = MediaType.parseMediaType(image.getContentType());
+        String contentDisposition = "attachment; filename=\"" + image.getFilename() + "\"";
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .headers(headers)
-                .body(file);
+                .contentType(mediaType)
+                .contentLength(image.getBinaryImage().length())
+                .body(image.getBinaryImage().getData());
+    }
+
+
+
+    @GetMapping("/download/file/{fileName}")
+    public byte[] findDocumentByFilename(@PathVariable String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
+        List<MongoDocument> mongoDocuments = mongoDocumentRepo.findByFilename(fileName);
+        if (mongoDocuments.isEmpty()) throw new EntityNotFoundException("document with name " + fileName + ", not found");
+        MongoDocument mongoDocument = mongoDocuments.get(0);
+
+
+        if (mongoDocuments.size() > 1) {
+            log.info("MORE THEN ONE RESULT - {}", mongoDocuments);
+            for (MongoDocument document : mongoDocuments.subList(1, mongoDocuments.size())) {
+                log.info("delete - {} hashcode = {}, hashcode2 = {}", document, mongoDocument.getFile().hashCode(), Arrays.hashCode(mongoDocument.getFile().getData()));
+                mongoDocumentRepo.deleteById(document.getId());
+            }
+
+        }
+        log.info("DOWNLOAD DOCUMENT = {} hashcode = {}, hashcode2 = {}", mongoDocument, mongoDocument.getFile().hashCode(), Arrays.hashCode(mongoDocument.getFile().getData()));
+        Binary mongoFile = mongoDocument.getFile();
+
+        String encodedFilename = URLEncoder.encode(mongoDocument.getFilename(), StandardCharsets.UTF_8.toString());
+        String contentDisposition = "attachment; filename=\"" + encodedFilename + "\"";
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
+        response.addHeader(HttpHeaders.CONTENT_TYPE, mongoDocument.getContentType());
+        response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(mongoFile.length()));
+
+        return mongoFile.getData();
     }
 }

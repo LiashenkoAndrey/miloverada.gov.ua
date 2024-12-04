@@ -2,11 +2,8 @@ package gov.milove.services.institution;
 
 import gov.milove.domain.institution.InstitutionEmployee;
 import gov.milove.exceptions.EmployeeServiceException;
-import gov.milove.repositories.institution.InstitutionEmployeeRepository;
+import gov.milove.repositories.jpa.InstitutionEmployeeRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InstitutionEmployeeService {
@@ -26,9 +23,9 @@ public class InstitutionEmployeeService {
         }
     }
 
-    public Optional<InstitutionEmployee> findById(Long id) {
-        return institutionEmployeeRepository.findById(id);
-    }
+//    public Optional<InstitutionEmployee> findById(Long id) {
+//        return institutionEmployeeRepository.findById(id);
+//    }
 
     public void deleteById(Long id) throws EmployeeServiceException {
         try {
@@ -38,7 +35,7 @@ public class InstitutionEmployeeService {
         }
     }
 
-    public List<InstitutionEmployee> findAllByInstitutionTitle(String title) {
-        return institutionEmployeeRepository.findByInstitution_Title(title);
-    }
+//    public List<InstitutionEmployee> findAllByInstitutionTitle(String title) {
+//        return institutionEmployeeRepository.findByInstitution_Title(title);
+//    }
 }

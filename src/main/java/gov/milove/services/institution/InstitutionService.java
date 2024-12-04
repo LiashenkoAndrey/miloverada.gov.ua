@@ -1,7 +1,7 @@
 package gov.milove.services.institution;
 
 import gov.milove.domain.institution.Institution;
-import gov.milove.repositories.institution.InstitutionRepository;
+import gov.milove.repositories.jpa.InstitutionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,9 +15,9 @@ public class InstitutionService {
         this.institutionRepository = institutionRepository;
     }
 
-    public Optional<Institution> findInstitutionByTitle(String title) {
-        return institutionRepository.findByTitle(title);
-    }
+//    public Optional<Institution> findInstitutionByTitle(String title) {
+//        return institutionRepository.findByTitle(title);
+//    }
 
     public Optional<Institution> findInstitutionById(Long id) {
         return institutionRepository.findById(id);

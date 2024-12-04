@@ -13,8 +13,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "institution_employee")
 public class InstitutionEmployee extends Employee {
 
-    @ManyToOne
-    private Institution institution;
+    private Long institution_id;
 
     private String sub_institution;
 }

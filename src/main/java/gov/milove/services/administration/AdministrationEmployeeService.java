@@ -3,8 +3,7 @@ package gov.milove.services.administration;
 
 import gov.milove.domain.administration.AdministrationEmployee;
 import gov.milove.exceptions.AdministrationEmployeeServiceException;
-import gov.milove.repositories.administration.AdministrationEmployeeRepository;
-import gov.milove.services.ImageService;
+import gov.milove.repositories.jpa.administration.AdministrationEmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdministrationEmployeeService {
 
-    private final ImageService imageService;
 
     private final AdministrationEmployeeRepository repository;
 
@@ -41,7 +39,7 @@ public class AdministrationEmployeeService {
         try {
             AdministrationEmployee employee = repository.findById(id).orElseThrow(EntityNotFoundException::new);
             if (employee.getImage_id() != null) {
-                imageService.deleteImageById(employee.getImage_id());
+//                imageService.deleteImageById(employee.getImage_id());
             }
             repository.deleteById(id);
         } catch (Exception ex) {

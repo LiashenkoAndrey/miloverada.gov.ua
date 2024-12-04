@@ -1,17 +1,19 @@
 package gov.milove.services;
 
-import gov.milove.domain.dto.NewsDTO;
+import gov.milove.domain.News;
 import gov.milove.domain.dto.NewsDtoWithImageAndType;
-import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
 
 public interface NewsService {
 
-    Page<NewsDTO> getPagesList(int page, int newsAmount);
-
-    void save(NewsDtoWithImageAndType news);
+    News save(News news, MultipartFile[] images, LocalDateTime dateOfPostponedPublication);
 
     void deleteById(Long id);
 
     void update(NewsDtoWithImageAndType news);
+
+    void deleteNewsImageById(String mongoId);
 
 }

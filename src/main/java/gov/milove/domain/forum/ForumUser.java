@@ -1,14 +1,12 @@
 package gov.milove.domain.forum;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gov.milove.domain.AppUser;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -16,35 +14,32 @@ import java.util.Date;
 @Entity
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode
 @Table(name = "forum_users", schema = "forum")
 public class ForumUser {
-
-
-    public ForumUser(String id, String firstName, String lastName, String email, String avatar) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.avatar = avatar;
-    }
 
     @Id
     private String id;
 
     @CreationTimestamp
-    private LocalDateTime registeredOn;
+    private Date registeredOn;
 
-    @NotBlank
-    private String firstName;
+    private String nickname;
 
-    @NotBlank
-    private String lastName;
-
-    @Email
-    private String email;
-
-    @NotBlank
     private String avatar;
 
+    private String aboutMe;
+
+    private Boolean isOnline;
+
+    private Date lastWasOnline;
+
+    @OneToOne
+    @JoinColumn(name = "app_user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private AppUser appUser;
+
+    private Boolean isVerified;
 }

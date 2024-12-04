@@ -1,64 +1,31 @@
 package gov.milove.controllers.institution;
 
-import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.dto.InstitutionDto;
 import gov.milove.domain.institution.Institution;
-import gov.milove.domain.institution.InstitutionEmployee;
-import gov.milove.repositories.institution.InstitutionRepository;
-import gov.milove.services.institution.InstitutionEmployeeService;
-import gov.milove.services.institution.InstitutionService;
-
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import gov.milove.exceptions.InstitutionNotFoundException;
+import gov.milove.repositories.jpa.InstitutionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
-@Controller
-@RequestMapping("/institution/{title}")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api")
 public class InstitutionController {
 
-    private final InstitutionService institutionService;
-    private final InstitutionEmployeeService institutionEmployeeService;
 
     private final InstitutionRepository inst_repo;
 
-    public InstitutionController(InstitutionService institutionService, InstitutionEmployeeService institutionEmployeeService, InstitutionRepository inst_repo) {
-        this.institutionService = institutionService;
-        this.institutionEmployeeService = institutionEmployeeService;
-        this.inst_repo = inst_repo;
+    @GetMapping("/institution/all")
+    private List<InstitutionDto> getAll() {
+        return inst_repo.getAllAsDto();
     }
 
-    @GetMapping
-    public String getInstitution(@PathVariable("title") String title,
-                                 Model model) {
-        Optional<Institution> institution = institutionService.findInstitutionByTitle(title);
-        if (institution.isPresent()) {
-            model.addAttribute("institution", institution.get());
-            model.addAttribute("employee_list", institutionEmployeeService.findAllByInstitutionTitle(title));
-            model.addAttribute("employee", new InstitutionEmployee());
-            return "institution";
-        } else {
-            return "error/404";
-        }
+    @GetMapping("/institution/{id}")
+    private Institution getById(@PathVariable Long id) {
+        return inst_repo.findById(id).orElseThrow(InstitutionNotFoundException::new);
     }
 
-    @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> update(@PathVariable("title") Long id, @RequestParam("title") String new_title) {
-        try {
-            Institution institution = inst_repo.findById(id)
-                    .orElseThrow(EntityNotFoundException::new);
-            inst_repo.updateTitleById(new_title, institution.getId());
-            return new ResponseEntity<>("Оновлення успішне", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ResponseEntity<>("Виникли проблеми з оновленням", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        }
-    }
 }

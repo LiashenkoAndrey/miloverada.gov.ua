@@ -1,23 +1,29 @@
 package gov.milove.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class News {
+
+    public News(NewsType newsType) {
+        this.newsType = newsType;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,20 +33,25 @@ public class News {
     @NotNull
     private String description;
 
-    @Size(max = 40000)
     @NotNull
     private String main_text;
 
     @NotNull
+    private LocalDateTime dateOfPublication;
+
     private String image_id;
 
-    @NotNull
-    private LocalDate created;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "newsId")
+    private List<NewsImage> images = new ArrayList<>();
 
     private LocalDateTime last_updated;
 
-    private Long views;
+    private Long views = 0L;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @Formula("(select count(*) from news_comment c where c.news_id = id)")
+    private Long commentsAmount;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private NewsType newsType;
 }

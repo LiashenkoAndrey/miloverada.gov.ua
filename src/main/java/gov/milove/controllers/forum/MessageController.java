@@ -2,9 +2,8 @@ package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.*;
 import gov.milove.domain.forum.Message;
-import gov.milove.repositories.forum.ChatRepo;
-import gov.milove.repositories.forum.ForumUserRepo;
-import gov.milove.repositories.forum.MessageRepo;
+import gov.milove.repositories.jpa.forum.ForumUserRepo;
+import gov.milove.repositories.jpa.forum.MessageRepo;
 import gov.milove.services.forum.MessageService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.validation.Valid;
@@ -22,6 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,6 @@ public class MessageController {
 
     private final MessageRepo messageRepo;
     private final ForumUserRepo forumUserRepo;
-    private final ChatRepo chatRepo;
     private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
 
@@ -39,7 +39,7 @@ public class MessageController {
     public Message newMessage(@Valid @RequestBody MessageDto dto) {
         Message message = MessageDto.toEntity(dto);
         message.setSender(forumUserRepo.getReferenceById(dto.getSenderId()));
-        message.setChat(chatRepo.getReferenceById(dto.getChatId()));
+        message.setChatId(dto.getChatId());
 
         Message saved = messageRepo.save(message);
         log.info(saved);
@@ -56,18 +56,20 @@ public class MessageController {
         return saved.getId();
     }
 
-
     @Transactional
     @MessageMapping("/userMessage/new")
     public void saveMessage(@Valid @Payload MessageDto dto) {
-        log.info("new message: " + dto);
-        log.info("reply msg id {}", dto.getReplyToMessageId());
-        Message saved = messageService.saveMessage(dto);
-        log.info("saved ok {}",  saved);
-
-        String destination = "/chat/" + dto.getChatId();
-        messagingTemplate.convertAndSend(destination, saved);
+        messageService.saveNewMessage(dto);
     }
+
+
+    @Transactional
+    @MessageMapping("/messages/forward")
+    public void forwardMessages(@Valid @Payload ForwardMessagesDto dto) {
+        log.info("forward messages: {}" ,dto);
+        messageService.forwardMessages(dto);
+    }
+
 
     @MessageMapping("/userMessage/wasDeleted")
     public void notifyThatMessageWasDeleted(@Payload DeleteMessageDto dto) {
@@ -112,7 +114,7 @@ public class MessageController {
 
     @GetMapping("/forum/chat/{chatId}/message/latest")
     public List<Message> getLatestOfChat(@PathVariable Long chatId) {
-        List<Message> messages =  messageRepo.findByChat_Id(chatId, PageRequest.of(0, 30, Sort.by("createdOn").descending()));
+        List<Message> messages =  messageRepo.findAllByChatId(chatId, PageRequest.of(0, 30, Sort.by("createdOn").descending()));
         Collections.reverse(messages);
         return messages;
     }
@@ -120,5 +122,17 @@ public class MessageController {
     @GetMapping("/forum/message/latest")
     public List<Message> getLatestMessages() {
         return messageRepo.findAll(PageRequest.of(0, 30, Sort.by("createdOn").descending())).stream().collect(Collectors.toList());
+    }
+
+    @GetMapping("/forum/chat/{chatId}/messages/previous")
+    public List<Message> getPrevious(@RequestParam Long fromMessageId, @PathVariable Long chatId) {
+        List<Message> messages = messageRepo.getPrevious(fromMessageId, chatId);
+        Collections.reverse(messages);
+        return messages;
+    }
+
+    @GetMapping("/forum/chat/{chatId}/messages/next")
+    public List<Message> getNext(@RequestParam Long fromMessageId, @PathVariable Long chatId) {
+        return messageRepo.getNext(fromMessageId, chatId);
     }
 }

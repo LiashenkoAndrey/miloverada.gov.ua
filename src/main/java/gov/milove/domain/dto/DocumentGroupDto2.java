@@ -1,26 +1,10 @@
 package gov.milove.domain.dto;
 
-import gov.milove.controllers.institution.document.SubGroup;
-import gov.milove.domain.SubGroupDto2;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public interface DocumentGroupDto2 {
 
-import java.util.List;
+    Long getId();
 
-@Getter
-@Setter
-@NoArgsConstructor
+    String getName();
 
-public class DocumentGroupDto2  {
-    public DocumentGroupDto2(String title, Long id, List<SubGroupDto2> subGroups) {
-        this.title = title;
-        this.id = id;
-        this.subGroups = subGroups;
-    }
-
-    private String title;
-    private Long id;
-    private List<SubGroupDto2> subGroups;
+    DocumentGroupDto2 getDocumentGroup();
 }

@@ -1,0 +1,62 @@
+spring:
+  config:
+    import: "optional:application-dev-environment.properties"
+
+  flyway:
+    user: ${postgres_username}
+    password: ${postgres_password}
+    schemas: public
+    url: ${postgres_url}
+
+  data:
+    mongodb:
+      database: ${mongo.database}
+      uri: ${mongo_url}
+      repositories:
+        type: auto
+    jpa:
+
+      repositories:
+        enabled: true
+  jpa:
+    properties:
+      hibernate:
+
+    show-sql: true
+#    open-in-view: false
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${postgres_username}
+    password: ${postgres_password}
+    url: ${postgres_url}
+
+  web:
+    resources:
+      add-mappings: false
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: false
+
+okta:
+  oauth2:
+    issuer: https://dev-i1ehhh4j3rf2tyqz.us.auth0.com/
+    audience: https://miloverada-api
+
+server:
+  port: 6060
+  tomcat:
+    max-http-form-post-size: 50000000
+logging:
+  file:
+    path: logs

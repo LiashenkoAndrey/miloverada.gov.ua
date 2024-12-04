@@ -1,40 +1,52 @@
 package gov.milove.domain;
 
 
-import gov.milove.domain.administration.AdministrationGroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Data
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @AllArgsConstructor
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@Table
 public class Document {
 
-    public Document(Long id, String title, String document_filename) {
+    public Document(Long id, String title, String name) {
         this.id = id;
         this.title = title;
-        this.document_filename = document_filename;
+        this.name = name;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String mongoId;
+
+    @NotNull
     private String title;
 
-    private String document_filename;
+    @NotNull
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "sub_group_id")
-    private SubGroup sub_group;
+    @NotNull
+    private Integer hashCode;
 
-    @ManyToOne
-    private AdministrationGroup administration_group;
+    @CreationTimestamp
+    private LocalDateTime createdOn;
 
-    public Document() {
-
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @JsonIgnoreProperties("hibernateLazyInitializer")
+    private DocumentGroup documentGroup;
 }
