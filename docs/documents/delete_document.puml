@@ -4,7 +4,7 @@ participant DocumentController
 participant DocumentService
 participant DocumentRepository
 
-User -> DocumentController : DELETE /api/protected/document/{id}/delete
+User -> DocumentController : DELETE /api/protected/documents/{id}/delete
 
 DocumentController -> DocumentService : deleteDocument(id)
 DocumentService -> DocumentRepository : findDocument(id)

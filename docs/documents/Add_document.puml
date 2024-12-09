@@ -1,0 +1,20 @@
+@startuml
+actor User
+participant DocumentController
+participant DocumentService
+participant DocumentRepository
+
+User -> DocumentController : POST /api/protected/documents
+
+DocumentController -> DocumentService : saveDocument(id)
+DocumentService -> DocumentService : calculateHash()
+DocumentService -> DocumentMetadataRepository : get by hash
+alt document exists with provided hash
+ DocumentService -> DocumentMetadataRepository : save new record
+
+else document not exists
+  DocumentService -> DocumentMetadataRepository :  save new record
+  DocumentService -> FileDocumentRepository : save real file
+end
+
+@enduml
