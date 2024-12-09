@@ -1,0 +1,46 @@
+@startuml
+
+together {
+  together {
+    DocumentGroup -> DocumentGroup
+  }
+
+  DocumentGroup -> DocumentMetadata
+}
+
+class DocumentMetadata {
+  id: Long
+  fileId : String
+  title: String
+  fileName: String
+  size: Long
+  hashCode: Long
+  documentGroup: DocumentGroup
+  addedOn: LocalDateTime
+  addedBy : AppUser
+}
+
+class DocumentGroup {
+  id : Long
+  name : String
+  DocumentGroup: groups
+  DocumentMetadata : documents
+  addedBy : AppUser
+  addedOn: LocalDateTime
+}
+
+interface FileDocumentRepository {
+  void: deleteById(Long id)
+  void: findById(Long id)
+}
+
+interface DocumentService {
+  String: saveFile(MultipartFile file)
+  void: delete(DocumentMetadata document)
+}
+
+interface DocumentMetadataRepository {
+  DocumentMetadata: save(DocumentMetadata)
+}
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+actor User
+participant DocumentController
+participant DocumentService
+participant DocumentRepository
+
+User -> DocumentController : DELETE /api/protected/document/{id}/delete
+
+DocumentController -> DocumentService : deleteDocument(id)
+DocumentService -> DocumentRepository : findDocument(id)
+activate DocumentRepository
+DocumentRepository -> DocumentService : Document
+deactivate DocumentRepository
+
+alt document used more one time
+  DocumentService -> DocumentRepository : delete Document(id) delete record
+else document used one time
+  DocumentService -> DocumentRepository : deleteDocument(id) delete record
+  DocumentService -> FileDocumentRepository : deleteDocument(id) delete real file
+end
+
+@enduml

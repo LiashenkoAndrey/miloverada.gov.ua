@@ -15,15 +15,8 @@ spring:
       repositories:
         type: auto
     jpa:
-
       repositories:
         enabled: true
-  jpa:
-    properties:
-      hibernate:
-
-    show-sql: true
-#    open-in-view: false
 
   mvc:
     throw-exception-if-no-handler-found: true

@@ -3,16 +3,20 @@ package gov.milove.controllers.documents;
 import gov.milove.domain.Document;
 import gov.milove.domain.dto.DocumentWithGroupDto;
 import gov.milove.repositories.jpa.document.DocumentRepo;
-import gov.milove.repositories.mongo.MongoDocumentRepo;
 import gov.milove.services.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -23,7 +27,6 @@ public class DocumentController {
 
     private final DocumentRepo documentRepo;
     private final DocumentService documentService;
-    private final MongoDocumentRepo mongoDocumentRepo;
 
     @PutMapping("/protected/document/{id}/update")
     public Long updateDocumentName(@PathVariable Long id,
@@ -34,18 +37,6 @@ public class DocumentController {
         documentRepo.save(document);
         return id;
     }
-//
-//    @GetMapping("/documents/deleteUnused")
-//    public void delete() {
-//        log.info("Start search");
-//        List<String> documents = documentRepository.findAll().stream().map(Document::getMongoId).toList();
-//        log.info("50%");
-//        List<MongoDocument> mongoDocuments = mongoDocumentRepo.findAll().stream()
-//                .filter(mongoDocument -> !documents.contains(mongoDocument.getId())).toList();
-//        log.info("Not used docs! size = {} {}", mongoDocuments.size(), mongoDocuments);
-//        mongoDocumentRepo.deleteAll(mongoDocuments);
-//        log.info("End search");
-//    }
 
     @DeleteMapping("/protected/document/{id}/delete")
     public Document deleteDocument(@PathVariable Long id) {
