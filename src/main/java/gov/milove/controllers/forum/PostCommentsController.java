@@ -1,7 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.PostCommentDto;
-import gov.milove.domain.forum.PostComment;
+import gov.milove.domain.forum.post.PostComment;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.PostCommentRepo;
 import lombok.RequiredArgsConstructor;

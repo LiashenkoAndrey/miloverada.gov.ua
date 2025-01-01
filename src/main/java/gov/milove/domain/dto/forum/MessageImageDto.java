@@ -1,13 +1,7 @@
 package gov.milove.domain.dto.forum;
 
-import gov.milove.domain.forum.MongoMessageImage;
-import gov.milove.exceptions.ServiceException;
+import gov.milove.domain.forum.mongo.MongoMessageImage;
 import lombok.*;
-import org.bson.types.Binary;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 @Getter
 @Setter

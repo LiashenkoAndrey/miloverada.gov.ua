@@ -1,6 +1,6 @@
 package gov.milove.repositories.jpa.forum;
 
-import gov.milove.domain.forum.VoteResponse;
+import gov.milove.domain.forum.vote.VoteResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,9 @@
 package gov.milove.services.forum.impl;
 
-import gov.milove.domain.Image;
+import gov.milove.domain.media.Image;
 import gov.milove.domain.dto.forum.NewForumUserDto;
 import gov.milove.domain.forum.ForumUser;
-import gov.milove.repositories.jpa.AppUserRepo;
+import gov.milove.repositories.jpa.AppUserRepository;
 import gov.milove.repositories.mongo.ImageRepo;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.services.forum.ForumUserService;
@@ -18,7 +18,7 @@ import java.util.Date;
 @Log4j2
 public class ForumUserServiceImpl implements ForumUserService {
 
-    private final AppUserRepo appUserRepo;
+    private final AppUserRepository appUserRepo;
 
     private final ImageRepo imageRepo;
 

@@ -1,10 +1,7 @@
 package gov.milove.repositories.jpa.forum;
 
-import gov.milove.domain.forum.Post;
-import gov.milove.domain.forum.PostLike;
-import gov.milove.domain.forum.PostLikeDto;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
+import gov.milove.domain.forum.post.PostLike;
+import gov.milove.domain.forum.post.PostLikeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

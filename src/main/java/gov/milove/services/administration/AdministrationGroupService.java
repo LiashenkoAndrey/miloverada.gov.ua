@@ -1,7 +1,7 @@
 package gov.milove.services.administration;
 
 import gov.milove.exceptions.AdministrationGroupServiceException;
-import gov.milove.repositories.jpa.administration.AdministrationGroup;
+import gov.milove.repositories.jpa.institution.AdministrationGroup;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

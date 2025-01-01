@@ -3,7 +3,7 @@ package gov.milove.repositories.jpa.forum;
 import gov.milove.domain.dto.forum.ChatDto;
 import gov.milove.domain.dto.forum.ChatDtoWithMetadata;
 import gov.milove.domain.dto.forum.ChatMetadataDto;
-import gov.milove.domain.forum.Chat;
+import gov.milove.domain.forum.chat.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

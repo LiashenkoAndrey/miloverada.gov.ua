@@ -1,7 +1,7 @@
 package gov.milove.domain.institution;
 
 
-import gov.milove.domain.DocumentGroup;
+import gov.milove.domain.document.DocumentGroup;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,15 +1,15 @@
 package gov.milove.services.impl;
 
-import gov.milove.domain.News;
-import gov.milove.domain.NewsType;
-import gov.milove.domain.dto.NewsDtoWithImageAndType;
+import gov.milove.domain.news.News;
+import gov.milove.domain.news.NewsType;
+import gov.milove.domain.dto.news.NewsDtoWithImageAndType;
 import gov.milove.exceptions.NewsNotFoundException;
 import gov.milove.exceptions.NewsServiceException;
-import gov.milove.repositories.jpa.NewsImageRepo;
-import gov.milove.repositories.jpa.NewsRepository;
-import gov.milove.repositories.jpa.NewsTypeRepo;
-import gov.milove.services.NewsImagesService;
-import gov.milove.services.NewsService;
+import gov.milove.repositories.jpa.news.NewsImageRepo;
+import gov.milove.repositories.jpa.news.NewsRepository;
+import gov.milove.repositories.jpa.news.NewsTypeRepo;
+import gov.milove.services.news.NewsImagesService;
+import gov.milove.services.news.NewsService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

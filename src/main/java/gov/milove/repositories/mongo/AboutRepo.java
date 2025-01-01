@@ -1,6 +1,6 @@
 package gov.milove.repositories.mongo;
 
-import gov.milove.domain.About;
+import gov.milove.domain.media.About;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 

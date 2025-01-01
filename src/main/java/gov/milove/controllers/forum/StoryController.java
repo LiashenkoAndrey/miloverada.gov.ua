@@ -1,6 +1,6 @@
 package gov.milove.controllers.forum;
 
-import gov.milove.domain.Image;
+import gov.milove.domain.media.Image;
 import gov.milove.domain.dto.forum.UserStoryDto;
 import gov.milove.domain.forum.Story;
 import gov.milove.repositories.mongo.ImageRepo;

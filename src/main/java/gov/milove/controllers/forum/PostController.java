@@ -1,11 +1,11 @@
 package gov.milove.controllers.forum;
 
 
-import gov.milove.domain.Image;
+import gov.milove.domain.media.Image;
 import gov.milove.domain.dto.forum.PostDto;
-import gov.milove.domain.forum.Post;
-import gov.milove.domain.forum.PostLike;
-import gov.milove.domain.forum.PostLikeDto;
+import gov.milove.domain.forum.post.Post;
+import gov.milove.domain.forum.post.PostLike;
+import gov.milove.domain.forum.post.PostLikeDto;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.PostLikeRepo;
 import gov.milove.repositories.jpa.forum.PostRepo;

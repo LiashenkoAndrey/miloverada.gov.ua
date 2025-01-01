@@ -1,7 +1,7 @@
 package gov.milove.services.forum;
 
 import gov.milove.domain.dto.forum.MessageImageDto;
-import gov.milove.domain.forum.MessageImage;
+import gov.milove.domain.forum.message.MessageImage;
 
 import java.util.List;
 

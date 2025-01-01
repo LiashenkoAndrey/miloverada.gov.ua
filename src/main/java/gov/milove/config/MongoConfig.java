@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-
+@Deprecated
 @Configuration
 //@EnableMongoRepositories(basePackages = "gov.milove.repositories.mongo")
 public class MongoConfig {

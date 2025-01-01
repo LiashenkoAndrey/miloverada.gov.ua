@@ -3,7 +3,7 @@ package gov.milove.services.forum.impl;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import gov.milove.domain.forum.File;
-import gov.milove.domain.forum.MongoFile;
+import gov.milove.domain.forum.mongo.MongoFile;
 import gov.milove.exceptions.ServiceException;
 import gov.milove.repositories.jpa.forum.FileRepo;
 import gov.milove.repositories.mongo.MongoFileRepo;

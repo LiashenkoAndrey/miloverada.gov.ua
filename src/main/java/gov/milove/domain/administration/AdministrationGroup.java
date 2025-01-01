@@ -1,6 +1,5 @@
 package gov.milove.domain.administration;
 
-import gov.milove.domain.Document;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package gov.milove.repositories.jpa.document;
 
-import gov.milove.domain.Document;
-import gov.milove.domain.dto.DocumentWithGroupDto;
+import gov.milove.domain.document.Document;
+import gov.milove.domain.dto.document.DocumentWithGroupDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

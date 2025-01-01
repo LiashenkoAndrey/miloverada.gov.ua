@@ -1,13 +1,7 @@
 package gov.milove.controllers.util;
 
-import gov.milove.domain.News;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class ControllerUtil {
 

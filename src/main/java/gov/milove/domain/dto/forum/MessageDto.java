@@ -1,12 +1,10 @@
 package gov.milove.domain.dto.forum;
 
-import gov.milove.domain.forum.Message;
+import gov.milove.domain.forum.message.Message;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;

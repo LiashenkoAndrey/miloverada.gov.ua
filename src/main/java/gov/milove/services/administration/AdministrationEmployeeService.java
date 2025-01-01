@@ -3,7 +3,7 @@ package gov.milove.services.administration;
 
 import gov.milove.domain.administration.AdministrationEmployee;
 import gov.milove.exceptions.AdministrationEmployeeServiceException;
-import gov.milove.repositories.jpa.administration.AdministrationEmployeeRepository;
+import gov.milove.repositories.jpa.institution.AdministrationEmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

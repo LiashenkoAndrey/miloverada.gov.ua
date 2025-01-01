@@ -2,7 +2,7 @@ package gov.milove.domain.forum;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import gov.milove.domain.AppUser;
+import gov.milove.domain.user.AppUser;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
