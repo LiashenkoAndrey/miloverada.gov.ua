@@ -1,6 +1,7 @@
 package gov.milove.repositories.jpa.forum;
 
-import gov.milove.domain.forum.vote.Vote;
+import gov.milove.domain.forum.PageVote;
+import gov.milove.domain.forum.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
