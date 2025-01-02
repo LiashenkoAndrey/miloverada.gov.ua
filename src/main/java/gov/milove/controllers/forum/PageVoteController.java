@@ -1,6 +1,7 @@
 package gov.milove.controllers.forum;
 
-import gov.milove.domain.forum.vote.Vote;
+import gov.milove.domain.forum.PageVote;
+import gov.milove.domain.forum.Vote;
 import gov.milove.repositories.jpa.forum.VoteRepo;
 import gov.milove.services.VoteService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,9 @@
 package gov.milove.services.forum;
 
-import gov.milove.domain.forum.message.MessageFile;
+import gov.milove.domain.forum.MessageFile;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MessageFileService {
 

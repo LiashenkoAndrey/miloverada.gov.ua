@@ -1,8 +1,7 @@
 package gov.milove.domain.administration;
 
 
-import gov.milove.domain.institution.Employee;
-import jakarta.persistence.Column;
+import gov.milove.domain.Employee;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;

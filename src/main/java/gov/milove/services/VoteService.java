@@ -1,6 +1,6 @@
 package gov.milove.services;
 
-import gov.milove.domain.forum.vote.Vote;
+import gov.milove.domain.forum.Vote;
 
 public interface VoteService {
 
