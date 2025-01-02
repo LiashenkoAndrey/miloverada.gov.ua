@@ -1,12 +1,12 @@
 package gov.milove.services.impl;
 
-import gov.milove.domain.MongoNewsImage;
-import gov.milove.domain.NewsImage;
+import gov.milove.domain.mongo.MongoNewsImage;
+import gov.milove.domain.news.NewsImage;
 import gov.milove.exceptions.ImageNotFoundException;
 import gov.milove.exceptions.ServiceException;
-import gov.milove.repositories.jpa.NewsImageRepo;
+import gov.milove.repositories.jpa.news.NewsImageRepo;
 import gov.milove.repositories.mongo.NewsImagesMongoRepo;
-import gov.milove.services.NewsImagesService;
+import gov.milove.services.news.NewsImagesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.Binary;

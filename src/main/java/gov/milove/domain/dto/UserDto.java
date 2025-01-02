@@ -1,7 +1,7 @@
 package gov.milove.domain.dto;
 
-import gov.milove.domain.AdminMetadata;
-import gov.milove.domain.AppUser;
+import gov.milove.domain.user.AdminMetadata;
+import gov.milove.domain.user.AppUser;
 import lombok.*;
 
 @Getter

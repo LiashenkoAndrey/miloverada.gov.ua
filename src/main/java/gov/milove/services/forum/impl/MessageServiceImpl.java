@@ -3,9 +3,9 @@ package gov.milove.services.forum.impl;
 import gov.milove.domain.dto.forum.ForwardMessagesDto;
 import gov.milove.domain.dto.forum.MessageDto;
 import gov.milove.domain.dto.forum.MessageRequestDto;
-import gov.milove.domain.forum.ForwardedMessage;
-import gov.milove.domain.forum.Message;
-import gov.milove.repositories.jpa.ForwardedMessageRepo;
+import gov.milove.domain.forum.message.ForwardedMessage;
+import gov.milove.domain.forum.message.Message;
+import gov.milove.repositories.jpa.contact.ForwardedMessageRepository;
 import gov.milove.repositories.jpa.forum.ChatRepo;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.MessageRepo;
@@ -48,7 +48,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageImageService messageImageService;
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final ForwardedMessageRepo forwardedMessageRepo;
+    private final ForwardedMessageRepository forwardedMessageRepo;
 
 
     @PersistenceContext

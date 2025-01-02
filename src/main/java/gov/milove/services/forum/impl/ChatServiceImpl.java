@@ -1,9 +1,9 @@
 package gov.milove.services.forum.impl;
 
 import gov.milove.domain.dto.forum.*;
-import gov.milove.domain.forum.Chat;
-import gov.milove.domain.forum.PrivateChat;
-import gov.milove.domain.forum.UserChat;
+import gov.milove.domain.forum.chat.Chat;
+import gov.milove.domain.forum.chat.PrivateChat;
+import gov.milove.domain.forum.chat.UserChat;
 import gov.milove.repositories.jpa.forum.ChatRepo;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.PrivateChatRepo;
@@ -13,14 +13,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.postgresql.util.PGobject;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-
-import static gov.milove.util.Util.decodeUriComponent;
 
 @Service
 @RequiredArgsConstructor

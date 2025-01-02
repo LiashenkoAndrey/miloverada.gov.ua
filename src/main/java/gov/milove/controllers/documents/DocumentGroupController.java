@@ -1,13 +1,13 @@
 package gov.milove.controllers.documents;
 
-import gov.milove.domain.Document;
-import gov.milove.domain.DocumentGroup;
-import gov.milove.domain.dto.DocumentGroupWithGroupsDto;
-import gov.milove.domain.dto.DocumentGroupWithGroupsDtoAndDocumentsDto;
+import gov.milove.domain.document.Document;
+import gov.milove.domain.document.DocumentGroup;
+import gov.milove.domain.dto.document.DocumentGroupWithGroupsDto;
+import gov.milove.domain.dto.document.DocumentGroupWithGroupsAndDocumentsDto;
 import gov.milove.exceptions.DocumentGroupNotFoundException;
 import gov.milove.repositories.jpa.document.DocumentGroupRepo;
-import gov.milove.services.DocumentGroupService;
-import gov.milove.services.DocumentService;
+import gov.milove.services.document.DocumentGroupService;
+import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,8 @@ public class DocumentGroupController {
     }
 
     @PostMapping("/protected/documentGroup/new")
-    public DocumentGroupWithGroupsDtoAndDocumentsDto createNewSubGroup(@RequestParam(required = false) Long groupId,
-                                                                       @NotBlank @RequestParam String name) {
+    public DocumentGroupWithGroupsAndDocumentsDto createNewSubGroup(@RequestParam(required = false) Long groupId,
+                                                                    @NotBlank @RequestParam String name) {
 
         DocumentGroup documentGroup = DocumentGroup.builder()
                 .documentGroup(groupId == null ? null : documentGroupRepo.getReferenceById(groupId))
@@ -72,7 +72,7 @@ public class DocumentGroupController {
     }
 
     @GetMapping("/documentGroup/id/{id}")
-    public DocumentGroupWithGroupsDtoAndDocumentsDto findById(@PathVariable Long id) {
+    public DocumentGroupWithGroupsAndDocumentsDto findById(@PathVariable Long id) {
         return documentGroupRepo.findDistinctById(id)
                 .orElseThrow(DocumentGroupNotFoundException::new);
     }

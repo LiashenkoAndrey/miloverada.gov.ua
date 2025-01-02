@@ -1,6 +1,6 @@
 package gov.milove.controllers.forum;
 
-import gov.milove.domain.forum.MongoMessageImage;
+import gov.milove.domain.forum.mongo.MongoMessageImage;
 import gov.milove.exceptions.ImageNotFoundException;
 import gov.milove.repositories.mongo.MessageImageRepo;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,9 @@
 package gov.milove.repositories.mongo;
 
-import gov.milove.domain.MongoDocument;
+import gov.milove.domain.mongo.MongoDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface MongoDocumentRepo extends MongoRepository<MongoDocument, String> {

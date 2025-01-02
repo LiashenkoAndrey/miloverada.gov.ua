@@ -1,7 +1,7 @@
 package gov.milove.controllers.forum;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
-import gov.milove.domain.forum.MongoFile;
+import gov.milove.domain.forum.mongo.MongoFile;
 import gov.milove.exceptions.FileNotFoundException;
 import gov.milove.repositories.mongo.MongoFileRepo;
 import gov.milove.services.forum.MessageFileService;

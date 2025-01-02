@@ -1,7 +1,7 @@
 package gov.milove.controllers.forum;
 
 import gov.milove.domain.dto.forum.*;
-import gov.milove.domain.forum.Message;
+import gov.milove.domain.forum.message.Message;
 import gov.milove.repositories.jpa.forum.ForumUserRepo;
 import gov.milove.repositories.jpa.forum.MessageRepo;
 import gov.milove.services.forum.MessageService;

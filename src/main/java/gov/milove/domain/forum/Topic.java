@@ -1,8 +1,8 @@
 package gov.milove.domain.forum;
 
+import gov.milove.domain.forum.chat.Chat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MongoTimeoutException.class)
     public void handleNotFound(final HttpServletRequest request, final Exception error) {
-//        log.error(error.getMessage());
+        log.error(error.getMessage());
     }
 }

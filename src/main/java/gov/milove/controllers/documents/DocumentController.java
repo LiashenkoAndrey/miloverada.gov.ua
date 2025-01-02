@@ -1,10 +1,10 @@
 package gov.milove.controllers.documents;
 
-import gov.milove.domain.Document;
-import gov.milove.domain.dto.DocumentWithGroupDto;
+import gov.milove.domain.document.Document;
+import gov.milove.domain.dto.document.DocumentWithGroupDto;
 import gov.milove.repositories.jpa.document.DocumentRepo;
 import gov.milove.repositories.mongo.MongoDocumentRepo;
-import gov.milove.services.DocumentService;
+import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package gov.milove.domain.dto.forum;
 
-import gov.milove.domain.forum.Chat;
+import gov.milove.domain.forum.chat.Chat;
 import lombok.*;
 
 @Getter

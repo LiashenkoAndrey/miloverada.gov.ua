@@ -1,13 +1,13 @@
 package gov.milove.services.impl;
 
-import gov.milove.domain.Document;
-import gov.milove.domain.DocumentGroup;
-import gov.milove.domain.MongoDocument;
+import gov.milove.domain.document.Document;
+import gov.milove.domain.document.DocumentGroup;
+import gov.milove.domain.mongo.MongoDocument;
 import gov.milove.exceptions.ServiceException;
 import gov.milove.repositories.jpa.document.DocumentGroupRepo;
 import gov.milove.repositories.jpa.document.DocumentRepo;
 import gov.milove.repositories.mongo.MongoDocumentRepo;
-import gov.milove.services.DocumentService;
+import gov.milove.services.document.DocumentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

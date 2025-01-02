@@ -3,7 +3,7 @@ package gov.milove.controllers.forum;
 import gov.milove.domain.dto.forum.NewTopicDto;
 import gov.milove.domain.dto.forum.TopicDto;
 import gov.milove.domain.forum.Topic;
-import gov.milove.repositories.jpa.TopicRepo;
+import gov.milove.domain.dto.document.media.TopicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicController {
 
-    private final TopicRepo topicRepo;
+    private final TopicRepository topicRepo;
 
     @GetMapping("/forum/topic/all")
     public List<TopicDto> getAll() {

@@ -1,8 +1,8 @@
 package gov.milove.services.forum.impl;
 
 import gov.milove.domain.dto.forum.MessageImageDto;
-import gov.milove.domain.forum.MessageImage;
-import gov.milove.domain.forum.MongoMessageImage;
+import gov.milove.domain.forum.message.MessageImage;
+import gov.milove.domain.forum.mongo.MongoMessageImage;
 import gov.milove.exceptions.ImageNotFoundException;
 import gov.milove.repositories.jpa.forum.MessageRepo;
 import gov.milove.repositories.mongo.MessageImageRepo;

@@ -1,8 +1,6 @@
 package gov.milove.domain.institution;
 
-import gov.milove.domain.Employee;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

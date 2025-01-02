@@ -1,6 +1,6 @@
 package gov.milove.repositories.jpa.forum;
 
-import gov.milove.domain.forum.PrivateChat;
+import gov.milove.domain.forum.chat.PrivateChat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

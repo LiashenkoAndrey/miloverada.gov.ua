@@ -1,6 +1,6 @@
 package gov.milove.services.impl;
 
-import gov.milove.domain.forum.Vote;
+import gov.milove.domain.forum.vote.Vote;
 import gov.milove.repositories.jpa.forum.VoteCustomResponseRepo;
 import gov.milove.repositories.jpa.forum.VoteRepo;
 import gov.milove.repositories.jpa.forum.VoteResponseRepo;
